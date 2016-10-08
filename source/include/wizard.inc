@@ -4,7 +4,7 @@
 	tmp_str			: vtype;
       begin
 	clear(1,1);
-	writev(tmp_str,'               Moria Version M',cur_version:3:2);
+	writev(tmp_str,'               Moria Version ',cur_version:3:2);
 put_buffer(tmp_str,1,1);
 put_buffer('Version 0.1  : 03/25/83',2,1);
 put_buffer('Version 1.0  : 05/01/84',3,1);
@@ -19,12 +19,11 @@ put_buffer('           Miscellaneous          - RAK & JWT',12,1);
 put_buffer('     V2.0  Town Level & Misc      - RAK',13,1);
 put_buffer('     V3.0  Internal Help & Misc   - RAK',14,1);
 put_buffer('     V4.0  Source Release Version - RAK',15,1);
-put_buffer('     M4.4  DEC Internal fixes     - RHM',16,1);
-put_buffer('Robert Alan Koeneke               Jimmey Wayne Todd Jr.',18,1);
-put_buffer('Student/University of Oklahoma    Student/University of Oklahoma',19,1);
-put_buffer('119 Crystal Bend                  1912 Tiffany Dr.',20,1);
-put_buffer('Norman, OK 73069                  Norman, OK  73071',21,1);
-put_buffer('(405)-321-2925                    (405) 360-6792',22,1);
+put_buffer('Robert Alan Koeneke               Jimmey Wayne Todd Jr.',17,1);
+put_buffer('Student/University of Oklahoma    Student/University of Oklahoma',18,1);
+put_buffer('119 Crystal Bend                  1912 Tiffany Dr.',19,1);
+put_buffer('Norman, OK 73069                  Norman, OK  73071',20,1);
+put_buffer('(405)-321-2925                    (405) 360-6792',21,1);
 	pause(24);
 	draw_cave;
       end;

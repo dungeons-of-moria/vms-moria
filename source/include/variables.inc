@@ -1,4 +1,6 @@
 var
+	player_max_exp			: [psect(player$data)]
+					  integer;	{ Max exp possible    }
 	seed				: [psect(player$data),global]
 					  unsigned;	{ Contains seed #     }
 	randes_seed			: [psect(setup$data)]

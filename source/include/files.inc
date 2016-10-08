@@ -1,17 +1,17 @@
 	{ Attempt to open the intro file			-RAK-	}
 [psect(setup$code)] procedure intro(var finam : vtype);
       var
-	xpos,i1				: integer;
-	dummy				: char;
-	day_test,in_line		: vtype;
-	file1				: text;
-	file2				: file of key_type; 
-	exit_flag			: boolean;
+	xpos,i1                         : integer;
+	dummy                           : char;
+	day_test,in_line                : vtype;
+	file1                           : text;
+	file2                           : file of key_type;
+	exit_flag                       : boolean;
       begin
 	exit_flag := false;
 	clear(1,1);
-	{ Attempt to read hours.dat.  If it does not exist,	}
-	{ then create a standard one.				}
+	{ Attempt to read hours.dat.  If it does not exist,     }
+	{ then create a standard one.                           }
 	priv_switch(1);
 	open(file1,file_name:=MORIA_HOU,
 		history:=readonly,sharing:=readonly,error:=continue);
@@ -35,7 +35,7 @@
 	    close(file1,error:=continue);
 	    priv_switch(0);
 	  end
-	else	{ Create a standard hours file			}
+	else    { Create a standard hours file                  }
 	  begin
 	    priv_switch(0);
 	    open(file1,file_name:=MORIA_HOU,
@@ -73,7 +73,7 @@
 	      no_controly;
 	    if (not(check_time)) then
 	      if (not(wizard1)) then
-	        begin
+		begin
 		  priv_switch(1);
 		  open(file1,file_name:=MORIA_HOU,
 			history:=readonly,sharing:=readonly,error:=continue);
@@ -81,20 +81,20 @@
 		    begin
 		      reset(file1);
 		      repeat
-		        readln(file1,in_line);
-		        writeln(in_line);
+			readln(file1,in_line);
+			writeln(in_line);
 		      until(eof(file1));
 		      close(file1,error:=continue);
 		    end;
 		  priv_switch(0);
-	          exit;
-	        end;
+		  exit;
+		end;
 	  end;
 
 	{ Print the introduction message, news, ect...		}
 	priv_switch(1);
 	open(file1,file_name:=MORIA_MOR,
-		organization:=sequential,history:=old,
+		organization:=sequential,history:=readonly,
 		sharing:=readwrite,error:=continue);
 	if (status(file1) = 0) then
 	  begin
@@ -112,7 +112,7 @@
 	      close(file1,error:=continue);
 	    priv_switch(0);
 	  end
-	else	{ Create one...					}
+	else    { Create one...                                 }
 	  begin
 	    priv_switch(0);
 	    open(file1,file_name:=MORIA_MOR,
@@ -121,26 +121,26 @@
 	    if (status(file1) = 0) then
 	      begin
 		rewrite(file1,error:=continue);
-writeln(file1,'                         **********************');
-writeln(file1,'                         **    Moria M',cur_version:4:2,'   **');
-writeln(file1,'                         **********************');
+writeln(file1,'                         *********************');
+writeln(file1,'                         **    Moria ',cur_version:4:2,'   **');
+writeln(file1,'                         *********************');
 writeln(file1,'                   COPYRIGHT (c) Robert Alan Koeneke');
 writeln(file1,' ');
 writeln(file1,'Programers : Robert Alan Koeneke / University of Oklahoma');
 writeln(file1,'             Jimmey Wayne Todd   / University of Oklahoma');
 writeln(file1,' ');
 writeln(file1,'Dungeon Master: This file may contain updates and news.');
-	        close(file1,error:=continue);
+		close(file1,error:=continue);
 		writeln('Created ',MORIA_MOR);
 		exit_flag := true;
 	      end
 	    else
 	      begin
-	        writeln('Error in creating ',MORIA_MOR);
-	        exit;
+		writeln('Error in creating ',MORIA_MOR);
+		exit;
 	      end;
 	  end;
-	{ Check for MASTER.DAT				}
+	{ Check for MASTER.DAT                          }
 	priv_switch(1);
 	open (file2,file_name:=moria_mas,
 		access_method:=keyed,organization:=indexed,history:=readonly,
@@ -168,7 +168,7 @@ writeln(file1,'Dungeon Master: This file may contain updates and news.');
 	    close(file2,error:=continue);
 	    priv_switch(0);
 	  end;
-	{ Check for TOPTWENTY.DAT			}
+	{ Check for TOPTWENTY.DAT                       }
 	priv_switch(1);
 	open (file1,file_name:=moria_top,
 		organization:=sequential,history:=readonly,
@@ -213,11 +213,11 @@ writeln(file1,'Dungeon Master: This file may contain updates and news.');
 	{ Prints dungeon map to external file			-RAK-	}
 [psect(misc2$code)] procedure print_map;
     var
-	i1,i2,i3,i4,i5,i6,i7,i8		: integer;
-	dun_line			: varying [133] of char;
-	filename1			: varying [80] of char;
-	tmp				: char;
-	file1				: text;
+	i1,i2,i3,i4,i5,i6,i7,i8         : integer;
+	dun_line                        : varying [133] of char;
+	filename1                       : varying [80] of char;
+	tmp                             : char;
+	file1                           : text;
     begin
       prt('File name: ',1,1);
       if (get_string(filename1,1,12,64)) then
@@ -232,60 +232,60 @@ writeln(file1,'Dungeon Master: This file may contain updates and news.');
 	      i1 := 1;
 	      i7 := 0;
 	      repeat
-	        i2 := 1;
-	        i3 := i1 + outpage_height - 1;
-	        if (i3 > cur_height) then
-	          i3 := cur_height;
-	        i7 := i7 + 1;
-	        i8 := 0;
-	        repeat
-	          i4 := i2 + outpage_width - 1;
-	          if (i4 > cur_width) then
+		i2 := 1;
+		i3 := i1 + outpage_height - 1;
+		if (i3 > cur_height) then
+		  i3 := cur_height;
+		i7 := i7 + 1;
+		i8 := 0;
+		repeat
+		  i4 := i2 + outpage_width - 1;
+		  if (i4 > cur_width) then
 		    i4 := cur_width;
-	          i8 := i8 + 1;
-	          writeln(file1,chr(12),error:=continue);
-	          write(file1,'Section[',i7:1,',',i8:1,'];     ',
+		  i8 := i8 + 1;
+		  writeln(file1,chr(12),error:=continue);
+		  write(file1,'Section[',i7:1,',',i8:1,'];     ',
 							error:=continue);
-	          writeln(file1,'Depth : ',(dun_level*50):1,' (feet)',
+		  writeln(file1,'Depth : ',(dun_level*50):1,' (feet)',
 							error:=continue);
-	          writeln(file1,' ',error:=continue);
-	          write(file1,'   ',error:=continue);
-	          for i5 := i2 to i4 do
+		  writeln(file1,' ',error:=continue);
+		  write(file1,'   ',error:=continue);
+		  for i5 := i2 to i4 do
 		    begin
 		      i6 := trunc(i5/100);
 		      write(file1,i6:1,error:=continue);
 		    end;
-	          writeln(file1,error:=continue);
-	          write(file1,'   ',error:=continue);
-	          for i5 := i2 to i4 do
+		  writeln(file1,error:=continue);
+		  write(file1,'   ',error:=continue);
+		  for i5 := i2 to i4 do
 		    begin
 		      i6 := trunc(i5/10) - trunc(i5/100)*10;
 		      write(file1,i6:1,error:=continue);
 		    end;
-	          writeln(file1,error:=continue);
-	          write(file1,'   ',error:=continue);
-	          for i5 := i2 to i4 do
+		  writeln(file1,error:=continue);
+		  write(file1,'   ',error:=continue);
+		  for i5 := i2 to i4 do
 		    begin
 		      i6 := i5 - trunc(i5/10)*10;
 		      write(file1,i6:1,error:=continue);
 		    end;
-	          writeln(file1,error:=continue);
-	          for i5 := i1 to i3 do
+		  writeln(file1,error:=continue);
+		  for i5 := i1 to i3 do
 		    begin
 		      writev(dun_line,i5:3);
 		      for i6 := i2 to i4 do
-		        begin
-		          if (test_light(i5,i6)) then
-		            loc_symbol(i5,i6,tmp)
-		          else
+			begin
+			  if (test_light(i5,i6)) then
+			    loc_symbol(i5,i6,tmp)
+			  else
 			    tmp := ' ';
-		          dun_line := dun_line + tmp;
-		        end;
+			  dun_line := dun_line + tmp;
+			end;
 		      writeln(file1,dun_line,error:=continue);
 		    end;
-	          i2 := i2 + outpage_width;
-	        until (i2 >= cur_width);
-	        i1 := i1 + outpage_height;
+		  i2 := i2 + outpage_width;
+		until (i2 >= cur_width);
+		i1 := i1 + outpage_height;
 	      until (i1 >= cur_height);
 	      close(file1,error:=continue);
 	      prt('Completed.',1,1);
@@ -294,14 +294,14 @@ writeln(file1,'Dungeon Master: This file may contain updates and news.');
     end;
 
 
-	{ Prints a list of random objects to a file.  Note that	-RAK-	}
-	{ the objects produced is a sampling of objects which		}
-	{ be expected to appear on that level.				}
+	{ Prints a list of random objects to a file.  Note that -RAK-	}
+	{ the objects produced is a sampling of objects which           }
+	{ be expected to appear on that level.                          }
 [psect(misc2$code)] procedure print_objects;
     var
-	nobj,i1,i2,level		: integer;
-	filename1,tmp_str		: varying [80] of char;
-	file1				: text;
+	nobj,i1,i2,level                : integer;
+	filename1,tmp_str               : varying [80] of char;
+	file1                           : text;
     begin
       prt('Produce objects on what level?: ',1,1);
       get_string(tmp_str,1,33,10);
@@ -314,17 +314,17 @@ writeln(file1,'Dungeon Master: This file may contain updates and news.');
       if ((nobj > 0) and (level > -1) and (level < 1201)) then
 	begin
 	  if (nobj > 9999) then nobj := 9999;
-          prt('File name: ',1,1);
-          if (get_string(filename1,1,12,64)) then
+	  prt('File name: ',1,1);
+	  if (get_string(filename1,1,12,64)) then
 	    begin
 	      if (length(filename1) = 0) then filename1 := 'MORIAOBJ.DAT';
 	      open(file1,filename1,error:=continue);
 	      if (status(file1) = 0) then
-	        begin
+		begin
 		  writev(tmp_str,nobj:1);
-	          prt(tmp_str + ' random objects being produced...',1,1);
-	          put_qio;
-	          rewrite(file1,error:=continue);
+		  prt(tmp_str + ' random objects being produced...',1,1);
+		  put_qio;
+		  rewrite(file1,error:=continue);
 	writeln(file1,'*** Random Object Sampling:',error:=continue);
 	writeln(file1,'*** ',nobj:1,' objects',error:=continue);
 	writeln(file1,'*** For Level ',level:1,error:=continue);
@@ -334,21 +334,21 @@ writeln(file1,'Dungeon Master: This file may contain updates and news.');
 		  for i1 := 1 to nobj do
 		    begin
 		      t_list[i2] := object_list[get_obj_num(level)];
-	              magic_treasure(i2,level);
+		      magic_treasure(i2,level);
 		      inventory[inven_max] := t_list[i2];
 		      with inventory[inven_max] do
 			begin
-		          unquote(name);
-		          known1(name);
-		          known2(name);
+			  unquote(name);
+			  known1(name);
+			  known2(name);
 			end;
 		      objdes(tmp_str,inven_max,true);
 		      writeln(file1,tmp_str,error:=continue);
 		    end;
 		  pusht(i2);
-	          close(file1,error:=continue);
-	          prt('Completed.',1,1);
-	        end
+		  close(file1,error:=continue);
+		  prt('Completed.',1,1);
+		end
 	      else
 		prt('File could not be opened.',1,1);
 	    end;
@@ -359,11 +359,11 @@ writeln(file1,'Dungeon Master: This file may contain updates and news.');
 	{ Prints a listing of monsters				-RAK-	}
 [psect(wizard$code)] procedure print_monsters;
     var
-	i1,i2,xpos,atype,adesc		: integer;
-	file1				: text;
-	out_val,filename1		: vtype;
-	attstr,attx			: vtype;
-	damstr				: dtype;
+	i1,i2,xpos,atype,adesc          : integer;
+	file1                           : text;
+	out_val,filename1               : vtype;
+	attstr,attx                     : vtype;
+	damstr                          : dtype;
 
     begin
       prt('File name: ',1,1);
@@ -377,9 +377,9 @@ writeln(file1,'Dungeon Master: This file may contain updates and news.');
 	      put_qio;
 	      rewrite(file1,error:=continue);
 	      for i1 := 1 to max_creatures do
-	        with c_list[i1] do
-	          begin
-	{ Begin writing to file					}
+		with c_list[i1] do
+		  begin
+	{ Begin writing to file                                 }
 writeln(file1,'--------------------------------------------',error:=continue);
 out_val := name + '                              ';
 writeln(file1,i1:3,'  ',out_val:30,'     (',cchar:1,')',error:=continue);
@@ -437,7 +437,7 @@ if (uand(%X'20000000',cmove) <> 0) then
   writeln(file1,'       Has 2d2 object(s)/gold.',error:=continue);
 if (uand(%X'40000000',cmove) <> 0) then
   writeln(file1,'       Has 4d2 object(s)/gold.',error:=continue);
-	{ Creature casts spells / Breaths Dragon breath...	}
+	{ Creature casts spells / Breaths Dragon breath...      }
 if (spells > 0) then
   begin
     writeln(file1,'   --Spells/Dragon Breath =',error:=continue);
@@ -468,7 +468,7 @@ if (spells > 0) then
     if (uand(%X'00008000',spells) <> 0) then
       writeln(file1,'       Slow person.',error:=continue);
     if (uand(%X'00010000',spells) <> 0) then
-      writeln(file1,'       **Unknown spell value**',error:=continue);
+      writeln(file1,'       Drains mana for healing.',error:=continue);
     if (uand(%X'00020000',spells) <> 0) then
       writeln(file1,'       **Unknown spell value**',error:=continue);
     if (uand(%X'00040000',spells) <> 0) then
@@ -484,7 +484,7 @@ if (spells > 0) then
     if (uand(%X'00800000',spells) <> 0) then
       writeln(file1,'       Breaths Fire Dragon Breath.',error:=continue);
   end;
-	{ Movement for creature					}
+	{ Movement for creature                                 }
 writeln(file1,'   --Movement =',error:=continue);
 if (uand(%X'00000001',cmove) <> 0) then
   writeln(file1,'       Move only to attack.',error:=continue);
@@ -539,38 +539,39 @@ while (length(attstr) > 0) do
 	otherwise out_val := '     **Unknown value** ';
     end;
     case atype of
-{Normal attack	}     1  : out_val := out_val + 'normal damage.';
+{Normal attack  }     1  : out_val := out_val + 'normal damage.';
 {Poison Strength}     2  : out_val := out_val + 'lowering strength.';
 {Confusion attack}    3  : out_val := out_val + 'confusion.';
-{Fear attack	}     4  : out_val := out_val + 'fear.';
-{Fire attack	}     5  : out_val := out_val + 'fire damage.';
-{Acid attack	}     6  : out_val := out_val + 'acid damage.';
-{Cold attack	}     7  : out_val := out_val + 'cold damage.';
+{Fear attack    }     4  : out_val := out_val + 'fear.';
+{Fire attack    }     5  : out_val := out_val + 'fire damage.';
+{Acid attack    }     6  : out_val := out_val + 'acid damage.';
+{Cold attack    }     7  : out_val := out_val + 'cold damage.';
 {Lightning attack}    8  : out_val := out_val + 'lightning damage.';
 {Corrosion attack}    9  : out_val := out_val + 'corrosion damage.';
 {Blindness attack}    10 : out_val := out_val + 'blindness.';
 {Paralysis attack}    11 : out_val := out_val + 'paralyzation.';
-{Steal Money	}     12 : out_val := out_val + 'stealing money.';
-{Steal Object	}     13 : out_val := out_val + 'stealing object.';
-{Poison		}     14 : out_val := out_val + 'poison damage.';
-{Lose Dex	}     15 : out_val := out_val + 'lose dexterity.';
-{Lose Con	}     16 : out_val := out_val + 'lose constitution.';
-{Lose Int	}     17 : out_val := out_val + 'lose intelligence.';
-{Lose Wis	}     18 : out_val := out_val + 'lose wisdom.';
-{Lose Exp	}     19 : out_val := out_val + 'lose experience.';
-{Aggravation	}     20 : out_val := out_val + 'aggravates monsters.';
-{Disenchant	}     21 : out_val := out_val + 'disenchants objects.';
-{Eats food	}     22 : out_val := out_val + 'eats food.';
-{Eats light	}     23 : out_val := out_val + 'eats light source.';
-{ Special	}     99 : out_val := out_val + 'blank message.';
-	              otherwise out_val := out_val + '**Unknown value**';
+{Steal Money    }     12 : out_val := out_val + 'stealing money.';
+{Steal Object   }     13 : out_val := out_val + 'stealing object.';
+{Poison         }     14 : out_val := out_val + 'poison damage.';
+{Lose Dex       }     15 : out_val := out_val + 'lose dexterity.';
+{Lose Con       }     16 : out_val := out_val + 'lose constitution.';
+{Lose Int       }     17 : out_val := out_val + 'lose intelligence.';
+{Lose Wis       }     18 : out_val := out_val + 'lose wisdom.';
+{Lose Exp       }     19 : out_val := out_val + 'lose experience.';
+{Aggravation    }     20 : out_val := out_val + 'aggravates monsters.';
+{Disenchant     }     21 : out_val := out_val + 'disenchants objects.';
+{Eats food      }     22 : out_val := out_val + 'eating food.';
+{Eats light     }     23 : out_val := out_val + 'eating light source.';
+{Eats charges   }     24 : out_val := out_val + 'absorbing charges.';
+{ Special       }     99 : out_val := out_val + 'blank message.';
+		      otherwise out_val := out_val + '**Unknown value**';
     end;
     out_val := out_val + ' (' + damstr + ')';
     writeln(file1,out_val,error:=continue);
   end;
   for i2 := 1 to 2 do writeln(file1,' ',error:=continue);
 end;
-	{ End writing to file					}
+	{ End writing to file                                   }
 	      close(file1,error:=continue);
 	      prt('Completed.',1,1);
 	    end;
@@ -581,12 +582,12 @@ end;
 	{ Print the character to a file or device		-RAK-	}
 [psect(misc2$code)] procedure file_character;
     var
-	i1,i2,xbth,xbthb,xfos,xsrh,xstl,xdis		: integer;
-	xsave,xdev					: integer;
-	xinfra						: vtype;
-	file1						: text;
-	out_val,filename1,prt1,prt2,new_page		: vtype;
-	out_str,out_int,out_wis,out_dex,out_con,out_chr	: stat_type;
+	i1,i2,xbth,xbthb,xfos,xsrh,xstl,xdis            : integer;
+	xsave,xdev                                      : integer;
+	xinfra                                          : vtype;
+	file1                                           : text;
+	out_val,filename1,prt1,prt2,new_page            : vtype;
+	out_str,out_int,out_wis,out_dex,out_con,out_chr : stat_type;
 
     begin
       prt('File name: ',1,1);
@@ -671,12 +672,12 @@ writeln(file1,'  Searching   : ',pad(likert(xsrh , 6),' ',10),error:=continue);
 write(file1,  '  Saving Throw: ',pad(likert(xsave, 6),' ',10),error:=continue);
 write(file1,  '  Magic Device: ',pad(likert(xdev , 7),' ',10),error:=continue);
 writeln(file1,'  Infra-Vision: ',pad(xinfra,' ',10),error:=continue);
-	{ Write out the character's history	}
+	{ Write out the character's history     }
 writeln(file1,' ');
 writeln(file1,' ');
 writeln(file1,'Character Background':45);
 for i1 := 1 to 5 do writeln(file1,pad(py.misc.history[i1],' ',71):76);
-	{ Write out the equipment list...	}
+	{ Write out the equipment list...       }
 	      i2 := 0;
 	      writeln(file1,' ',error:=continue);
 	      writeln(file1,' ',error:=continue);
@@ -690,18 +691,18 @@ else
       if (tval > 0) then
 	begin
 	  case i1 of
-	    23 :	prt1 := ') You are wielding   : ';
-	    24 :	prt1 := ') Worn on head       : ';
-	    25 :	prt1 := ') Worn around neck   : ';
-	    26 :	prt1 := ') Worn on body       : ';
-	    27 :	prt1 := ') Worn on shield arm : ';
-	    28 :	prt1 := ') Worn on hands      : ';
-	    29 :	prt1 := ') Right ring finger  : ';
-	    30 :	prt1 := ') Left  ring finger  : ';
-	    31 :	prt1 := ') Worn on feet       : ';
-	    32 :	prt1 := ') Worn about body    : ';
-	    33 :	prt1 := ') Light source is    : ';
-	    34 :	prt1 := ') Secondary weapon   : ';
+	    23 :        prt1 := ') You are wielding   : ';
+	    24 :        prt1 := ') Worn on head       : ';
+	    25 :        prt1 := ') Worn around neck   : ';
+	    26 :        prt1 := ') Worn on body       : ';
+	    27 :        prt1 := ') Worn on shield arm : ';
+	    28 :        prt1 := ') Worn on hands      : ';
+	    29 :        prt1 := ') Right ring finger  : ';
+	    30 :        prt1 := ') Left  ring finger  : ';
+	    31 :        prt1 := ') Worn on feet       : ';
+	    32 :        prt1 := ') Worn about body    : ';
+	    33 :        prt1 := ') Light source is    : ';
+	    34 :        prt1 := ') Secondary weapon   : ';
 	    otherwise   prt1 := ') *Unknown value*    : ';
 	  end;
 	  i2 := i2 + 1;
@@ -709,7 +710,7 @@ else
 	  writev(out_val,'  ',chr(i2+96),prt1,prt2);
 	  writeln(file1,out_val,error:=continue);
 	end;
-	{ Write out the character's inventory...	}
+	{ Write out the character's inventory...        }
 	      writeln(file1,new_page,error:=continue);
 	      writeln(file1,' ',error:=continue);
 	      writeln(file1,' ',error:=continue);

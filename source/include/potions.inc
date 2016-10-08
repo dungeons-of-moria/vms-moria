@@ -2,7 +2,7 @@
 [psect(misc2$code)] procedure quaff;
       var
 		i1				: unsigned;
-		i2,i3,i4,item_val		: integer;
+		i2,i3,i4,i5,item_val		: integer;
 		out_val				: vtype;
 		redraw,ident			: boolean;
       begin
@@ -117,7 +117,9 @@
 		  end;
 	  18 :	with py.misc do
 		  begin
-		    exp := exp + trunc(exp/2) + 10;
+		    i5 := (exp div 2) + 10;
+		    if (i5 > 100000) then i5 := 100000;
+		    exp := exp + i5;
 		    msg_print('You feel more experienced.');
 		    prt_experience;
 		    ident := true;
@@ -222,13 +224,7 @@
 		  ident := true;
 		end;
 	  38 :	ident := remove_fear;
-	  39 :	if (py.misc.max_exp > py.misc.exp) then
-		  begin
-		    ident := true;
-		    py.misc.exp := py.misc.max_exp;
-		    msg_print('You feel your life energies returning...');
-		    prt_experience;
-		  end;
+	  39 :  ident := restore_level;
 	  40 :	with py.flags do
 		  resist_heat := resist_heat + randint(10) + 10;
 	  41 :	with py.flags do

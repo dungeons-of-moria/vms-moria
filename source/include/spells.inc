@@ -1,12 +1,12 @@
-{ Following are spell procedure/functions 			-RAK-	}
-{ These routines are commonly used in the scroll, potion, wands, and	}
-{ staves routines, and are occassionly called from other areas.		}
-{ Now included are creature spells also...			-RAK	}
+{ Following are spell procedure/functions			-RAK-	}
+{ These routines are commonly used in the scroll, potion, wands, and    }
+{ staves routines, and are occassionly called from other areas.         }
+{ Now included are creature spells also...                      -RAK    }
 
 	{ Sleep creatures adjacent to player			-RAK-	}
 [psect(misc6$code)] function sleep_monsters1(y,x : integer) : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	sleep_monsters1 := false;
 	for i1 := y-1 to y+1 do
@@ -19,9 +19,9 @@
 		      sleep_monsters1 := true;
 		      if ((randint(max_mons_level) < level) or
 			 (uand(%X'1000',cdefense) <> 0)) then
-		        msg_print('The ' + name + ' is unaffected.')
+			msg_print('The ' + name + ' is unaffected.')
 		      else
-		        begin
+			begin
 			  msg_print('The ' + name + ' falls asleep.');
 			  csleep := 500;
 			end;
@@ -31,7 +31,7 @@
 	{ Detect any monsters on the current panel		-RAK-	}
 [psect(misc6$code)] function detect_treasure : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	detect_treasure := false;
 	for i1 := panel_row_min to panel_row_max do
@@ -50,7 +50,7 @@
 	{ Detect all objects on the current panel		-RAK-	}
 [psect(misc6$code)] function detect_object : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	detect_object := false;
 	for i1 := panel_row_min to panel_row_max do
@@ -69,7 +69,7 @@
 	{ Locates and displays traps on current panel		-RAK-	}
 [psect(misc6$code)] function detect_trap : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	detect_trap := false;
 	for i1 := panel_row_min to panel_row_max do
@@ -90,14 +90,14 @@
 	{ Locates and displays all secret doors on current panel -RAK-	}
 [psect(misc6$code)] function detect_sdoor : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	detect_sdoor := false;
 	for i1 := panel_row_min to panel_row_max do
 	  for i2 := panel_col_min to panel_col_max do
 	    with cave[i1,i2] do
 	      if (tptr > 0) then
-		{ Secret doors	}
+		{ Secret doors  }
 		if (t_list[tptr].tval = 109) then
 		  begin
 		    fval := corr_floor3.ftval;
@@ -105,7 +105,7 @@
 		    fm := true;
 		    detect_sdoor := true;
 		  end
-		{ Staircases	}
+		{ Staircases    }
 		else if (t_list[tptr].tval in [107,108]) then
 		  if (not(fm)) then
 		    begin
@@ -118,14 +118,13 @@
 	{ Locates and displays all invisible creatures on current panel -RAK-}
 [psect(misc6$code)] function detect_invisible : boolean;
       var
-		i1		: integer;
-		dummy		: char;
-		flag		: boolean;
+		i1              : integer;
+		dummy           : char;
+		flag            : boolean;
       begin
 	flag := false;
 	i1 := muptr;
-	while i1 <> 0 do
-	begin
+	repeat
 	  with m_list[i1] do
 	    if (panel_contains(fy,fx)) then
 	      if (uand(%X'10000',c_list[mptr].cmove) <> 0) then
@@ -135,7 +134,7 @@
 		  flag := true;
 		end;
 	  i1 := m_list[i1].nptr;
-	end;
+	until(i1 = 0);
 	if (flag) then
 	  begin
 	    msg_print('You sense the presence of invisible creatures!');
@@ -146,10 +145,10 @@
       end;
 
 	{ Light an area: 1.  If corridor then light immediate area -RAK-}
-	{		 2.  If room then light entire room.	   	}
+	{                2.  If room then light entire room.            }
 [psect(misc6$code)] function light_area(y,x : integer) : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	msg_print('You are surrounded by a white light.');
 	light_area := true;
@@ -169,10 +168,10 @@
 	{ Darken an area, opposite of light area		-RAK-	}
 [psect(misc6$code)] function unlight_area(y,x : integer) : boolean;
       var
-	i1,i2,i3,tmp1,tmp2		: integer;
-	start_row,start_col		: integer;
-	end_row,end_col			: integer;
-	flag				: boolean;
+	i1,i2,i3,tmp1,tmp2              : integer;
+	start_row,start_col             : integer;
+	end_row,end_col                 : integer;
+	flag                            : boolean;
       begin
 	flag := false;
 	if ((cave[y,x].fval in [1,2]) and (dun_level > 0)) then
@@ -191,7 +190,7 @@
 		  with cave[i1,i2] do
 		    if (fval in [1,2]) then
 		      begin
-		        pl := false;
+			pl := false;
 			fval := 1;
 			if (not(test_light(i1,i2))) then
 			  begin
@@ -229,7 +228,7 @@
 		  if (fval in [4,5,6]) then
 		    if (pl) then
 		      begin
-		  	pl := false;
+			pl := false;
 			flag := true;
 		      end;
 	if (flag) then
@@ -244,7 +243,7 @@
 	{ Map the current area plus some			-RAK-	}
 [psect(misc6$code)] function map_area : boolean;
       var
-		i1,i2,i3,i4,i5,i6,i7,i8		: integer;
+		i1,i2,i3,i4,i5,i6,i7,i8         : integer;
       begin
 	map_area := true;
 	i1 := panel_row_min - randint(10);
@@ -255,13 +254,13 @@
 	  for i6 := i3 to i4 do
 	    if (in_bounds(i5,i6)) then
 	      if (cave[i5,i6].fval in floor_set) then
-	        for i7 := i5-1 to i5+1 do
+		for i7 := i5-1 to i5+1 do
 		  for i8 := i6-1 to i6+1 do
 		    with cave[i7,i8] do
 		      if (fval in pwall_set) then
-		        pl := true
+			pl := true
 		      else if (tptr > 0) then
-		        if (t_list[tptr].tval in light_set) then
+			if (t_list[tptr].tval in light_set) then
 			  fm := true;
 	prt_map;
       end;
@@ -269,9 +268,9 @@
 	{ Identify an object					-RAK-	}
 [psect(misc6$code)] function ident_spell : boolean;
       var
-		item_val		: integer;
-		out_val			: vtype;
-		redraw			: boolean;
+		item_val                : integer;
+		out_val                 : vtype;
+		redraw                  : boolean;
       begin
 	ident_spell := false;
 	redraw := false;
@@ -293,16 +292,15 @@
       end;
 
 	{ Get all the monsters on the level pissed off...	-RAK-	}
-[psect(misc6$code)] function aggravate_monster	(
-			dis_affect		:	integer
+[psect(misc6$code)] function aggravate_monster  (
+			dis_affect              :       integer
 						) : boolean;
       var
-		i1		: integer;
+		i1              : integer;
       begin
 	aggravate_monster := true;
 	i1 := muptr;
-	while i1 <> 0 do
-	begin
+	repeat
 	  with m_list[i1] do
 	    begin
 	      csleep := 0;
@@ -311,13 +309,13 @@
 		  cspeed := cspeed + 1;
 	    end;
 	  i1 := m_list[i1].nptr;
-	end;
+	until(i1 = 0);
       end;
 
 	{ Surround the fool with traps (chuckle)		-RAK-	}
 [psect(misc6$code)] function trap_creation : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	trap_creation := true;
 	for i1 := char_row-1 to char_row+1 do
@@ -334,14 +332,14 @@
 	{ Surround the player with doors...			-RAK-	}
 [psect(misc6$code)] function door_creation : boolean;
       var
-		i1,i2,i3	: integer;
+		i1,i2,i3        : integer;
       begin
 	door_creation := true;
 	for i1 := char_row-1 to char_row+1 do
 	  for i2 := char_col-1 to char_col+1 do
 	    if ((i1 <> char_row) or (i2 <> char_col)) then
 	      with cave[i1,i2] do
-	        if (fval in floor_set) then
+		if (fval in floor_set) then
 		  begin
 		    popt(i3);
 		    if (tptr > 0) then
@@ -354,10 +352,10 @@
 		  end;
       end;
 
-	{ Destroys any adjacent door(s)/trap(s)			-RAK-	}
+	{ Destroys any adjacent door(s)/trap(s) 		-RAK-	}
 [psect(misc6$code)] function td_destroy : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	td_destroy := false;
 	for i1 := char_row-1 to char_row+1 do
@@ -374,13 +372,12 @@
 	{ Display all creatures on the current panel		-RAK-	}
 [psect(misc6$code)] function detect_monsters : boolean;
       var
-		i1,i2		: integer;
-		flag		: boolean;
+		i1,i2           : integer;
+		flag            : boolean;
       begin
 	flag := false;
 	i1 := muptr;
-	while (i1 <> 0) do
-	begin
+	repeat
 	  with m_list[i1] do
 	    if (panel_contains(fy,fx)) then
 	      if (uand(%X'10000',c_list[mptr].cmove) = 0) then
@@ -390,7 +387,7 @@
 		  flag := true;
 		end;
 	  i1 := m_list[i1].nptr;
-	end;
+	until(i1 = 0);
 	if (flag) then
 	  begin
 	    msg_print('You sense the presense of monsters!');
@@ -403,11 +400,11 @@
 
 
 	{ Leave a line of light in given dir, blue light can sometimes	}
-	{ hurt creatures...					-RAK-	}
+	{ hurt creatures...                                     -RAK-   }
 [psect(misc6$code)] function light_line(dir,y,x : integer) : boolean;
       begin
 	light_line := true;
-	while cave[y,x].fopen do
+	while (cave[y,x].fopen) do
 	  begin
 	    with cave[y,x] do
 	      begin
@@ -415,20 +412,20 @@
 		  begin
 		    if (not((tl) or (pl))) then
 		      if (fval = 2) then
-		        light_room(y,x)
+			light_room(y,x)
 		      else
-		        lite_spot(y,x);
-	            if (cptr > 1) then
-	              with m_list[cptr] do
-		        with c_list[mptr] do
-	                  if (uand(%X'0100',cdefense) <> 0) then
-		            begin
-		              msg_print('The ' + name + ' wails out in pain!');
-		              i1 := mon_take_hit(cptr,damroll('2d8'));
-		              if (i1 > 0) then
-			        msg_print('The ' + name +
+			lite_spot(y,x);
+		    if (cptr > 1) then
+		      with m_list[cptr] do
+			with c_list[mptr] do
+			  if (uand(%X'0100',cdefense) <> 0) then
+			    begin
+			      msg_print('The ' + name + ' wails out in pain!');
+			      i1 := mon_take_hit(cptr,damroll('2d8'));
+			      if (i1 > 0) then
+				msg_print('The ' + name +
 						' dies in a fit of agony.');
-		            end;
+			    end;
 		  end;
 		pl := true;
 	      end;
@@ -440,7 +437,7 @@
 	{ Light line in all directions				-RAK-	}
 [psect(misc6$code)] function starlite(y,x : integer) : boolean;
       var
-	i1			: integer;
+	i1                      : integer;
       begin
 	msg_print('The end of the staff bursts into a blue shimmering light.');
 	starlite := true;
@@ -450,14 +447,13 @@
       end;
 
 
-	{ Disarms all traps/chests in a given direction		-RAK-	}
+	{ Disarms all traps/chests in a given direction 	-RAK-	}
 [psect(misc6$code)] function disarm_all(dir,y,x : integer) : boolean;
       var
-	i1,oldy,oldx		: integer;
+	i1,oldy,oldx            : integer;
       begin
 	disarm_all := false;
-	while 	cave[oldy,oldx].fopen do
-	begin
+	repeat
 	  with cave[y,x] do
 	    begin
 	      if (tptr > 0) then
@@ -465,7 +461,7 @@
 		  if (tval in [101,102]) then
 		    begin
 		      if (delete_object(y,x)) then
-		        disarm_all := true;
+			disarm_all := true;
 		    end
 		  else if (tval = 105) then
 		    begin
@@ -494,45 +490,45 @@
 	  oldy := y;
 	  oldx := x;
 	  move(dir,y,x);
-	end;
+	until(not(cave[oldy,oldx].fopen))
       end;
 
 	{ Return flags for given type area affect		-RAK-	}
-[psect(misc6$code)] procedure get_flags	(
-			typ 				: integer; 
-			var weapon_type,harm_type 	: integer; 
-			var destroy			: obj_set
-       					);
+[psect(misc6$code)] procedure get_flags (
+			typ                             : integer;
+			var weapon_type,harm_type       : integer;
+			var destroy                     : obj_set
+					);
       begin
-            case typ of
-	1  :  begin	{ Lightning	}
+	    case typ of
+	1  :  begin     { Lightning     }
 		weapon_type := %X'00080000';
 		harm_type   := %X'0100';
 		destroy     := [45,60,65];
 	      end;
-	2  :  begin	{ Poison Gas	}
+	2  :  begin     { Poison Gas    }
 		weapon_type := %X'00100000';
 		harm_type   := %X'0040';
 		destroy     := [];
 	      end;
-	3  :  begin	{ Acid		}
+	3  :  begin     { Acid          }
 		weapon_type := %X'00200000';
 		harm_type   := %X'0080';
 		destroy     :=
 			[12,20,21,22,30,31,32,33,34,35,36,55,70,71,80,104,105];
 	      end;
-	4  :  begin	{ Frost		}
+	4  :  begin     { Frost         }
 		weapon_type := %X'00400000';
 		harm_type   := %X'0010';
 		destroy     := [75,76];
 	      end;
-	5  :  begin	{ Fire		}
+	5  :  begin     { Fire          }
 		weapon_type := %X'00800000';
 		harm_type   := %X'0020';
-		destroy     := 
+		destroy     :=
 			[12,20,21,22,30,31,32,36,55,70,71,75,76,80,104,105];
 	      end;
-	6  :  begin	{ Holy Orb	}
+	6  :  begin     { Holy Orb      }
 		weapon_type := %X'00000000';
 		harm_type   := %X'0004';
 		destroy     := [];
@@ -542,199 +538,218 @@
 		    harm_type   := 0;
 		    destroy     := [];
 		  end;
-        end;
+	end;
       end;
 
 
 	{ Shoot a bolt in a given direction			-RAK-	}
-[psect(misc6$code)] function fire_bolt	(
-			typ,dir,y,x,dam	: integer;
-			bolt_typ 	: ctype
+[psect(misc6$code)] function fire_bolt  (
+			typ,dir,y,x,dam : integer;
+			bolt_typ        : ctype
 					) : boolean;
       var
-	i1,oldy,oldx			: integer;
-	weapon_type,harm_type		: integer;
-	flag				: boolean;
-	dummy				: obj_set;
+	i1,oldy,oldx,dist               : integer;
+	weapon_type,harm_type           : integer;
+	flag                            : boolean;
+	dummy                           : obj_set;
       begin
 	fire_bolt := true;
 	flag := false;
 	get_flags(typ,weapon_type,harm_type,dummy);
 	oldy := y;
 	oldx := x;
+	dist := 0;
 	repeat
 	  move(dir,y,x);
 	  if (test_light(oldy,oldx)) then
 	    lite_spot(oldy,oldx)
 	  else
 	    unlite_spot(oldy,oldx);
-	  with cave[y,x] do
+	  dist := dist + 1;
+	  if (dist > obj$bolt_range) then
+	    flag := true
+	  else
 	    begin
-	      if (fopen) then
+	      with cave[y,x] do
 		begin
-		  if (cptr > 1) then
+		  if (fopen) then
 		    begin
-		      flag := true;
-		      with m_list[cptr] do
-			with c_list[mptr] do
-			  begin
-			    msg_print('The ' + bolt_typ + ' strikes the ' + 
-						c_list[mptr].name + '.');
-			    if (uand(harm_type,cdefense) <> 0) then
-			      dam := dam*2
-			    else if (uand(weapon_type,spells) <> 0) then
-			      dam := trunc(dam/4.0);
-			    i1 := mon_take_hit(cptr,dam);
-			    if (i1 > 0) then
-			      msg_print('The ' + c_list[i1].name +
-						' dies in a fit of agony.')
-			    else
+		      if (cptr > 1) then
+			begin
+			  flag := true;
+			  with m_list[cptr] do
+			    with c_list[mptr] do
 			      begin
-			        if (panel_contains(y,x)) then
+				msg_print('The ' + bolt_typ + ' strikes the '
+						+ c_list[mptr].name + '.');
+				if (uand(harm_type,cdefense) <> 0) then
+				  dam := dam*2
+				else if (uand(weapon_type,spells) <> 0) then
+				  dam := trunc(dam/4.0);
+				i1 := mon_take_hit(cptr,dam);
+				if (i1 > 0) then
+				  msg_print('The ' + c_list[i1].name +
+						' dies in a fit of agony.')
+				else
 				  begin
-			            print(c_list[mptr].cchar,y,x);
-			            m_list[cptr].ml := true;
-				  end;
+				    if (panel_contains(y,x)) then
+				      begin
+					print(c_list[mptr].cchar,y,x);
+					m_list[cptr].ml := true;
+				      end;
+				  end
 			      end
-			  end
+			end
+		      else if (panel_contains(y,x)) then
+			print('*',y,x);
 		    end
-		  else if (panel_contains(y,x)) then
-		    print('*',y,x);
-		end
-	      else
-		flag := true;
-            end;
-	  oldy := y;
-	  oldx := x;
+		  else
+		    flag := true;
+		end;
+	      oldy := y;
+	      oldx := x;
+	    end;
 	until (flag);
       end;
 
 
 	{ Shoot a ball in a given direction.  Note that balls have an	}
-	{ area affect....					-RAK-	}
-[psect(misc6$code)] function fire_ball		(
-			typ,dir,y,x,dam_hp	:	integer;
-			descrip			:	ctype
+	{ area affect....                                       -RAK-   }
+[psect(misc6$code)] function fire_ball          (
+			typ,dir,y,x,dam_hp      :       integer;
+			descrip                 :       ctype
 						) : boolean;
       var
-	i1,i2,i3			: integer;
-	dam,max_dis,thit,tkill		: integer;
-	oldy,oldx			: integer;
-	weapon_type,harm_type		: integer;
-	flag				: boolean;
-	destroy				: obj_set;
+	i1,i2,i3                        : integer;
+	dam,max_dis,thit,tkill          : integer;
+	oldy,oldx,dist                  : integer;
+	weapon_type,harm_type           : integer;
+	flag                            : boolean;
+	destroy                         : obj_set;
       begin
 	fire_ball := true;
-        thit   := 0;
-        tkill  := 0;
+	thit   := 0;
+	tkill  := 0;
 	max_dis := 2;
 	get_flags(typ,weapon_type,harm_type,destroy);
 	flag := false;
 	oldy := y;
 	oldx := x;
+	dist := 0;
 	repeat
 	  move(dir,y,x);
+	  dist := dist + 1;
 	  if (test_light(oldy,oldx)) then
 	    lite_spot(oldy,oldx)
 	  else
 	    unlite_spot(oldy,oldx);
-	  with cave[y,x] do
+	  if (dist > obj$bolt_range) then
+	    flag := true
+	  else
 	    begin
-	      if ((not(fopen)) or (cptr > 1)) then
+	      with cave[y,x] do
 		begin
-		  flag := true;
-	{ The ball hits and explodes...			}
-	{ The explosion...			}
-	for i1 := y-2 to y+2 do
-	  for i2 := x-2 to x+2 do
+		  if ((not(fopen)) or (cptr > 1)) then
+		    begin
+		      flag := true;
+		      if (not(fopen)) then
+			begin
+			  y := oldy;
+			  x := oldx;
+			end;
+	{ The ball hits and explodes...                 }
+	{ The explosion...                      }
+	for i1 := y-max_dis to y+max_dis do
+	  for i2 := x-max_dis to x+max_dis do
 	    if (in_bounds(i1,i2)) then
 	      if (distance(y,x,i1,i2) <= max_dis) then
+	      if (los(y,x,i1,i2)) then          { FIXED BUG V4.5        }
 		with cave[i1,i2] do
 		  begin
 		    if (tptr > 0) then
 		      if (t_list[tptr].tval in destroy) then
-		        delete_object(i1,i2);
+			delete_object(i1,i2);
 		    if (fopen) then
 		      begin
-			if (panel_contains(i1,i2)) then
-		          print('*',i1,i2);
-		        if (cptr > 1) then
+			if (panel_contains(i1,i2)) then print('*',i1,i2);
+			if (cptr > 1) then
 			  with m_list[cptr] do
 			    with c_list[mptr] do
 			      begin
-			        thit := thit + 1;
-			        dam := dam_hp;
-			        if (uand(harm_type,cdefense) <> 0) then
+				thit := thit + 1;
+				dam := dam_hp;
+				if (uand(harm_type,cdefense) <> 0) then
 				  dam := dam*2
 				else if (uand(weapon_type,spells) <> 0) then
-				  dam := trunc(dam/4.0);
+				  dam := dam div 4;
 				dam := trunc(dam/(distance(i1,i2,y,x)+1));
-			        i3 := mon_take_hit(cptr,dam);
-	        	        if (i3 > 0) then
-		  		  tkill := tkill + 1
-	        	        else
-		  		  begin
-		    		    if (panel_contains(i1,i2)) then
-		      		      begin
-		        	        print(cchar,i1,i2);
-		        	        ml := true;
-		      		      end
-		  		  end;
+				i3 := mon_take_hit(cptr,dam);
+				if (i3 > 0) then
+				  tkill := tkill + 1
+				else
+				  begin
+				    if (panel_contains(i1,i2)) then
+				      begin
+					print(cchar,i1,i2);
+					ml := true;
+				      end
+				  end;
 			      end;
 		      end;
 		  end;
-        for i1 := (y - 2) to (y + 2) do
+	for i1 := (y - 2) to (y + 2) do
 	  for i2 := (x - 2) to (x + 2) do
 	    if (in_bounds(i1,i2)) then
 	      if (panel_contains(i1,i2)) then
-	        if (distance(y,x,i1,i2) <= max_dis) then
+		if (distance(y,x,i1,i2) <= max_dis) then
 		  begin
 		    with cave[i1,i2] do
-	              if (test_light(i1,i2)) then
-		        lite_spot(i1,i2)
+		      if (test_light(i1,i2)) then
+			lite_spot(i1,i2)
 		      else if (cptr = 1) then
-		        lite_spot(i1,i2)
+			lite_spot(i1,i2)
 		      else if (cptr > 1) then
 			if (m_list[cptr].ml) then
-		          lite_spot(i1,i2)
+			  lite_spot(i1,i2)
 			else
-		          unlite_spot(i1,i2)
+			  unlite_spot(i1,i2)
 		      else
-		        unlite_spot(i1,i2);
+			unlite_spot(i1,i2);
 		  end;
-	{ End  explosion...			}
-      if (thit = 1) then
-	msg_print('The ' + descrip + ' envelopes a creature!')
-      else if (thit > 1) then
-	msg_print('The ' + descrip + 
+	{ End  explosion...                     }
+	  if (thit = 1) then
+	    msg_print('The ' + descrip + ' envelopes a creature!')
+	  else if (thit > 1) then
+	    msg_print('The ' + descrip +
 				' envelopes several creatures!');
-      if (tkill = 1) then
-	msg_print('There is a scream of agony!')
-      else if (tkill > 1) then
-	msg_print('There are several screams of agony!');
-	{ End ball hitting...			}
-		end
-	      else if (panel_contains(y,x)) then
-		print('*',y,x);
-            end;
-	  oldy := y;
-	  oldx := x;
+	  if (tkill = 1) then
+	    msg_print('There is a scream of agony!')
+	  else if (tkill > 1) then
+	    msg_print('There are several screams of agony!');
+	{ End ball hitting...                   }
+		    end
+		  else if (panel_contains(y,x)) then
+		    print('*',y,x);
+		end;
+	      oldy := y;
+	      oldx := x;
+	    end;
 	until (flag);
       end;
 
 
-	{ Breath weapon works like a fire_ball, but affects the player.	}
-	{ Note the area affect....				-RAK-	}
-[psect(misc6$code)] function breath		(
-			typ,y,x,dam_hp		:	integer;
-			ddesc			:	vtype
+	{ Breath weapon works like a fire_ball, but affects the player. }
+	{ Note the area affect....                              -RAK-   }
+[psect(misc6$code)] function breath             (
+			typ,y,x,dam_hp          :       integer;
+			ddesc                   :       vtype
 						) : boolean;
       var
-	i1,i2,i3			: integer;
-	dam,max_dis			: integer;
-	weapon_type,harm_type		: integer;
-	flag				: boolean;
-	destroy				: obj_set;
+	i1,i2,i3                        : integer;
+	dam,max_dis                     : integer;
+	weapon_type,harm_type           : integer;
+	flag                            : boolean;
+	destroy                         : obj_set;
       begin
 	breath := true;
 	max_dis := 2;
@@ -747,17 +762,17 @@
 		  begin
 		    if (tptr > 0) then
 		      if (t_list[tptr].tval in destroy) then
-		        delete_object(i1,i2);
+			delete_object(i1,i2);
 		    if (fopen) then
 		      begin
 			if (panel_contains(i1,i2)) then
-		          print('*',i1,i2);
-		        if (cptr > 1) then
+			  print('*',i1,i2);
+			if (cptr > 1) then
 			  with m_list[cptr] do
 			    with c_list[mptr] do
 			      begin
-			        dam := dam_hp;
-			        if (uand(harm_type,cdefense) <> 0) then
+				dam := dam_hp;
+				if (uand(harm_type,cdefense) <> 0) then
 				  dam := dam*2
 				else if (uand(weapon_type,spells) <> 0) then
 				  dam := trunc(dam/4.0);
@@ -774,33 +789,33 @@
 			  begin
 			    dam := trunc(dam_hp/(distance(i1,i2,y,x)+1));
 			    case typ of
-				1 :	light_dam(dam,ddesc);
-				2 :	poison_gas(dam,ddesc);
-				3 :	acid_dam(dam,ddesc);
-				4 :	cold_dam(dam,ddesc);
-				5 :	fire_dam(dam,ddesc);
+				1 :     light_dam(dam,ddesc);
+				2 :     poison_gas(dam,ddesc);
+				3 :     acid_dam(dam,ddesc);
+				4 :     cold_dam(dam,ddesc);
+				5 :     fire_dam(dam,ddesc);
 			    end;
 			  end;
 		      end;
 		  end;
-        for i1 := (y - 2) to (y + 2) do
+	for i1 := (y - 2) to (y + 2) do
 	  for i2 := (x - 2) to (x + 2) do
 	    if (in_bounds(i1,i2)) then
 	      if (panel_contains(i1,i2)) then
-	        if (distance(y,x,i1,i2) <= max_dis) then
+		if (distance(y,x,i1,i2) <= max_dis) then
 		  begin
 		    with cave[i1,i2] do
-	              if (test_light(i1,i2)) then
-		        lite_spot(i1,i2)
+		      if (test_light(i1,i2)) then
+			lite_spot(i1,i2)
 		      else if (cptr = 1) then
-		        lite_spot(i1,i2)
+			lite_spot(i1,i2)
 		      else if (cptr > 1) then
 			if (m_list[cptr].ml) then
-		          lite_spot(i1,i2)
+			  lite_spot(i1,i2)
 			else
-		          unlite_spot(i1,i2)
+			  unlite_spot(i1,i2)
 		      else
-		        unlite_spot(i1,i2);
+			unlite_spot(i1,i2);
 		  end;
       end;
 
@@ -808,27 +823,28 @@
 	{ Recharge a wand, staff, or rod.  Sometimes the item breaks. -RAK-}
 [psect(misc6$code)] function recharge(num : integer) : boolean;
       var
-		item_val	: integer;
-		redraw		: boolean;
+		item_val        : integer;
+		redraw          : boolean;
       begin
 	recharge := false;
 	redraw := false;
 	if (get_item(item_val,'Recharge which item?',redraw,1,inven_ctr)) then
 	  with inventory[item_val] do
 	    if (tval in [55,60,65]) then
-	      if (randint(10) = 1) then
+	      if (randint(8) = 1) then
 		begin
 		  recharge := true;
 		  msg_print('There is a bright flash of light...');
 		  inven_destroy(item_val);
 		end
 	      else
-	        begin
+		begin
 		  recharge := true;
 		  num := trunc(num/(level+2));
 		  p1 := p1 + 2 + randint(num);
-		  insert_str(name,'(%P4','^(%P4');
-	        end;
+		  if (index(name,'^') = 0) then
+		    insert_str(name,' (%P1','^ (%P1');
+		end;
 	if (redraw) then
 	  begin
 	    msg_print(' ');
@@ -839,8 +855,8 @@
 	{ Increase or decrease a creatures hit points		-RAK-	}
 [psect(misc6$code)] function hp_monster(dir,y,x,dam : integer) : boolean;
       var
-		i1			: integer;
-		flag			: boolean;
+		i1                      : integer;
+		flag                    : boolean;
       begin
 	hp_monster := false;
 	flag := false;
@@ -855,7 +871,7 @@
 		      flag := true;
 		      with m_list[cptr] do
 			with c_list[mptr] do
-		          begin
+			  begin
 			    hp_monster := true;
 			    i1 := mon_take_hit(cptr,dam);
 			    if (i1 > 0) then
@@ -867,15 +883,15 @@
 		end
 	      else
 		flag := true;
-            end;
+	    end;
 	until (flag);
       end;
 
 	{ Drains life; note it must be living...		-RAK-	}
 [psect(misc6$code)] function drain_life(dir,y,x : integer) : boolean;
       var
-		i1			: integer;
-		flag			: boolean;
+		i1                      : integer;
+		flag                    : boolean;
       begin
 	drain_life := false;
 	flag := false;
@@ -891,7 +907,7 @@
 		      with m_list[cptr] do
 			with c_list[mptr] do
 			  if (uand(cdefense,%X'0008') = 0) then
-		            begin
+			    begin
 			      drain_life := true;
 			      i1 := mon_take_hit(cptr,50);
 			      if (i1 > 0) then
@@ -903,15 +919,15 @@
 		end
 	      else
 		flag := true;
-            end;
+	    end;
 	until (flag);
       end;
 
 	{ Increase or decrease a creatures speed		-RAK-	}
-	{ NOTE: cannot slow a winning creature (BALROG)			}
+	{ NOTE: cannot slow a winning creature (BALROG)                 }
 [psect(misc6$code)] function speed_monster(dir,y,x,spd : integer) : boolean;
       var
-		flag			: boolean;
+		flag                    : boolean;
       begin
 	speed_monster := false;
 	flag := false;
@@ -943,14 +959,14 @@
 		end
 	      else
 		flag := true;
-            end;
+	    end;
 	until (flag);
       end;
 
 	{ Confuse a creature					-RAK-	}
 [psect(misc6$code)] function confuse_monster(dir,y,x : integer) : boolean;
       var
-		flag			: boolean;
+		flag                    : boolean;
       begin
 	confuse_monster := false;
 	flag := false;
@@ -959,19 +975,19 @@
 	  with cave[y,x] do
 	    if (fopen) then
 	      begin
-	        if (cptr > 1) then
+		if (cptr > 1) then
 		  with m_list[cptr] do
 		    with c_list[mptr] do
 		      begin
-		        confuse_monster := true;
-		        flag := true;
-		        if ((randint(max_mons_level) < level) or
+			confuse_monster := true;
+			flag := true;
+			if ((randint(max_mons_level) < level) or
 			 (uand(%X'1000',cdefense) <> 0)) then
-		          msg_print('The ' + name + ' is unaffected.')
-		        else
-		          begin
-		            confused := true;
-		            csleep := 0;
+			  msg_print('The ' + name + ' is unaffected.')
+			else
+			  begin
+			    confused := true;
+			    csleep := 0;
 			    msg_print('The ' + name + ' appears confused.');
 			  end;
 		      end;
@@ -984,7 +1000,7 @@
 	{ Sleep a creature...					-RAK-	}
 [psect(misc6$code)] function sleep_monster(dir,y,x : integer) : boolean;
       var
-		flag			: boolean;
+		flag                    : boolean;
       begin
 	sleep_monster := false;
 	flag := false;
@@ -993,18 +1009,18 @@
 	  with cave[y,x] do
 	    if (fopen) then
 	      begin
-	        if (cptr > 1) then
+		if (cptr > 1) then
 		  with m_list[cptr] do
 		    with c_list[mptr] do
 		      begin
-		        sleep_monster := true;
-		        flag := true;
-		        if ((randint(max_mons_level) < level) or
+			sleep_monster := true;
+			flag := true;
+			if ((randint(max_mons_level) < level) or
 			 (uand(%X'1000',cdefense) <> 0)) then
-		          msg_print('The ' + name + ' is unaffected.')
-		        else
-		          begin
-		            csleep := 500;
+			  msg_print('The ' + name + ' is unaffected.')
+			else
+			  begin
+			    csleep := 500;
 			    msg_print('The ' + name + ' falls asleep.');
 			  end;
 		      end;
@@ -1017,9 +1033,9 @@
 	{ Turn stone to mud, delete wall....			-RAK-	}
 [psect(misc6$code)] function wall_to_mud(dir,y,x : integer) : boolean;
       var
-		i1			: integer;
-		out_val			: vtype;
-		flag			: boolean;
+		i1                      : integer;
+		out_val                 : vtype;
+		flag                    : boolean;
       begin
 	wall_to_mud := false;
 	flag := false;
@@ -1028,42 +1044,42 @@
 	  with cave[y,x] do
 	    if (in_bounds(y,x)) then
 	      begin
-	        if (fval in wall_set) then
+		if (fval in wall_set) then
 		  begin
 		    flag := true;
 		    twall(y,x,1,0);
 		    if (test_light(y,x)) then
 		      begin
-		        msg_print('The wall turns into mud.');
-		        wall_to_mud := true;
+			msg_print('The wall turns into mud.');
+			wall_to_mud := true;
 		      end;
 		  end
-	        else if ((tptr > 0) and (not(fopen))) then
-	          begin
+		else if ((tptr > 0) and (not(fopen))) then
+		  begin
 		    flag := true;
 		    if (panel_contains(y,x)) then
 		      if (test_light(y,x)) then
-		        begin
-		          inventory[inven_max] := t_list[tptr];
-		          objdes(out_val,inven_max,false);
-		          msg_print('The ' + out_val + ' turns into mud.');
-		          wall_to_mud := true;
-		        end;
+			begin
+			  inventory[inven_max] := t_list[tptr];
+			  objdes(out_val,inven_max,false);
+			  msg_print('The ' + out_val + ' turns into mud.');
+			  wall_to_mud := true;
+			end;
 		    delete_object(y,x);
 		  end;
-	        if (cptr > 1) then
-	          with m_list[cptr] do
+		if (cptr > 1) then
+		  with m_list[cptr] do
 		    with c_list[mptr] do
-	              if (uand(%X'0200',cdefense) <> 0) then
-		        begin
-		          i1 := mon_take_hit(cptr,100);
+		      if (uand(%X'0200',cdefense) <> 0) then
+			begin
+			  i1 := mon_take_hit(cptr,100);
 			  flag := true;
 			  if (ml) then
 			    if (i1 > 0) then
-			      msg_print('The ' + name + ' wails out in pain!')
+			msg_print('The ' + name + ' dies in a fit of agony.')
 			    else
-			msg_print('The ' + name + ' dies in a fit of agony.');
-		        end;
+			      msg_print('The ' + name + ' wails out in pain!');
+			end;
 	      end
 	    else
 	      flag := true;
@@ -1080,57 +1096,65 @@
 	  with cave[y,x] do
 	    if (tptr > 0) then
 	      with t_list[tptr] do
-	        if (tval in [2,101,102,105,109]) then
-	          begin
+		if (tval in [2,101,102,105,109]) then
+		  begin
 		    if (delete_object(y,x)) then
 		      begin
-	                msg_print('There is a bright flash of light!');
-		        fopen := true;
-		        td_destroy2 := true;
-	              end;
-	          end;
+			msg_print('There is a bright flash of light!');
+			fopen := true;
+			td_destroy2 := true;
+		      end;
+		  end;
 	until (not(cave[y,x].fopen));
       end;
 
 	{ Polymorph a monster					-RAK-	}
-	{ NOTE: cannot polymorph a winning creature (BALROG)		}
+	{ NOTE: cannot polymorph a winning creature (BALROG)            }
 [psect(misc6$code)] function poly_monster(dir,y,x : integer) : boolean;
       var
-		flag			: boolean;
+		dist                    : integer;
+		flag                    : boolean;
       begin
 	poly_monster := false;
 	flag := false;
+	dist := 0;
 	repeat
 	  move(dir,y,x);
-	  with cave[y,x] do
+	  dist := dist + 1;
+	  if (dist <+ obj$bolt_range) then
 	    begin
-	      if (fopen) then
+	      with cave[y,x] do
 		begin
-		  if (cptr > 1) then
-		    with c_list[m_list[cptr].mptr] do
-		      if (randint(max_mons_level) > level) then
-		        begin
-		          flag := true;
-		          delete_monster(cptr);
-		          place_monster(y,x,randint(m_level[max_mons_level])
-							+ m_level[0],false);
-		          if (panel_contains(y,x)) then
-			    if (test_light(y,x)) then
-		              poly_monster := true;
-		        end
-		      else
-			msg_print('The ' + name + ' is unaffected.');
-		end
-	      else
-		flag := true;
-            end;
+		  if (fopen) then
+		    begin
+		      if (cptr > 1) then
+			with c_list[m_list[cptr].mptr] do
+			  if (randint(max_mons_level) > level) then
+			    begin
+			      flag := true;
+			      delete_monster(cptr);
+			      place_monster(y,x,
+			randint(m_level[max_mons_level])+ m_level[0],false);
+			      if (panel_contains(y,x)) then
+				if (test_light(y,x)) then
+				  poly_monster := true;
+			    end
+			  else
+			    msg_print('The ' + name + ' is unaffected.');
+		    end
+		  else
+		    flag := true;
+		end;
+	    end
+	  else
+	    flag := true;
 	until (flag);
       end;
 
 	{ Create a wall...					-RAK-	}
 [psect(misc6$code)] function build_wall(dir,y,x : integer) : boolean;
       var
-		i1		: integer;
+		i1              : integer;
       begin
 	build_wall := false;
 	i1 := 0;
@@ -1156,7 +1180,7 @@
 	{ Replicate a creature					-RAK-	}
 [psect(misc6$code)] function clone_monster(dir,y,x : integer) : boolean;
       var
-		flag			: boolean;
+		flag                    : boolean;
       begin
 	flag := false;
 	clone_monster := false;
@@ -1177,15 +1201,15 @@
 	{ Move the creature record to a new location		-RAK-	}
 [psect(misc6$code)] function teleport_away(monptr,dis : integer) : boolean;
       var
-		yn,xn,ctr		: integer;
+		yn,xn,ctr               : integer;
       begin
 	with m_list[monptr] do
 	  begin
 	    ctr := 0;
 	    repeat
 	      repeat
-	        yn := fy + (randint(2*dis+1) - (dis + 1));
-	        xn := fx + (randint(2*dis+1) - (dis + 1));
+		yn := fy + (randint(2*dis+1) - (dis + 1));
+		xn := fx + (randint(2*dis+1) - (dis + 1));
 	      until(in_bounds(yn,xn));
 	      ctr := ctr + 1;
 	      if (ctr > 9) then
@@ -1207,7 +1231,7 @@
 	{ Teleport player to spell casting creature		-RAK-	}
 [psect(misc6$code)] function teleport_to(ny,nx : integer) : boolean;
       var
-	dis,ctr,y,x,i1,i2		: integer;
+	dis,ctr,y,x,i1,i2               : integer;
       begin
 	teleport_to := true;
 	dis := 1;
@@ -1221,7 +1245,7 @@
 	      ctr := 0;
 	      dis := dis + 1;
 	    end;
-        until ((cave[y,x].fopen) and (cave[y,x].cptr < 2));
+	until ((cave[y,x].fopen) and (cave[y,x].cptr < 2));
 	move_rec(char_row,char_col,y,x);
 	for i1 := char_row-1 to char_row+1 do
 	  for i2 := char_col-1 to char_col+1 do
@@ -1242,8 +1266,8 @@
 	{ Teleport all creatures in a given direction away	-RAK-	}
 [psect(misc6$code)] function teleport_monster(dir,y,x : integer) : boolean;
       var
-		yn,xn			: integer;
-		flag			: boolean;
+		yn,xn                   : integer;
+		flag                    : boolean;
       begin
 	flag := false;
 	teleport_monster := false;
@@ -1252,27 +1276,26 @@
 	  with cave[y,x] do
 	    if (cptr > 1) then
 	      begin
-	        teleport_away(cptr,max_sight);
+		teleport_away(cptr,max_sight);
 		teleport_monster := true;
 	      end;
 	until ((not(cave[y,x].fopen)) or (flag));
       end;
 
 	{ Delete all creatures within MAX_SIGHT distance	-RAK-	}
-	{ NOTE : Winning creatures cannot be genocided			}
+	{ NOTE : Winning creatures cannot be genocided                  }
 [psect(misc6$code)] function mass_genocide : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	mass_genocide := false;
 	i1 := muptr;
-	while i1 <> 0 do
-	begin
+	repeat
 	  with m_list[i1] do
 	    with c_list[mptr] do
 	      begin
-	        i2 := nptr;
-	        if (cdis <= max_sight) then
+		i2 := nptr;
+		if (cdis <= max_sight) then
 		  if (uand(cdefense,%X'80000000') = 0) then
 		    begin
 		      delete_monster(i1);
@@ -1280,48 +1303,46 @@
 		    end;
 	      end;
 	  i1 := i2;
-	end;
+	until(i1 = 0);
       end;
 
 	{ Delete all creatures of a given type from level.	-RAK-	}
-	{ This does not keep creatures of type from appearing later.	}
+	{ This does not keep creatures of type from appearing later.    }
 	{ NOTE : Winning creatures that are genocided will be considered}
 	{        as teleporting to another level.  Genocide will NOT win}
-	{        the game...						}
+	{        the game...                                            }
 [psect(misc6$code)] function genocide : boolean;
       var
-		i1,i2		: integer;
-		typ		: char;
+		i1,i2           : integer;
+		typ             : char;
       begin
 	genocide := true;
 	i1 := muptr;
 	if (get_com('Which type of creature do wish exterminated?',typ)) then
-	  while i1 <> 0 do
-	    begin
+	  repeat
 	    with m_list[i1] do
 	      with c_list[mptr] do
-	        begin
-	          i2 := nptr;
-	          if (typ = c_list[mptr].cchar) then
+		begin
+		  i2 := nptr;
+		  if (typ = c_list[mptr].cchar) then
 		    if (uand(cdefense,%X'80000000') = 0) then
 		      delete_monster(i1)
 		    else
 		      msg_print('The ' + name + ' is unaffected.');
-	        end;
+		end;
 	    i1 := i2;
-	  end;
+	  until(i1 = 0);
       end;
 
 	{ Change speed of any creature player can see....	-RAK-	}
-	{ NOTE: cannot slow a winning creature (BALROG)			}
+	{ NOTE: cannot slow a winning creature (BALROG)                 }
 [psect(misc6$code)] function speed_monsters(spd : integer) : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	i1 := muptr;
 	speed_monsters := false;
-	while i1 <> 0 do
-	begin
+	repeat
 	  with m_list[i1] do
 	    begin
 	      i2 := nptr;
@@ -1343,41 +1364,43 @@
 		    msg_print('The ' + name + ' is unaffected.');
 	    end;
 	  i1 := i2;
-	end;
+	until(i1 = 0);
       end;
 
 	{ Sleep any creature that player can see		-RAK-	}
 [psect(misc6$code)] function sleep_monsters2 : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	i1 := muptr;
 	sleep_monsters2 := false;
-	while i1 <> 0 do
-	begin
+	repeat
 	  with m_list[i1] do
-	    begin
-	      i2 := nptr;
-	      if (ml) then
-		begin
-	          csleep := 500;
-		  sleep_monsters2 := true;
-		end;
-	    end;
+	    with c_list[mptr] do
+	      begin
+		i2 := nptr;
+		sleep_monsters2 := true;
+		if (ml) then
+		  begin
+		    if ((randint(max_mons_level) < level) or (uand(%X'1000',cdefense) <> 0)) then
+		      msg_print('The ' + name + ' is unaffected.')
+		    else
+		      csleep := 500;
+		  end;
+	      end;
 	  i1 := i2;
-	end;
+	until(i1 = 0);
       end;
 
-	{ Polymorph any creature that player can see...		-RAK-	}
-	{ NOTE: cannot polymorph a winning creature (BALROG)		}
+	{ Polymorph any creature that player can see... 	-RAK-	}
+	{ NOTE: cannot polymorph a winning creature (BALROG)            }
 [psect(misc6$code)] function mass_poly : boolean;
       var
-		i1,i2,y,x	: integer;
+		i1,i2,y,x       : integer;
       begin
 	i1 := muptr;
 	mass_poly := false;
-	while i1 <> 0 do
-	  begin
+	repeat
 	  with m_list[i1] do
 	    begin
 	      i2 := nptr;
@@ -1394,20 +1417,19 @@
 		    end;
 	    end;
 	  i1 := i2;
-	end;
+	until(i1 = 0);
       end;
 
 	{ Display evil creatures on current panel		-RAK-	}
 [psect(misc6$code)] function detect_evil : boolean;
       var
-		i1		: integer;
-		dummy		: char;
-		flag		: boolean;
+		i1              : integer;
+		dummy           : char;
+		flag            : boolean;
       begin
 	flag := false;
 	i1 := muptr;
-	while i1 <> 0 do
-	begin
+	repeat
 	  with m_list[i1] do
 	    if (panel_contains(fy,fx)) then
 	      if (uand(%X'0004',c_list[mptr].cdefense) <> 0) then
@@ -1417,7 +1439,7 @@
 		  flag := true;
 		end;
 	  i1 := m_list[i1].nptr;
-	end;
+	until(i1 = 0);
 	if (flag) then
 	  begin
 	    msg_print('You sense the presence of evil!');
@@ -1447,10 +1469,10 @@
 		  chp := mhp;
 		prt_chp;
 		case trunc(num/5) of
-		  0          :	msg_print('You feel a little better.');
-		  1,2        :	msg_print('You feel better.');
-		  3,4,5,6    :	msg_print('You feel much better.');
-		  otherwise	msg_print('You feel very good.');
+		  0          :  msg_print('You feel a little better.');
+		  1,2        :  msg_print('You feel better.');
+		  3,4,5,6    :  msg_print('You feel much better.');
+		  otherwise     msg_print('You feel very good.');
 		end;
 		hp_player := true;
 	      end;
@@ -1493,7 +1515,7 @@
 	    end;
       end;
 
-	{ Cure the players fear					-RAK-	}
+	{ Cure the players fear 				-RAK-	}
 [psect(misc6$code)] function remove_fear : boolean;
       begin
 	remove_fear := false;
@@ -1506,26 +1528,26 @@
       end;
 
 	{ This is a fun one.  In a given block, pick some walls and	}
-	{ turn them into open spots.  Pick some open spots and turn	}
-	{ them into walls.  An "Earthquake" effect...		-RAK-	}
+	{ turn them into open spots.  Pick some open spots and turn     }
+	{ them into walls.  An "Earthquake" effect...           -RAK-   }
 [psect(misc6$code)] function earthquake : boolean;
       var
-		i1,i2		: integer;
+		i1,i2           : integer;
       begin
 	earthquake := true;
 	for i1 := char_row-8 to char_row+8 do
 	  for i2 := char_col-8 to char_col+8 do
 	    if ((i1 <> char_row) or (i2 <> char_col)) then
 	      if (in_bounds(i1,i2)) then
-	        if (randint(8) = 1) then
-	          begin
+		if (randint(8) = 1) then
+		  begin
 		    with cave[i1,i2] do
 		      begin
-		        if (tptr > 0) then
-		          delete_object(i1,i2);
-		        if (cptr > 1) then
+			if (tptr > 0) then
+			  delete_object(i1,i2);
+			if (cptr > 1) then
 			  mon_take_hit(cptr,damroll('2d8'));
-		        if (fval in wall_set) then
+			if (fval in wall_set) then
 			  begin
 			    if (next_to4(i1,i2,[1,2]) > 0) then
 			      begin
@@ -1542,18 +1564,18 @@
 			    fm := false;
 			    if (tl) then lite_spot(i1,i2);
 			  end
-		        else if (fval in floor_set) then
+			else if (fval in floor_set) then
 			  begin
 			    case randint(10) of
 			      1,2,3,4,5 : begin
 					    fval  := rock_wall3.ftval;
 					    fopen := rock_wall3.ftopen;
 					  end;
-			      6,7,8	: begin
+			      6,7,8     : begin
 					    fval  := rock_wall2.ftval;
 					    fopen := rock_wall2.ftopen;
 					  end;
-			      9,10	: begin
+			      9,10      : begin
 					    fval  := rock_wall1.ftval;
 					    fopen := rock_wall1.ftopen;
 					  end;
@@ -1563,10 +1585,10 @@
 		      end;
 		    if (test_light(i1,i2)) then
 		      lite_spot(i1,i2);
-	          end;
+		  end;
       end;
 
-	{ Evil creatures don't like this...			-RAK-	}
+	{ Evil creatures don't like this...                     -RAK-   }
 [psect(misc6$code)] function protect_evil : boolean;
       begin
 	protect_evil := true;
@@ -1574,7 +1596,7 @@
 	  protevil := protevil + randint(25) + 3*py.misc.lev;
       end;
 
-	{ Create some high quality mush for the player.		-RAK-	}
+	{ Create some high quality mush for the player. 	-RAK-	}
 [psect(misc6$code)] function create_food : boolean;
       begin
 	create_food := true;
@@ -1589,17 +1611,16 @@
 
 
 	{ Attempts to destroy a type of creature.  Success depends on	}
-	{ the creatures level VS. the player's level		-RAK-	}
+	{ the creatures level VS. the player's level            -RAK-   }
 [psect(misc6$code)] function dispell_creature(
-				cflag	: integer;
+				cflag   : integer;
 				damage  : integer) : boolean;
       var
-	i1,m_next		: integer;
+	i1,m_next               : integer;
       begin
 	i1 := muptr;
 	dispell_creature := false;
-	while i1 <> 0 do
-	begin
+	repeat
 	  m_next := m_list[i1].nptr;
 	  with m_list[i1] do
 	    if (ml) then
@@ -1610,54 +1631,53 @@
 		    if (hp < 0) then
 		      begin
 			msg_print('The ' + c_list[mptr].name + ' dissolves!');
-		        monster_death(fy,fx,c_list[mptr].cmove);
-		        with c_list[mptr] do
+			monster_death(fy,fx,c_list[mptr].cmove);
+			with c_list[mptr] do
 			  with py.misc do
 			    exp := exp + round(mexp*(level/lev));
-		        delete_monster(i1);
+			delete_monster(i1);
 		      end
 		    else
 		      msg_print('The ' + c_list[mptr].name + ' shudders.');
 		    dispell_creature := true;
 		  end;
 	  i1 := m_next;
-	end;
+	until(i1 = 0);
       end;
 
-	{ Attempt to turn (confuse) undead creatures...		-RAK-	}
+	{ Attempt to turn (confuse) undead creatures... 	-RAK-	}
 [psect(misc6$code)] function turn_undead : boolean;
       var
-		i1		: integer;
+		i1              : integer;
       begin
 	i1 := muptr;
 	turn_undead := false;
-	while i1 <> 0 do
-	begin
+	repeat
 	  with m_list[i1] do
 	    if (panel_contains(fy,fx)) then
 	      if (ml) then
-	        if (uand(%X'0008',c_list[mptr].cdefense) <> 0) then
+		if (uand(%X'0008',c_list[mptr].cdefense) <> 0) then
 		  begin
 		    if (((py.misc.lev+1) > c_list[mptr].level) or
 			(randint(5) = 1)) then
 		      begin
-			msg_print('The ' + c_list[mptr].name + 
+			msg_print('The ' + c_list[mptr].name +
 						' runs frantically!');
 			confused := true;
 		      end
 		    else
-		      msg_print('The ' + c_list[mptr].name + 
+		      msg_print('The ' + c_list[mptr].name +
 						' is unaffected.');
 		    turn_undead := true;
 		  end;
 	  i1 := m_list[i1].nptr;
-	end;
+	until(i1 = 0);
       end;
 
 	{ Leave a glyph of warding... Creatures will not pass over! -RAK-}
 [psect(misc6$code)] function warding_glyph : boolean;
       var
-		i1			: integer;
+		i1                      : integer;
       begin
 	warding_glyph := true;
 	with cave[char_row,char_col] do
@@ -1762,10 +1782,10 @@
 	{ Lose experience					-RAK-	}
 [psect(misc6$code)] procedure lose_exp(amount : integer);
     var
-	i1,i2				: integer;
-	av_hp,lose_hp			: integer;
-	av_mn,lose_mn			: integer;
-	flag				: boolean;
+	i1,i2                           : integer;
+	av_hp,lose_hp                   : integer;
+	av_mn,lose_mn                   : integer;
+	flag                            : boolean;
     begin
       with py.misc do
 	begin
@@ -1835,7 +1855,7 @@
 	  end;
     end;
 
-	{ Bless							-RAK-	}
+	{ Bless 						-RAK-	}
 [psect(misc6$code)] function bless(amount : integer) : boolean;
     begin
       bless := true;
@@ -1852,35 +1872,35 @@
     end;
 
 	{ The spell of destruction...				-RAK-	}
-	{ NOTE : Winning creatures that are deleted will be considered	}
+	{ NOTE : Winning creatures that are deleted will be considered  }
 	{        as teleporting to another level.  This will NOT win the}
-	{        game...						}
+	{        game...                                                }
 [psect(misc6$code)] function destroy_area(y,x : integer) : boolean;
     var
-	i1,i2,i3			: integer;
+	i1,i2,i3                        : integer;
 
     procedure replace_spot(y,x,typ : integer);
       begin
 	with cave[y,x] do
 	  begin
 	    case typ of
-	      1,2,3  :	begin
+	      1,2,3  :  begin
 			  fval  := corr_floor1.ftval;
 			  fopen := corr_floor1.ftopen;
 			end;
-	      4,7,10 :	begin
+	      4,7,10 :  begin
 			  fval  := rock_wall1.ftval;
 			  fopen := rock_wall1.ftopen;
 			end;
-	      5,8,11 :	begin
+	      5,8,11 :  begin
 			  fval  := rock_wall2.ftval;
 			  fopen := rock_wall2.ftopen;
 			end;
-	      6,9,12 :	begin
+	      6,9,12 :  begin
 			  fval  := rock_wall3.ftval;
 			  fopen := rock_wall3.ftopen;
 			end;
-            end;
+	    end;
 	    pl := false;
 	    fm := false;
 	    if (tptr > 0) then
@@ -1894,17 +1914,17 @@
       destroy_area := true;
       if (dun_level > 0) then
 	begin
-          for i1 := (y-15) to (y+15) do
+	  for i1 := (y-15) to (y+15) do
 	    for i2 := (x-15) to (x+15) do
 	      if (in_bounds(i1,i2)) then
-	        if (cave[i1,i2].fval <> 15) then
-	          begin
-	            i3 := distance(i1,i2,y,x);
-	            if (i3 < 13) then
+		if (cave[i1,i2].fval <> 15) then
+		  begin
+		    i3 := distance(i1,i2,y,x);
+		    if (i3 < 13) then
 		      replace_spot(i1,i2,randint(6))
-	            else if (i3 < 16) then
+		    else if (i3 < 16) then
 		      replace_spot(i1,i2,randint(9));
-	          end;
+		  end;
 	end;
       msg_print('There is a searing blast of light!');
       py.flags.blind := py.flags.blind + 10 + randint(10);
@@ -1914,21 +1934,21 @@
 	{ Enchants a plus onto an item...			-RAK-	}
 [psect(misc6$code)] function enchant(var pluses : worlint) : boolean;
     var
-	chance			: integer;
+	chance                  : integer;
     begin
       chance := 0;
       enchant := false;
       if (pluses > 0) then
-        case pluses of
-	  1  :	chance := 040;
-	  2  :	chance := 100;
-	  3  :	chance := 200;
-	  4  :	chance := 400;
-	  5  :	chance := 600;
-	  6  :	chance := 700;
-	  7  :	chance := 800;
-	  8  :	chance := 900;
-	  9  :	chance := 950;
+	case pluses of
+	  1  :  chance := 040;
+	  2  :  chance := 100;
+	  3  :  chance := 200;
+	  4  :  chance := 400;
+	  5  :  chance := 600;
+	  6  :  chance := 700;
+	  7  :  chance := 800;
+	  8  :  chance := 900;
+	  9  :  chance := 950;
 	  otherwise chance := 995;
 	end;
       if (randint(1000) > chance) then
@@ -1942,7 +1962,7 @@
 	{ Removes curses from items in inventory		-RAK-	}
 [psect(misc6$code)] function remove_curse : boolean;
     var
-	i1			: integer;
+	i1                      : integer;
     begin
       remove_curse := false;
       for i1 := 23 to 32 do
@@ -1954,3 +1974,22 @@
 	      remove_curse := true;
 	    end;
     end;
+
+
+	{ Restores any drained experience			-RAK-	}
+[psect(misc6$code)] function restore_level : boolean;
+    begin
+      restore_level := false;
+      with py.misc do
+	if (max_exp > exp) then
+	  begin
+	    restore_level := true;
+	    msg_print('You feel your life energies returning...');
+	    while (exp < max_exp) do
+	      begin
+		exp := max_exp;
+		prt_experience;
+	      end;
+	  end;
+    end;
+

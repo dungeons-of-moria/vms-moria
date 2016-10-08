@@ -73,7 +73,7 @@
 	{ NOTE: Remove or comment out for VMS 4.0 or greater		}
 [psect(setup$code)] procedure setup_io_pause;
     begin
-(*      convert_time(IO$MOR_IOPAUSE,IO$BIN_PAUSE);	*)
+      convert_time(IO$MOR_IOPAUSE,IO$BIN_PAUSE);
     end;
 
 
@@ -224,51 +224,21 @@
 	%immed p6		: integer := %immed 0) : integer;
 	external;
 
-	{ SET/SENSEMODE definition			-RHM-	}
-  [asynchronous,external(SYS$QIOW)] function qiow_mode(
-	%immed efn		: integer := %immed 1;
-	%immed chan  		: integer;
-	%immed func		: integer := %immed 0;
-	%immed isob		: integer := %immed 0;
-	%immed astadr		: integer := %immed 0;
-	%immed astprm		: integer := %immed 0;
-	%ref   mode_buffer	: [unsafe] array[l1..l2:integer]
-					of unsigned := %immed 0;
-	%immed buf_size		: integer := %immed 12;
-	%immed p3		: integer := %immed 0;
-	%immed p4		: integer := %immed 0;
-	%immed p5		: integer := %immed 0;
-	%immed p6		: integer := %immed 0) : integer;
-	external;
-
 	{ Gets single character from keyboard and returns		}
 [psect(io$code)] procedure inkey(var getchar : char);
     var
-	term_char		: array [0..2] of unsigned;	{ -RHM- }
 	status			: integer;
     begin
       put_qio;			{ Dump IO buffer		}
-	{ Do a SENSEMODE to get the characteristics	-RHM-}
-      qiow_mode(chan:=channel,
-		func:=IO$_SENSEMODE,
-		mode_buffer:=term_char);
-	{ Now, set the XON bit			-RHM-}
-	term_char[2] := uor(term_char[2],tt2$m_xon);
-	{ Do a setmode now -RHM-}
-      qiow_mode(chan:=channel,
-		func:=IO$_SETMODE,
-		mode_buffer:=term_char);
+	{ Allow device driver to catch up			}
+	{ NOTE: Remove or comment out for VMS 4.0 or greater	}
+      set_time(bintime:=IO$BIN_PAUSE);
+      hibernate;
 	{ Now read				}
       qiow_read(chan:=channel,
 		func:=IO$MOR_INPUT,
 		get_char:=getchar,
 		buff_len:=1	);
-	{ Now, set the XON bit again...		-RHM-}
-	term_char[2] := uor(term_char[2],tt2$m_xon);
-	{ Do a setmode now -RHM-}
-      qiow_mode(chan:=channel,
-		func:=IO$_SETMODE,
-		mode_buffer:=term_char);
       msg_flag := false;
     end;
 
@@ -284,8 +254,8 @@
       put_qio;			{ Dump the IO buffer		}
 	{ Allow device driver to catch up			}
 	{ NOTE: Remove or comment out for VMS 4.0 or greater	}
-(*      set_time(bintime:=IO$BIN_PAUSE);
-      hibernate;		*)
+      set_time(bintime:=IO$BIN_PAUSE);
+      hibernate;
 	{ Now read				}
       getchar := null;		{ Blank out return character	}
       qiow_read(chan:=channel,
@@ -301,8 +271,8 @@
     begin
 	{ Allow device driver to catch up			}
 	{ NOTE: Remove or comment out for VMS 4.0 or greater	}
-(*      set_time(bintime:=IO$BIN_PAUSE);
-      hibernate;		*)
+      set_time(bintime:=IO$BIN_PAUSE);
+      hibernate;
 	{ Now flush				}
       qiow_read(chan:=channel,func:=IO$MOR_IPURGE);
     end;
@@ -550,7 +520,7 @@
 		  end;
 	path		= packed array [1..128] of char;
     var
-	i1,i2		: integer;
+	i1		: integer;
 	tmp_str		: path;
 	image_path	: vtype;
 	flag		: boolean;
@@ -593,21 +563,19 @@
 	  end
 	else
 	  get_jpi_path := jpirec.ptr_path^;
-	  i1 := jpirec.ptr_pathlen^;
       end;
 
     begin
-      flag := false;
       tmp_str := get_jpi_path;
-	repeat
-	    if tmp_str[i1] = ']' then flag := true;
-	    if tmp_str[i1] = '>' then flag := true;	{ Also allow <>'s -RHM-}
-	    i1 := i1 - 1;
-	    if i1 <= 1 then flag := true;
-	  until (flag);
+      i1 := 0;
+      flag := false;
       image_path := '';
-      for i2 := 1 to i1+1 do
-	image_path := image_path + tmp_str[i2];
+      repeat
+	i1 := i1 + 1;
+	if (tmp_str[i1] = ']') then flag := true;
+	image_path := image_path + tmp_str[i1];
+	if (i1 > 127) then flag := true;
+      until(flag);
       MORIA_HOU := image_path + 'HOURS.DAT';
       MORIA_MOR := image_path + 'MORIA.DAT';
       MORIA_MAS := image_path + 'MORIACHR.DAT';

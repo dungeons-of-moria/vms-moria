@@ -276,5 +276,3 @@
 		store_ctr	: byteint;
 		store_inven	: array [1..store_inven_max] of inven_record;
 	end;
-	SigArgs		= ARRAY[0..100] OF INTEGER;
-	MechArgs	= ARRAY[0..4]   OF INTEGER;

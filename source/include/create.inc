@@ -1,5 +1,6 @@
 [psect(create$code)] procedure create_character;
 
+
 	{ Generates character's stats				-JWT-	}
   function get_stat : integer;
     var
@@ -263,7 +264,7 @@
       i4 := 3;
       i5 := 22;
       clear(21,1);
-      prt('Choose a class (<Escape>= another player, ? for Help):',21,3);
+      prt('Choose a class (? for Help):',21,3);
       repeat
 	if (uand(race[i1].tclass,bit_array[i2]) <> 0) then
 	  begin
@@ -280,7 +281,7 @@
 	i2 := i2 + 1;
       until (i2 > max_class);
       py.misc.pclass := 0;
-      put_buffer('',21,58);
+      put_buffer('',21,31);
       exit_flag := false;
       repeat
 	inkey_flush(s);
@@ -338,14 +339,10 @@
 	    moria_help('Character Classes');
 	    exit_flag := true;
 	    get_class := false;
-	  end
-	else if (ord(s) = 27) then
-	  begin
-	    exit_flag := true;
-	    get_class := false;
 	  end;
       until(exit_flag);
     end;
+
 
   procedure get_money;
     var
@@ -367,8 +364,8 @@
 	{							-JWT-	}
 
   begin
-  repeat 
-  begin
+    with py do
+      begin
 	{ This delay may be reduced, but is recomended to keep players	}
 	{ from continuously rolling up characters, which can be VERY	}
 	{ expensive CPU wise.						}
@@ -381,15 +378,18 @@
 	print_history;
 	put_misc1;
 	put_stats;
-  end until (get_class);
-	put_character;
-	print_history;
-	put_misc1;
-	put_stats;
+	while (not(get_class)) do
+	  begin
+	    put_character;
+	    print_history;
+	    put_misc1;
+	    put_stats;
+	  end;
 	get_money;
 	put_stats;
 	put_misc2;
 	put_misc3;
 	get_name;
 	pause_exit(24,player_exit_pause);
+      end
   end;

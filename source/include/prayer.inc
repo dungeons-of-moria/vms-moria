@@ -88,8 +88,9 @@
 			        if (not(reset_flag)) then
 			          with py.misc do
 			            begin
-			              exp := exp + round(slevel/lev);
+			              exp := exp + sexp;
 			              prt_experience;
+				      sexp := 0;
 			            end
 			      end;
 			    with py.misc do

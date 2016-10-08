@@ -1,309 +1,309 @@
   value
 
-	wizard1		:= false;
-	wizard2		:= false;
-	{ God and Wizard passwords: God is for debugging purposes only.	}
-	wdata		:=(
-		(3193371,192,178,190,215,37,89,25,144,244,117,63,170),
-		(599531,143,183,122,133,6,145,174,185,138,11,241,204)
+	wizard1 	:= false;
+	wizard2         := false;
+	{ God and Wizard passwords: God is for debugging purposes only. }
+	wdata           :=(
+		(011065,87,36,139,197,12,22,228,250,54,148,136,163),
+		(122565,181,170,214,182,212,8,195,173,86,76,252,124)
 			  );
-	used_line	:= (22 of false);
-	death		:= false;
-	total_winner	:= false;
-	stat_column	:= 1;
-	turn		:= 0;
-	pclass		:= 0;
-	print_stat	:= 0;
+	used_line       := (22 of false);
+	death           := false;
+	total_winner    := false;
+	stat_column     := 1;
+	turn            := 0;
+	pclass          := 0;
+	print_stat      := 0;
 
 	{ For the testing of bits				-RAK-	}
-	bit_array	:= (
-		%X'00000001',	{ Bit number 1	}
-		%X'00000002',	{ Bit number 2	}
-		%X'00000004',	{ Bit number 3	}
-		%X'00000008',	{ Bit number 4	}
-		%X'00000010',	{ Bit number 5	}
-		%X'00000020',	{ Bit number 6	}
-		%X'00000040',	{ Bit number 7	}
-		%X'00000080',	{ Bit number 8	}
-		%X'00000100',	{ Bit number 9	}
-		%X'00000200',	{ Bit number 10	}
-		%X'00000400',	{ Bit number 11	}
-		%X'00000800',	{ Bit number 12	}
-		%X'00001000',	{ Bit number 13	}
-		%X'00002000',	{ Bit number 14	}
-		%X'00004000',	{ Bit number 15	}
-		%X'00008000',	{ Bit number 16	}
-		%X'00010000',	{ Bit number 17	}
-		%X'00020000',	{ Bit number 18	}
-		%X'00040000',	{ Bit number 19	}
-		%X'00080000',	{ Bit number 20	}
-		%X'00100000',	{ Bit number 21	}
-		%X'00200000',	{ Bit number 22	}
-		%X'00400000',	{ Bit number 23	}
-		%X'00800000',	{ Bit number 24	}
-		%X'01000000',	{ Bit number 25	}
-		%X'02000000',	{ Bit number 26	}
-		%X'04000000',	{ Bit number 27	}
-		%X'08000000',	{ Bit number 28	}
-		%X'10000000',	{ Bit number 29	}
-		%X'20000000',	{ Bit number 30	}
-		%X'40000000',	{ Bit number 31	}
-		%X'80000000'	{ Bit number 32	}
+	bit_array       := (
+		%X'00000001',   { Bit number 1  }
+		%X'00000002',   { Bit number 2  }
+		%X'00000004',   { Bit number 3  }
+		%X'00000008',   { Bit number 4  }
+		%X'00000010',   { Bit number 5  }
+		%X'00000020',   { Bit number 6  }
+		%X'00000040',   { Bit number 7  }
+		%X'00000080',   { Bit number 8  }
+		%X'00000100',   { Bit number 9  }
+		%X'00000200',   { Bit number 10 }
+		%X'00000400',   { Bit number 11 }
+		%X'00000800',   { Bit number 12 }
+		%X'00001000',   { Bit number 13 }
+		%X'00002000',   { Bit number 14 }
+		%X'00004000',   { Bit number 15 }
+		%X'00008000',   { Bit number 16 }
+		%X'00010000',   { Bit number 17 }
+		%X'00020000',   { Bit number 18 }
+		%X'00040000',   { Bit number 19 }
+		%X'00080000',   { Bit number 20 }
+		%X'00100000',   { Bit number 21 }
+		%X'00200000',   { Bit number 22 }
+		%X'00400000',   { Bit number 23 }
+		%X'00800000',   { Bit number 24 }
+		%X'01000000',   { Bit number 25 }
+		%X'02000000',   { Bit number 26 }
+		%X'04000000',   { Bit number 27 }
+		%X'08000000',   { Bit number 28 }
+		%X'10000000',   { Bit number 29 }
+		%X'20000000',   { Bit number 30 }
+		%X'40000000',   { Bit number 31 }
+		%X'80000000'    { Bit number 32 }
 			);
 
 	{ Operating hours for Moria				-RAK-	}
-	{	X = Open; . = Closed					}
-	days	:=(
-		'SUN:........................|',
-		'MON:........................|',
-		'TUE:........................|',
-		'WED:........................|',
-		'THU:........................|',
-		'FRI:........................|',
-		'SAT:........................|'
+	{       X = Open; . = Closed                                    }
+	days    :=(
+		'SUN:XXXXXXXXXXXXXXXXXXXXXXXX|',
+		'MON:XXXXXXXX.........XXXXXXX|',
+		'TUE:XXXXXXXX.........XXXXXXX|',
+		'WED:XXXXXXXX.........XXXXXXX|',
+		'THU:XXXXXXXX.........XXXXXXX|',
+		'FRI:XXXXXXXX.........XXXXXXX|',
+		'SAT:XXXXXXXXXXXXXXXXXXXXXXXX|'
 		   );
 
 	closing_flag := 0;
 
 	{ Values for floor types					}
 	blank_floor:= (0,0,0,false,false,false,false);
-	dopen_floor	:= (  1,true );	{ Dark open floor	}
-	lopen_floor	:= (  2,true );	{ Light open floor	}
-	corr_floor1	:= (  4,true );	{ Corridor open floor	}
-	corr_floor2	:= (  5,true );	{ Room junction marker	}
-	corr_floor3	:= (  6,true );	{ Door type floor	}
-	corr_floor4	:= (  7,false);	{ Secret door type floor}
-	{ Floor values 8 and 9 are used in generate		}
-	rock_wall1	:= ( 10,false);	{ Granite rock wall	}
-	rock_wall2	:= ( 11,false);	{ Magma rock wall	}
-	rock_wall3	:= ( 12,false);	{ Quartz rock wall	}
-	boundry_wall	:= ( 15,false);	{ Indestructable wall	}
+	dopen_floor     := (  1,true ); { Dark open floor       }
+	lopen_floor     := (  2,true ); { Light open floor      }
+	corr_floor1     := (  4,true ); { Corridor open floor   }
+	corr_floor2     := (  5,true ); { Room junction marker  }
+	corr_floor3     := (  6,true ); { Door type floor       }
+	corr_floor4     := (  7,false); { Secret door type floor}
+	{ Floor values 8 and 9 are used in generate             }
+	rock_wall1      := ( 10,false); { Granite rock wall     }
+	rock_wall2      := ( 11,false); { Magma rock wall       }
+	rock_wall3      := ( 12,false); { Quartz rock wall      }
+	boundry_wall    := ( 15,false); { Indestructable wall   }
 
 	{ Player record is special					}
-	py		:=	(
+	py              :=      (
 	(' ',' ',' ',' ',' ',
 	 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	 ('','','','','')),
- 	(0,0,0,0,0,0,0,0,0,0,0,0),
-	(0,0,0,0,0,5000,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	(0,0,0,0,0,0,0,0,0,0,0,0),
+	(0,0,0,0,0,7500,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	 false,false,false,false,false,false,false,false,false,
 	 false,false,false,false,false,false,false,false,false)
 				);
 
-	bare_hands	:= '1d2';
+	bare_hands	:= '1d1';
 
-	acc_exp		:= 0.0;
+	acc_exp 	:= 0.0;
 
 	{ Each character class has a list of spells they can use.  In	}
-	{ cases the entire array is blank				}
+	{ cases the entire array is blank                               }
 
 	magic_spell	:=	(	(		{ Warrior	}
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false)
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false),
+ (''                            ,99,99,  0,  0,false)
 					),
-					(		{ Mage		}
- ('Magic Missle'		, 1, 1,  2, 20,false),
- ('Detect Monsters'		, 1, 1,  3, 25,false),
- ('Phase Door'			, 1, 2,  4, 20,false),
- ('Light Area'			, 1, 2,  2, 15,false),
- ('Cure Light Wounds'		, 3, 3,  3, 23,false),
- ('Find Hidden Traps/Doors'	, 3, 3,  4, 27,false),
- ('Stinking Cloud'		, 3, 4,  5, 25,false),
- ('Confusion'			, 3, 4,  8, 30,false),
- ('Lightning Bolt'		, 5, 4, 10, 30,false),
- ('Trap/Door Destruction'	, 5, 5, 12, 35,false),
- ('Sleep I'			, 5, 5, 10, 30,false),
- ('Cure Poison'			, 5, 5, 15, 35,false),
- ('Teleport Self'		, 7, 6, 18, 35,false),
- ('Remove Curse'		, 7, 6, 25, 37,false),
- ('Frost Bolt'			, 7, 6, 20, 37,false),
- ('Turn Stone to Mud'		, 9, 7, 25, 40,false),
- ('Identify'			, 9, 7, 25, 75,false),
- ('Recharge Item I'		, 9, 7, 35, 55,false),
- ('Sleep II'			, 9, 7, 25, 40,false),
- ('Polymorph Other'		,11, 7, 30, 40,false),
- ('Create Food'			,11, 7, 30, 40,false),
- ('Sleep III'			,13, 7, 40, 40,false),
- ('Fire Bolt'			,15, 9, 50, 43,false),
- ('Slow Monster'		,17, 9, 45, 43,false),
- ('Frost Ball'			,19,12, 75, 45,false),
- ('Recharge Item II'		,21,12,100, 75,false),
- ('Teleport Other'		,23,12,125, 52,false),
- ('Haste Self'			,25,12,150, 55,false),
- ('Fire Ball'			,29,18,200, 60,false),
- ('Word of Destruction'		,33,21,300, 75,false),
- ('Genocide'			,37,25,400, 95,false)
+					(               { Mage          }
+ ('Magic Missile'               , 1, 1,  5, 22,false),
+ ('Detect Monsters'             , 1, 1,  5, 23,false),
+ ('Phase Door'                  , 1, 2,  4, 24,false),
+ ('Light Area'                  , 1, 2,  4, 26,false),
+ ('Cure Light Wounds'           , 3, 3,  8, 25,false),
+ ('Find Hidden Traps/Doors'     , 3, 3,  6, 55,false),
+ ('Stinking Cloud'              , 3, 4,  8, 27,false),
+ ('Confusion'                   , 3, 4,  6, 30,false),
+ ('Lightning Bolt'              , 5, 4, 25, 30,false),
+ ('Trap/Door Destruction'       , 5, 5, 30, 30,false),
+ ('Sleep I'                     , 5, 5, 20, 30,false),
+ ('Cure Poison'                 , 5, 5, 25, 35,false),
+ ('Teleport Self'               , 7, 6, 35, 35,false),
+ ('Remove Curse'                , 7, 6, 40, 50,false),
+ ('Frost Bolt'                  , 7, 6, 50, 40,false),
+ ('Turn Stone to Mud'           , 9, 7, 75, 44,false),
+ ('Create Food'                 , 9, 7, 75, 45,false),
+ ('Recharge Item I'             , 9, 7, 90, 75,false),
+ ('Sleep II'                    , 9, 7, 75, 45,false),
+ ('Polymorph Other'             ,11, 7,100, 45,false),
+ ('Identify'                    ,11, 7, 75, 99,false),
+ ('Sleep III'                   ,13, 7, 90, 50,false),
+ ('Fire Bolt'                   ,15, 9,100, 50,false),
+ ('Slow Monster'                ,17, 9,125, 50,false),
+ ('Frost Ball'                  ,19,12,150, 55,false),
+ ('Recharge Item II'            ,21,12,175, 90,false),
+ ('Teleport Other'              ,23,12,200, 60,false),
+ ('Haste Self'                  ,25,12,250, 65,false),
+ ('Fire Ball'                   ,29,18,350, 65,false),
+ ('Word of Destruction'         ,33,21,500, 80,false),
+ ('Genocide'                    ,37,25,800, 95,false)
 					),
-					(		{ Priest	}
- ('Detect Evil'			, 1, 1,  2, 15,false),
- ('Cure Light Wounds'		, 1, 2,  2, 25,false),
- ('Bless'			, 1, 2,  3, 25,false),
- ('Remove Fear'			, 1, 2,  3, 25,false),
- ('Call Light'			, 3, 2,  4, 25,false),
- ('Find Traps'			, 3, 3,  4, 30,false),
- ('Detect Doors/Stairs'		, 3, 3,  4, 30,false),
- ('Slow Poison'			, 3, 3,  4, 27,false),
- ('Blind Creature'		, 5, 4, 10, 27,false),
- ('Portal'			, 5, 4, 10, 27,false),
- ('Cure Medium Wounds'		, 5, 4,  8, 30,false),
- ('Chant'			, 5, 5, 12, 30,false),
- ('Sanctuary'			, 7, 5, 12, 30,false),
- ('Create Food'			, 7, 5, 15, 40,false),
- ('Remove Curse'		, 7, 6, 15, 40,false),
- ('Resist Heat and Cold'	, 7, 7, 18, 40,false),
- ('Neutralize Poison'		, 9, 6, 20, 35,false),
- ('Orb of Draining'             , 9, 7, 25, 35,false),
- ('Cure Serious Wounds'		, 9, 7, 30, 40,false),
- ('Sense Invisible'		,11, 8, 40, 40,false),
- ('Protection from Evil'	,11, 8, 35, 40,false),
- ('Earthquake'			,11, 9, 35, 50,false),
- ('Sense Surroundings'		,13,10, 40, 45,false),
- ('Cure Critical Wounds'	,13,11, 45, 45,false),
- ('Turn Undead'			,15,12, 50, 45,false),
- ('Prayer'			,15,14, 50, 45,false),
- ('Dispell Undead'		,17,14, 75, 50,false),
- ('Heal'			,21,16, 80, 55,false),
- ('Dispell Evil'		,25,20,100, 60,false),
- ('Glyph of Warding'		,33,24,125, 75,false),
- ('Holy Word'			,39,32,200, 95,false)
+					(               { Priest        }
+ ('Detect Evil'                 , 1, 1,  3, 10,false),
+ ('Cure Light Wounds'           , 1, 2,  4, 15,false),
+ ('Bless'                       , 1, 2,  3, 20,false),
+ ('Remove Fear'                 , 1, 2,  3, 25,false),
+ ('Call Light'                  , 3, 2,  6, 25,false),
+ ('Find Traps'                  , 3, 3,  8, 27,false),
+ ('Detect Doors/Stairs'         , 3, 3,  8, 27,false),
+ ('Slow Poison'                 , 3, 3, 10, 28,false),
+ ('Blind Creature'              , 5, 4, 16, 29,false),
+ ('Portal'                      , 5, 4, 20, 30,false),
+ ('Cure Medium Wounds'          , 5, 4, 20, 32,false),
+ ('Chant'                       , 5, 5, 20, 34,false),
+ ('Sanctuary'                   , 7, 5, 30, 36,false),
+ ('Create Food'                 , 7, 5, 30, 38,false),
+ ('Remove Curse'                , 7, 6, 35, 38,false),
+ ('Resist Heat and Cold'        , 7, 7, 35, 38,false),
+ ('Neutralize Poison'           , 9, 6, 40, 38,false),
+ ('Orb of Draining'             , 9, 7, 40, 38,false),
+ ('Cure Serious Wounds'         , 9, 7, 40, 40,false),
+ ('Sense Invisible'             ,11, 8, 40, 42,false),
+ ('Protection from Evil'        ,11, 8, 50, 42,false),
+ ('Earthquake'                  ,11, 9, 60, 55,false),
+ ('Sense Surroundings'          ,13,10, 60, 45,false),
+ ('Cure Critical Wounds'        ,13,11, 65, 45,false),
+ ('Turn Undead'                 ,15,12, 80, 50,false),
+ ('Prayer'                      ,15,14, 90, 50,false),
+ ('Dispell Undead'              ,17,14,125, 55,false),
+ ('Heal'                        ,21,16,150, 60,false),
+ ('Dispell Evil'                ,25,20,300, 70,false),
+ ('Glyph of Warding'            ,33,24,500, 90,false),
+ ('Holy Word'                   ,39,32,800, 99,false)
 					),
-					(		{ Rogue		}
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false),
- (''				,99,99,  0,  0,false)
+					(               { Rogue         }
+ ('Magic Missile'               ,99,99,  0,  0,false),
+ ('Detect Monsters'             , 5, 1,  2, 50,false),
+ ('Phase Door'                  , 7, 2,  4, 55,false),
+ ('Light Area'                  , 9, 3,  6, 60,false),
+ ('Cure Light Wounds'           ,11, 4,  8, 65,false),
+ ('Find Hidden Traps/Doors'     ,13, 5, 10, 70,false),
+ ('Stinking Cloud'              ,99,99,  0,  0,false),
+ ('Confusion'                   ,15, 6, 12, 75,false),
+ ('Lightning Bolt'              ,99,99,  0,  0,false),
+ ('Trap/Door Destruction'       ,17, 7, 15, 80,false),
+ ('Sleep I'                     ,19, 8, 20, 85,false),
+ ('Cure Poison'                 ,21, 9, 25, 90,false),
+ ('Teleport Self'               ,99,99,  0,  0,false),
+ ('Remove Curse'                ,23,10, 30, 95,false),
+ ('Frost Bolt'                  ,99,99,  0,  0,false),
+ ('Turn Stone to Mud'           ,99,99,  0,  0,false),
+ ('Create Food'                 ,25,12, 35, 95,false),
+ ('Recharge Item I'             ,27,15, 45, 99,false),
+ ('Sleep II'                    ,99,99,  0,  0,false),
+ ('Polymorph Other'             ,99,99,  0,  0,false),
+ ('Identify'                    ,29,18, 75, 99,false),
+ ('Sleep III'                   ,99,99,  0,  0,false),
+ ('Fire Bolt'                   ,99,99,  0,  0,false),
+ ('Slow Monster'                ,99,99,  0,  0,false),
+ ('Frost Ball'                  ,99,99,  0,  0,false),
+ ('Recharge Item II'            ,99,99,  0,  0,false),
+ ('Teleport Other'              ,99,99,  0,  0,false),
+ ('Haste Self'                  ,99,99,  0,  0,false),
+ ('Fire Ball'                   ,99,99,  0,  0,false),
+ ('Word of Destruction'         ,99,99,  0,  0,false),
+ ('Genocide'                    ,99,99,  0,  0,false)
 					),
-					(		{ Ranger	}
- ('Magic Missle'		, 3, 1,  3, 25,false),
- ('Detect Monsters'		, 3, 2,  3, 30,false),
- ('Phase Door'			, 3, 2,  4, 30,false),
- ('Light Area'			, 5, 3,  4, 30,false),
- ('Cure Light Wounds'		, 5, 3,  4, 35,false),
- ('Find Hidden Traps/Doors'	, 5, 4,  5, 40,false),
- ('Stinking Cloud'		, 7, 6, 12, 35,false),
- ('Confusion'			, 7, 6, 10, 35,false),
- ('Lightning Bolt'		, 9, 7, 10, 35,false),
- ('Trap/Door Destruction'	, 9, 8, 12, 40,false),
- ('Sleep I'			,11, 8, 15, 35,false),
- ('Cure Poison'			,11, 9, 20, 40,false),
- ('Teleport Self'		,13,10, 25, 40,false),
- ('Remove Curse'		,13,11, 30, 50,false),
- ('Frost Bolt'			,15,12, 30, 45,false),
- ('Turn Stone to Mud'		,15,13, 35, 45,false),
- ('Identify'			,17,15, 40, 75,false),
- ('Recharge Item I'		,17,17, 40, 75,false),
- ('Sleep II'			,21,17, 40, 50,false),
- ('Polymorph Other'		,21,19, 50, 55,false),
- ('Detect Invisible'		,23,19, 60, 50,false),
- ('Sleep III'			,23,20, 75, 55,false),
- ('Fire Bolt'			,25,20, 75, 55,false),
- ('Slow Monster'		,25,21, 80, 60,false),
- ('Frost Ball'			,27,21, 85, 60,false),
- ('Recharge Item II'		,29,23, 90, 90,false),
- ('Teleport Other'		,31,25,100, 65,false),
- ('Haste Self'			,33,25,125, 70,false),
- ('Fire Ball'			,35,25,130, 75,false),
- ('Word of Destruction'		,37,30,200,100,false),
- (''				,99,99,  0,  0,false)
+					(               { Ranger        }
+ ('Magic Missile'               , 3, 1,  6, 30,false),
+ ('Detect Monsters'             , 3, 2,  6, 35,false),
+ ('Phase Door'                  , 3, 2,  8, 35,false),
+ ('Light Area'                  , 5, 3,  8, 35,false),
+ ('Cure Light Wounds'           , 5, 3,  8, 40,false),
+ ('Find Hidden Traps/Doors'     , 5, 4, 10, 45,false),
+ ('Stinking Cloud'              , 7, 6, 24, 40,false),
+ ('Confusion'                   , 7, 6, 20, 40,false),
+ ('Lightning Bolt'              , 9, 7, 30, 40,false),
+ ('Trap/Door Destruction'       , 9, 8, 30, 45,false),
+ ('Sleep I'                     ,11, 8, 40, 40,false),
+ ('Cure Poison'                 ,11, 9, 40, 45,false),
+ ('Teleport Self'               ,13,10, 50, 45,false),
+ ('Remove Curse'                ,13,11, 50, 55,false),
+ ('Frost Bolt'                  ,15,12, 60, 50,false),
+ ('Turn Stone to Mud'           ,15,13, 60, 50,false),
+ ('Create Food'                 ,17,17, 60, 55,false),
+ ('Recharge Item I'             ,17,17, 70, 90,false),
+ ('Sleep II'                    ,21,17, 70, 55,false),
+ ('Polymorph Other'             ,21,19, 70, 60,false),
+ ('Identify'                    ,23,25, 80, 95,false),
+ ('Sleep III'                   ,23,20, 80, 60,false),
+ ('Fire Bolt'                   ,25,20, 80, 60,false),
+ ('Slow Monster'                ,25,21, 80, 65,false),
+ ('Frost Ball'                  ,27,21, 90, 65,false),
+ ('Recharge Item II'            ,29,23, 90, 95,false),
+ ('Teleport Other'              ,31,25,100, 70,false),
+ ('Haste Self'                  ,33,25,150, 75,false),
+ ('Fire Ball'                   ,35,25,200, 80,false),
+ ('Word of Destruction'         ,37,30,500, 95,false),
+ (''                            ,99,99,  0,  0,false)
 					),
-					(		{ Paladin	}
- ('Detect Evil'			, 1, 1,  2, 25,false),
- ('Cure Light Wounds'		, 2, 2,  2, 30,false),
- ('Bless'			, 3, 3,  3, 30,false),
- ('Remove Fear'			, 5, 3,  5, 30,false),
- ('Call Light'			, 5, 4,  5, 30,false),
- ('Find Traps'			, 7, 5, 10, 35,false),
- ('Detect Doors/Stairs'		, 7, 5, 10, 35,false),
- ('Slow Poison'			, 9, 7, 12, 35,false),
- ('Blind Creature'              , 9, 7, 15, 35,false),
- ('Portal'			, 9, 8, 20, 35,false),
- ('Cure Medium Wounds'		,11, 9, 20, 35,false),
- ('Chant'			,11,10, 25, 40,false),
- ('Sanctuary'			,11,10, 25, 40,false),
- ('Create Food'			,13,10, 25, 40,false),
- ('Remove Curse'		,13,11, 30, 40,false),
- ('Resist Heat and Cold'	,15,13, 30, 40,false),
- ('Neutralize Poison'		,15,15, 40, 45,false),
- ('Orb of Draining'             ,17,15, 45, 45,false),
- ('Cure Serious Wounds'		,17,15, 45, 45,false),
- ('Sense Invisible'		,19,15, 45, 45,false),
- ('Protection from Evil'	,19,15, 50, 45,false),
- ('Earthquake'			,21,17, 50, 45,false),
- ('Sense Surroundings'		,23,17, 55, 45,false),
- ('Cure Critical Wounds'	,25,20, 60, 45,false),
- ('Turn Undead'			,27,21, 65, 45,false),
- ('Prayer'			,29,22, 70, 45,false),
- ('Dispell Undead'		,31,24, 75, 55,false),
- ('Heal'			,33,28, 80, 55,false),
- ('Dispell Evil'		,35,32,100, 65,false),
- ('Glyph of Warding'		,37,36,125, 85,false),
- ('Holy Word'			,39,38,200, 95,false)
+					(               { Paladin       }
+ ('Detect Evil'                 , 1, 1,  4, 30,false),
+ ('Cure Light Wounds'           , 2, 2,  8, 35,false),
+ ('Bless'                       , 3, 3, 12, 35,false),
+ ('Remove Fear'                 , 5, 3, 20, 35,false),
+ ('Call Light'                  , 5, 4, 20, 35,false),
+ ('Find Traps'                  , 7, 5, 25, 40,false),
+ ('Detect Doors/Stairs'         , 7, 5, 25, 40,false),
+ ('Slow Poison'                 , 9, 7, 30, 40,false),
+ ('Blind Creature'              , 9, 7, 30, 40,false),
+ ('Portal'                      , 9, 8, 30, 40,false),
+ ('Cure Medium Wounds'          ,11, 9, 40, 40,false),
+ ('Chant'                       ,11,10, 40, 45,false),
+ ('Sanctuary'                   ,11,10, 40, 45,false),
+ ('Create Food'                 ,13,10, 50, 45,false),
+ ('Remove Curse'                ,13,11, 50, 45,false),
+ ('Resist Heat and Cold'        ,15,13, 60, 45,false),
+ ('Neutralize Poison'           ,15,15, 60, 50,false),
+ ('Orb of Draining'             ,17,15, 70, 50,false),
+ ('Cure Serious Wounds'         ,17,15, 70, 50,false),
+ ('Sense Invisible'             ,19,15, 75, 50,false),
+ ('Protection from Evil'        ,19,15, 75, 50,false),
+ ('Earthquake'                  ,21,17, 80, 50,false),
+ ('Sense Surroundings'          ,23,17, 80, 50,false),
+ ('Cure Critical Wounds'        ,25,20, 80, 50,false),
+ ('Turn Undead'                 ,27,21, 90, 50,false),
+ ('Prayer'                      ,29,22, 95, 50,false),
+ ('Dispell Undead'              ,31,24,100, 60,false),
+ ('Heal'                        ,33,28,125, 60,false),
+ ('Dispell Evil'                ,35,32,150, 70,false),
+ ('Glyph of Warding'            ,37,36,200, 90,false),
+ ('Holy Word'                   ,39,38,500, 95,false)
 					)
 			);
-	{ For Create Food spell use...		}
- mush := 
+	{ For Create Food spell use...          }
+ mush :=
 ('& pint~ of fine grade mush'                      ,  80, ',',%X'00000000',
  1500,      0, 308,   1,   1,   0,   0,   0,   0, '1d1'  ,  1);
 
 
 	char_row	:= 0;
-	char_col	:= 0;
+	char_col        := 0;
 
 	{ Initialize player generation variables			}
 	sex_type  := 'FemaleMale  ';
@@ -311,9 +311,9 @@
 	{Race	STR,INT,WIS,DEX,CON,CHR,
 		Ages, heights, and weights,
 		Racial Bases for: dis,srh,stl,fos,bth,bthb,bsav,hitdie,
-		infra, choice-classes					}
+		infra, choice-classes                                   }
 
-	race	:= 	(
+	race	:=	(
 		('Human',     0,  0,  0,  0,  0,  0,
 			 14,  6, 72,  6,180, 25, 66,  4,120, 20, 1.00,
 			  0,  0,  0,  0,  0,  0,  0, 10,  0,  %B'111111'
@@ -328,54 +328,54 @@
 			),
 		('Halfling', -2,  2,  1,  3,  1,  1,
 			 21, 12, 36,  3, 60,  3, 33,  3, 50,  3, 1.10,
-			 15, 12,  4, -5,-10, 20, 18,  7,  4,  %B'001011'
+			 15, 12,  4, -5,-10, 20, 18,  6,  4,  %B'001011'
 			),
 		('Gnome',    -1,  2,  0,  2,  1, -2,
-			 50, 40, 42,  3, 90,  6, 39,  3, 75,  3, 1.15,
-			 10,  6,  3, -3, -8, 12, 14,  8,  4,  %B'001111'
+			 50, 40, 42,  3, 90,  6, 39,  3, 75,  3, 1.25,
+			 10,  6,  3, -3, -8, 12, 12,  7,  3,  %B'001111'
 			),
 		('Dwarf',     2, -3,  1, -2,  2, -3,
-			 35, 15, 48,  3,150, 10, 46,  3,120, 10, 1.25,
+			 35, 15, 48,  3,150, 10, 46,  3,120, 10, 1.20,
 			  2,  7,  0,  0, 15,  0,  9,  9,  5,  %B'000101'
 			),
 		('Half-Orc',  2, -1,  0,  0,  1, -4,
-			 11,  4, 66,  1,150,  5, 62,  1,120,  5, 1.15,
+			 11,  4, 66,  1,150,  5, 62,  1,120,  5, 1.10,
 			 -3,  0, -1,  3, 12, -5, -3, 10,  3,  %B'001101'
 			),
 		('Half-Troll',4, -4, -2, -4,  3, -6,
-			 20, 10, 96, 10,300, 50, 84,  8,260, 40, 1.30,
+			 20, 10, 96, 10,300, 50, 84,  8,260, 40, 1.20,
 			 -5, -1, -2,  5, 20,-10, -8, 12,  3,  %B'000101'
 			)
 		);
 
 	{ Buying and selling adjustments for character race VS store	}
-	{ owner race							}
+	{ owner race                                                    }
 
 	rgold_adj :=	(
 			{  Hum,  HfE,  Elf,  Hal,  Gno,  Dwa,  HfO,  HfT}
-{Human		}	( 0.00, 0.05, 0.05, 0.10, 0.13, 0.15, 0.20, 0.25),
-{Half-Elf	}	( 0.10, 0.00, 0.00, 0.05, 0.10, 0.20, 0.25, 0.30),
-{Elf		}	( 0.10, 0.05, 0.00, 0.05, 0.10, 0.20, 0.25, 0.30),
-{Halfling	}	( 0.15, 0.10, 0.05,-0.05, 0.05, 0.10, 0.15, 0.30),
-{Gnome		}	( 0.15, 0.15, 0.10, 0.05,-0.05, 0.10, 0.15, 0.30),
-{Dwarf		}	( 0.15, 0.20, 0.20, 0.10, 0.10,-0.05, 0.25, 0.35),
-{Half-Orc	}	( 0.15, 0.20, 0.25, 0.15, 0.15, 0.30, 0.10, 0.15),
-{Half-Troll	}	( 0.10, 0.15, 0.15, 0.10, 0.10, 0.30, 0.10, 0.10)
+{Human          }       ( 0.00, 0.05, 0.05, 0.10, 0.13, 0.15, 0.20, 0.25),
+{Half-Elf       }       ( 0.10, 0.00, 0.00, 0.05, 0.10, 0.20, 0.25, 0.30),
+{Elf            }       ( 0.10, 0.05, 0.00, 0.05, 0.10, 0.20, 0.25, 0.30),
+{Halfling       }       ( 0.15, 0.10, 0.05,-0.05, 0.05, 0.10, 0.15, 0.30),
+{Gnome          }       ( 0.15, 0.15, 0.10, 0.05,-0.05, 0.10, 0.15, 0.30),
+{Dwarf          }       ( 0.15, 0.20, 0.20, 0.10, 0.10,-0.05, 0.25, 0.35),
+{Half-Orc       }       ( 0.15, 0.20, 0.25, 0.15, 0.15, 0.30, 0.10, 0.15),
+{Half-Troll     }       ( 0.10, 0.15, 0.15, 0.10, 0.10, 0.30, 0.10, 0.10)
 			);
 
 	{ Classes...							}
-	class	:=	(
-('Warrior', 0.05,  5, 20, 10, 1, 45, 65, 50,15, 3,-1,-1, 1, 2,-1, false,false),
-('Mage',    0.20,  1, 35, 15, 2, 30, 45, 35,30,-1, 2, 1, 1,-1, 0, false,true ),
-('Priest',  0.10,  2, 25, 12, 2, 40, 50, 40,25, 0,-1, 2,-1, 1, 1, true ,false),
-('Rogue',   0.00,  4, 45, 30, 4, 20, 60, 65,25, 1, 1,-1, 3, 1,-1, false,false),
-('Ranger',  0.50,  3, 30, 16, 3, 35, 55, 70,25, 0, 1, 0, 1, 1, 1, false,true ),
-('Paladin', 0.40,  5, 15, 10, 1, 40, 65, 45,20, 2,-1, 1, 0, 1, 2, true ,false)
+	class   :=      (
+('Warrior', 0.00,  9, 25, 14, 1, 38, 68, 55,30, 5,-2,-2, 2, 2,-1, false,false),
+('Mage',    0.30,  0, 30, 16, 2, 36, 34, 20,20,-5, 3, 0, 0,-2, 0, false,true ),
+('Priest',  0.10,  3, 25, 16, 2, 32, 48, 35,20, 0,-3, 3,-1, 1, 2, true ,false),
+('Rogue',   0.00,  6, 45, 32, 4, 16, 60, 66,30, 3, 1,-2, 3, 2,-1, false,true ),
+('Ranger',  0.40,  4, 30, 24, 3, 24, 56, 72,25, 2, 2, 0, 1, 1, 1, false,true ),
+('Paladin', 0.35,  6, 20, 12, 1, 38, 70, 40,25, 3,-3, 1, 0, 2, 2, true ,false)
 			);
 
 	{ Class titles for different levels				}
-	player_title	:=	(
-	{ Warrior	}
+	player_title    :=      (
+	{ Warrior       }
 ('Novice','Veteran(1st)','Veteran(2nd)','Veteran(3rd)','Warrior(1st)',
 'Warrior(2nd)','Warrior(3rd)','Swordsman-1','Swordsman-2','Swordsman-3',
 'Hero','Swashbuckler','Myrmidon','Champion-1','Champion-2','Champion-3',
@@ -384,7 +384,7 @@
 'Lord (1st)','Lord (2nd)','Lord (3rd)','Lord (4th)','Lord (5th)','Lord (6th)',
 'Lord (7th)','Lord (8th)','Lord (9th)','Lord Gallant','Lord Keeper',
 'Lord Noble'),
-	{ Mage		}
+	{ Mage          }
 ('Novice','Apprentice','Trickster-1','Trickster-2','Trickster-3','Cabalist-1',
 'Cabalist-2','Cabalist-3','Visionist','Phantasmist','Shadowist','Spellbinder',
 'Illusionist','Evoker (1st)','Evoker (2nd)','Evoker (3rd)','Evoker (4th)',
@@ -393,7 +393,7 @@
 'Mage (5th)','Wizard (1st)','Wizard (2nd)','Wizard (3rd)','Wizard (4th)',
 'Wizard (5th)','Wizard (6th)','Wizard (7th)','Wizard (8th)','Wizard (9th)',
 'Wizard Lord'),
-	{ Priests 	}
+	{ Priests       }
 ('Believer','Acolyte(1st)','Acolyte(2nd)','Acolyte(3rd)','Adept (1st)',
 'Adept (2nd)','Adept (3rd)','Priest (1st)','Priest (2nd)','Priest (3rd)',
 'Priest (4th)','Priest (5th)','Priest (6th)','Priest (7th)','Priest (8th)',
@@ -402,7 +402,7 @@
 'Canon (1st)','Canon (2nd)','Canon (3rd)','Canon (4th)','Canon (5th)',
 'Low Lama','Lama-1','Lama-2','Lama-3','High Lama','Great Lama','Patriarch',
 'High Priest','Great Priest','Noble Priest'),
-	{ Rogues 	}
+	{ Rogues        }
 ('Apprentice','Footpad','Cutpurse','Robber','Burglar','Filcher','Sharper',
 'Magsman','Common Rogue','Rogue (1st)','Rogue (2nd)','Rogue (3rd)',
 'Rogue (4th)','Rogue (5th)','Rogue (6th)','Rogue (7th)','Rogue (8th)',
@@ -411,7 +411,7 @@
 'Thief (4th)','Thief (5th)','Thief (6th)','Thief (7th)','Thief (8th)',
 'Thief (9th)','High Thief','Master Thief','Executioner','Low Assassin',
 'Assassin','HighAssassin','Guildsmaster'),
-	{ Rangers 	}
+	{ Rangers       }
 ('Runner (1st)','Runner (2nd)','Runner (3rd)','Strider (1st)','Strider (2nd)',
 'Strider (3rd)','Scout (1st)','Scout (2nd)','Scout (3rd)','Scout (4th)',
 'Scout (5th)','Courser (1st)','Courser (2nd)','Courser (3rd)','Courser (4th)',
@@ -421,7 +421,7 @@
 'Guide (4th)','Guide (5th)','Guide (6th)','Guide (7th)','Guide (8th)',
 'Guide (9th)','Pathfinder-1','Pathfinder-2','Pathfinder-3','Ranger',
 'High Ranger','Ranger Lord'),
-	{ Paladins 	}
+	{ Paladins      }
 ('Gallant','Keeper (1st)','Keeper (2nd)','Keeper (3rd)','Keeper (4th)',
 'Keeper (5th)','Keeper (6th)','Keeper (7th)','Keeper (8th)','Keeper (9th)',
 'Protector-1','Protector-2','Protector-3','Protector-4','Protector-5',
@@ -432,192 +432,192 @@
 'Chevalier','Justiciar','Paladin','High Lord')
 				);
 	{ Base experience levels, may be adjusted up for race and/or class}
-	player_exp :=	(
+	player_exp :=   (
      10,     25,     45,     70,    100,    140,    200,    280,    380,   500,
     650,    850,   1100,   1400,   1800,   2300,   2900,   3600,   4400,  5400,
    6800,   8400,  10200,  12500,  17500,  25000,  35000,  50000,  75000,100000,
- 150000, 200000, 300000, 400000, 500000, 750000,1000000,1500000,2000000,5000000
+ 150000, 200000, 300000, 400000, 500000, 750000,1500000,2500000,5000000,9999999
 			);
 
 
-	{ Background information 					}
-	background	:=	(
-('You are the illegitimate and unacknowledged child ',		 10, 1, 2,-25),
-('You are the illegitimate but acknowledged child ',		 20, 1, 2,-15),
-('You are one of several children ',				 95, 1, 2, -5),
-('You are the 1st child ',					100, 1, 2,  0),
-('of a Serf.  ',						 40, 2, 3, 15),
-('of a Yeoman.  ',						 65, 2, 3, 30),
-('of a Townsman.  ',						 80, 2, 3, 40),
-('of a Guildsman.  ',						 90, 2, 3, 55),
-('of a Landed Knight.  ',					 96, 2, 3, 70),
-('of a Titled Noble.  ',					 99, 2, 3, 80),
-('of a Royal Blood Line.  ',				 	100, 2, 3, 90),
-('You are the black sheep of the family.  ',			 20, 3,50,-30),
-('You are a credit to the family.  ',				 80, 3,50,  5),
-('You are a well liked child.  ',				100, 3,50, 10),
-('Your mother was a Green-Elf.  ',				 40, 4, 1,  0),
-('Your father was a Green-Elf.  ',				 75, 4, 1,  5),
-('Your mother was a Grey-Elf.  ',				 90, 4, 1,  5),
-('Your father was a Grey-Elf.  ',				 95, 4, 1, 10),
-('Your mother was a High-Elf.  ',				 98, 4, 1, 15),
-('Your father was a High-Elf.  ',				100, 4, 1, 20),
-('You are one of several children ',				 60, 7, 8,  0),
-('You are the only child ',					100, 7, 8,  5),
-('of a Green-Elf ',						 75, 8, 9,  0),
-('of a Grey-Elf ',						 95, 8, 9,  5),
-('of a High-Elf ',						100, 8, 9, 10),
-('Ranger.  ',							 40, 9,54, 30),
-('Archer.  ',							 70, 9,54, 40),
-('Warrior.  ',							 87, 9,54, 60),
-('Mage.  ',							 95, 9,54, 75),
-('Prince.  ',							 99, 9,54, 90),
-('King.  ',							100, 9,54, 95),
-('You are one of several children of a Halfling ',		 85,10,11, -5),
-('You are the only child of a Halfling ',			100,10,11,  5),
-('Bum.  ',							 20,11, 3,  5),
-('Tavern Owner.  ',						 30,11, 3, 30),
-('Miller.  ',							 40,11, 3, 40),
-('Home Owner.  ',						 50,11, 3, 50),
-('Burglar.  ',							 80,11, 3, 60),
-('Warrior.  ',							 95,11, 3, 65),
-('Mage.  ',							100,11, 3, 75),
-('Clan Elder.  ',						100,11, 3, 90),
-('You are one of several children of a Gnome ',			 85,13,14, -5),
-('You are the only child of a Gnome ',				100,13,14,  5),
-('Beggar.  ',							 20,14, 3,  5),
-('Bragart.  ',							 50,14, 3, 20),
-('Prankster.  ',						 75,14, 3, 35),
-('Warrior.  ',							 95,14, 3, 50),
-('Mage.  ',							100,14, 3, 75),
-('You are one of two children of a Dwarven ',			 25,16,17,-10),
-('You are the only child of a Dwarven ',			100,16,17,  0),
-('Thief.  ',							 10,17,18, 10),
-('Prison Guard.  ',						 25,17,18, 25),
-('Miner.  ',							 75,17,18, 40),
-('Warrior.  ',							 90,17,18, 60),
-('Priest.  ',							 99,17,18, 80),
-('King.  ',							100,17,18,100),
-('You are the black sheep of the family.  ',			 15,18,57,-40),
-('You are a credit to the family.  ',				 85,18,57,  0),
-('You are a well liked child.  ',			 	100,18,57,  5),
-('Your mother was an Orc, but it is unacknowledged.  ',		 25,19,20,-25),
-('Your father was an Orc, but it is unacknowledged.  ',		100,19,20,-25),
-('You are the adopted child ',					100,20, 2,  0),
-('Your mother was a Cave-Troll ',				 30,22,23,-30),
-('Your father was a Cave-Troll ',				 60,22,23,-25),
-('Your mother was a Hill-Troll ',				 75,22,23,-20),
-('Your father was a Hill-Troll ',				 90,22,23,-15),
-('Your mother was a Water-Troll ',				 95,22,23,-10),
-('Your father was a Water-Troll ',				100,22,23, -5),
-('Cook.  ',							  5,23,62, 10),
-('Warrior.  ',							 95,23,62,  5),
-('Shaman.  ',							 99,23,62, 15),
-('Clan Chief.  ',						100,23,62, 30),
-('You have dark brown eyes, ',					 20,50,51,  0),
-('You have brown eyes, ',					 60,50,51,  0),
-('You have hazel eyes, ',					 70,50,51,  0),
-('You have green eyes, ',					 80,50,51,  0),
-('You have blue eyes, ',					 90,50,51,  0),
-('You have blue-gray eyes, ',					100,50,51,  0),
-('straight ',							 70,51,52,  0),
-('wavey ',							 90,51,52,  0),
-('curly ',							100,51,52,  0),
-('black hair, ',						 30,52,53,  0),
-('brown hair, ',						 70,52,53,  0),
-('auburn hair, ',						 80,52,53,  0),
-('red hair, ',							 90,52,53,  0),
-('blonde hair, ',						100,52,53,  0),
-('and a very dark complexion.',					 10,53,-1,  0),
-('and a dark complexion.',					 30,53,-1,  0),
-('and an average complexion.',					 80,53,-1,  0),
-('and a fair complexion.',					 90,53,-1,  0),
-('and a very fair complexion.',					100,53,-1,  0),
-('You have light grey eyes, ',					 85,54,55,  0),
-('You have light blue eyes, ',					 95,54,55,  0),
-('You have light green eyes, ',					100,54,55,  0),
-('straight ',							 75,55,56,  0),
-('wavey ',							100,55,56,  0),
-('black hair, and a fair complexion.',				 75,56,-1,  0),
-('brown hair, and a fair complexion.',				 85,56,-1,  0),
-('blonde hair, and a fair complexion.',				 95,56,-1,  0),
-('silver hair, and a fair complexion.',				100,56,-1,  0),
-('You have dark brown eyes, ',					 99,57,58,  0),
-('You have glowing red eyes, ',					100,57,58, 10),
-('straight ',							 90,58,59,  0),
-('wavey ',							100,58,59,  0),
-('black hair, ',						 75,59,60,  0),
-('brown hair, ',						100,59,60,  0),
-('a one foot beard, ',						 25,60,61,  0),
-('a two foot beard, ',						 60,60,61,  1),
-('a three foot beard, ',					 90,60,61,  3),
-('a four foot beard, ',						100,60,61,  5),
-('and a dark complexion.',					100,61,-1,  0),
-('You have slime green eyes, ',					 60,62,63,  0),
-('You have puke yellow eyes, ',					 85,62,63,  0),
-('You have blue-bloodshot eyes, ',				 99,62,63,  0),
-('You have glowing red eyes, ',					100,62,63,  5),
-('dirty ',							 33,63,64,  0),
-('mangy ',							 66,63,64,  0),
-('oily ',							100,63,64,  0),
-('sea-weed green hair, ',					 33,64,65,  0),
-('bright red hair, ',						 66,64,65,  0),
-('dark purple hair, ',						100,64,65,  0),
-('and green ',							 25,65,66,  0),
-('and blue ',							 50,65,66,  0),
-('and white ',							 75,65,66,  0),
-('and black ',							100,65,66,  0),
-('ulcerous skin.',						 33,66,-1,  0),
-('scabby skin.',						 66,66,-1,  0),
-('leprous skin.',						100,66,-1,  0)
+	{ Background information					}
+	background      :=      (
+('You are the illegitimate and unacknowledged child ',           10, 1, 2,-25),
+('You are the illegitimate but acknowledged child ',             20, 1, 2,-15),
+('You are one of several children ',                             95, 1, 2, -5),
+('You are the 1st child ',                                      100, 1, 2,  0),
+('of a Serf.  ',                                                 40, 2, 3, 15),
+('of a Yeoman.  ',                                               65, 2, 3, 30),
+('of a Townsman.  ',                                             80, 2, 3, 40),
+('of a Guildsman.  ',                                            90, 2, 3, 55),
+('of a Landed Knight.  ',                                        96, 2, 3, 70),
+('of a Titled Noble.  ',                                         99, 2, 3, 80),
+('of a Royal Blood Line.  ',                                    100, 2, 3, 90),
+('You are the black sheep of the family.  ',                     20, 3,50,-30),
+('You are a credit to the family.  ',                            80, 3,50,  5),
+('You are a well liked child.  ',                               100, 3,50, 10),
+('Your mother was a Green-Elf.  ',                               40, 4, 1,  0),
+('Your father was a Green-Elf.  ',                               75, 4, 1,  5),
+('Your mother was a Grey-Elf.  ',                                90, 4, 1,  5),
+('Your father was a Grey-Elf.  ',                                95, 4, 1, 10),
+('Your mother was a High-Elf.  ',                                98, 4, 1, 15),
+('Your father was a High-Elf.  ',                               100, 4, 1, 20),
+('You are one of several children ',                             60, 7, 8,  0),
+('You are the only child ',                                     100, 7, 8,  5),
+('of a Green-Elf ',                                              75, 8, 9,  0),
+('of a Grey-Elf ',                                               95, 8, 9,  5),
+('of a High-Elf ',                                              100, 8, 9, 10),
+('Ranger.  ',                                                    40, 9,54, 30),
+('Archer.  ',                                                    70, 9,54, 40),
+('Warrior.  ',                                                   87, 9,54, 60),
+('Mage.  ',                                                      95, 9,54, 75),
+('Prince.  ',                                                    99, 9,54, 90),
+('King.  ',                                                     100, 9,54, 95),
+('You are one of several children of a Halfling ',               85,10,11, -5),
+('You are the only child of a Halfling ',                       100,10,11,  5),
+('Bum.  ',                                                       20,11, 3,  5),
+('Tavern Owner.  ',                                              30,11, 3, 30),
+('Miller.  ',                                                    40,11, 3, 40),
+('Home Owner.  ',                                                50,11, 3, 50),
+('Burglar.  ',                                                   80,11, 3, 60),
+('Warrior.  ',                                                   95,11, 3, 65),
+('Mage.  ',                                                     100,11, 3, 75),
+('Clan Elder.  ',                                               100,11, 3, 90),
+('You are one of several children of a Gnome ',                  85,13,14, -5),
+('You are the only child of a Gnome ',                          100,13,14,  5),
+('Beggar.  ',                                                    20,14, 3,  5),
+('Bragart.  ',                                                   50,14, 3, 20),
+('Prankster.  ',                                                 75,14, 3, 35),
+('Warrior.  ',                                                   95,14, 3, 50),
+('Mage.  ',                                                     100,14, 3, 75),
+('You are one of two children of a Dwarven ',                    25,16,17,-10),
+('You are the only child of a Dwarven ',                        100,16,17,  0),
+('Thief.  ',                                                     10,17,18, 10),
+('Prison Guard.  ',                                              25,17,18, 25),
+('Miner.  ',                                                     75,17,18, 40),
+('Warrior.  ',                                                   90,17,18, 60),
+('Priest.  ',                                                    99,17,18, 80),
+('King.  ',                                                     100,17,18,100),
+('You are the black sheep of the family.  ',                     15,18,57,-40),
+('You are a credit to the family.  ',                            85,18,57,  0),
+('You are a well liked child.  ',                               100,18,57,  5),
+('Your mother was an Orc, but it is unacknowledged.  ',          25,19,20,-25),
+('Your father was an Orc, but it is unacknowledged.  ',         100,19,20,-25),
+('You are the adopted child ',                                  100,20, 2,  0),
+('Your mother was a Cave-Troll ',                                30,22,23,-30),
+('Your father was a Cave-Troll ',                                60,22,23,-25),
+('Your mother was a Hill-Troll ',                                75,22,23,-20),
+('Your father was a Hill-Troll ',                                90,22,23,-15),
+('Your mother was a Water-Troll ',                               95,22,23,-10),
+('Your father was a Water-Troll ',                              100,22,23, -5),
+('Cook.  ',                                                       5,23,62, 10),
+('Warrior.  ',                                                   95,23,62,  5),
+('Shaman.  ',                                                    99,23,62, 15),
+('Clan Chief.  ',                                               100,23,62, 30),
+('You have dark brown eyes, ',                                   20,50,51,  0),
+('You have brown eyes, ',                                        60,50,51,  0),
+('You have hazel eyes, ',                                        70,50,51,  0),
+('You have green eyes, ',                                        80,50,51,  0),
+('You have blue eyes, ',                                         90,50,51,  0),
+('You have blue-gray eyes, ',                                   100,50,51,  0),
+('straight ',                                                    70,51,52,  0),
+('wavey ',                                                       90,51,52,  0),
+('curly ',                                                      100,51,52,  0),
+('black hair, ',                                                 30,52,53,  0),
+('brown hair, ',                                                 70,52,53,  0),
+('auburn hair, ',                                                80,52,53,  0),
+('red hair, ',                                                   90,52,53,  0),
+('blonde hair, ',                                               100,52,53,  0),
+('and a very dark complexion.',                                  10,53,-1,  0),
+('and a dark complexion.',                                       30,53,-1,  0),
+('and an average complexion.',                                   80,53,-1,  0),
+('and a fair complexion.',                                       90,53,-1,  0),
+('and a very fair complexion.',                                 100,53,-1,  0),
+('You have light grey eyes, ',                                   85,54,55,  0),
+('You have light blue eyes, ',                                   95,54,55,  0),
+('You have light green eyes, ',                                 100,54,55,  0),
+('straight ',                                                    75,55,56,  0),
+('wavey ',                                                      100,55,56,  0),
+('black hair, and a fair complexion.',                           75,56,-1,  0),
+('brown hair, and a fair complexion.',                           85,56,-1,  0),
+('blonde hair, and a fair complexion.',                          95,56,-1,  0),
+('silver hair, and a fair complexion.',                         100,56,-1,  0),
+('You have dark brown eyes, ',                                   99,57,58,  0),
+('You have glowing red eyes, ',                                 100,57,58, 10),
+('straight ',                                                    90,58,59,  0),
+('wavey ',                                                      100,58,59,  0),
+('black hair, ',                                                 75,59,60,  0),
+('brown hair, ',                                                100,59,60,  0),
+('a one foot beard, ',                                           25,60,61,  0),
+('a two foot beard, ',                                           60,60,61,  1),
+('a three foot beard, ',                                         90,60,61,  3),
+('a four foot beard, ',                                         100,60,61,  5),
+('and a dark complexion.',                                      100,61,-1,  0),
+('You have slime green eyes, ',                                  60,62,63,  0),
+('You have puke yellow eyes, ',                                  85,62,63,  0),
+('You have blue-bloodshot eyes, ',                               99,62,63,  0),
+('You have glowing red eyes, ',                                 100,62,63,  5),
+('dirty ',                                                       33,63,64,  0),
+('mangy ',                                                       66,63,64,  0),
+('oily ',                                                       100,63,64,  0),
+('sea-weed green hair, ',                                        33,64,65,  0),
+('bright red hair, ',                                            66,64,65,  0),
+('dark purple hair, ',                                          100,64,65,  0),
+('and green ',                                                   25,65,66,  0),
+('and blue ',                                                    50,65,66,  0),
+('and white ',                                                   75,65,66,  0),
+('and black ',                                                  100,65,66,  0),
+('ulcerous skin.',                                               33,66,-1,  0),
+('scabby skin.',                                                 66,66,-1,  0),
+('leprous skin.',                                               100,66,-1,  0)
 			);
 
 
 	{ Treasure related values					}
-	inven_ctr	:= 0;
-	inven_weight	:= 0;
-	missle_ctr	:= 0;
-	equip_ctr	:= 0;
-	blank_treasure	:= (' ',0,' ',0,0,0,0,0,0,0,0,0,0,' ',0);
+	inven_ctr       := 0;
+	inven_weight    := 0;
+	missle_ctr      := 0;
+	equip_ctr       := 0;
+	blank_treasure  := (' ',0,' ',0,0,0,0,0,0,0,0,0,0,' ',0);
 
 	{ Gold list (All types of gold and gems are defined here)	}
-	gold_list	:=	(
+	gold_list       :=      (
 ('copper'                                          , 100, '$',%X'00000000',
-    0,      1,   1,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,      3,   1,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('copper'                                          , 100, '$',%X'00000000',
-    0,      3,   2,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,      4,   2,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('copper'                                          , 100, '$',%X'00000000',
-    0,      4,   3,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,      5,   3,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('silver'                                          , 100, '$',%X'00000000',
-    0,      5,   4,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,      6,   4,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('silver'                                          , 100, '$',%X'00000000',
-    0,      6,   5,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,      7,   5,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('silver'                                          , 100, '$',%X'00000000',
     0,      8,   6,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('garnets'                                         , 100, '*',%X'00000000',
-    0,     10,   7,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,      9,   7,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('garnets'                                         , 100, '*',%X'00000000',
-    0,     12,   8,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     10,   8,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('gold'                                            , 100, '$',%X'00000000',
-    0,     15,   9,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     12,   9,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('gold'                                            , 100, '$',%X'00000000',
-    0,     18,   0,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     14,   0,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('gold'                                            , 100, '$',%X'00000000',
-    0,     20,   1,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     16,   1,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('opals'                                           , 100, '*',%X'00000000',
-    0,     24,   2,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     18,   2,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('saphires'                                        , 100, '*',%X'00000000',
-    0,     30,   3,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     20,   3,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('gold'                                            , 100, '$',%X'00000000',
-    0,     40,   4,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     24,   4,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('rubies'                                          , 100, '*',%X'00000000',
-    0,     60,   5,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     28,   5,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('diamonds'                                        , 100, '*',%X'00000000',
-    0,     80,   6,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     32,   6,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('emeralds'                                        , 100, '*',%X'00000000',
-    0,    100,   7,   0,   0,   0,   0,   0,   0, ' '    ,  1),
+    0,     40,   7,   0,   0,   0,   0,   0,   0, ' '    ,  1),
 ('mithril'                                         , 100, '$',%X'00000000',
-    0,    200,   8,   0,   0,   0,   0,   0,   0, ' '    ,  1)
+    0,     80,   8,   0,   0,   0,   0,   0,   0, ' '    ,  1)
 				);
 
 	{ Object description:  Objects are defined here.  Each object has
@@ -638,18 +638,18 @@
 		Type value : Value representing the type of object.
 			1   ~   Miscellaneous Object.
 			2   &   chest.
-			10  (Left Curly Brace)	sling ammo.
-			11  (Left Curly Brace)	bolt.
-			12  (Left Curly Brace)	arrow.
-			13  ~	spike.
-			15  ~	Lamp or Torch.
+			10  (Left Curly Brace)  sling ammo.
+			11  (Left Curly Brace)  bolt.
+			12  (Left Curly Brace)  arrow.
+			13  ~   spike.
+			15  ~   Lamp or Torch.
 			20  (Right curly brace)  bow, crossbow, or sling.
 			21  /   hafted weapon.
 			22  \   pole arm.
 			23  |   sword or dagger.
 			30  ]   boots.
 			31  ]   gloves and gauntlets.
-			32  (	Cloak
+			32  (   Cloak
 			33  ]   helm.
 			34  )   shield.
 			35  [   hard armor.
@@ -661,28 +661,28 @@
 			65  -   wand.
 			70  ?   scroll.
 			71  ?   scroll.    continued
-			75  !   potion. 
+			75  !   potion.
 			76  !   potion.    continued
-			77  !	flask of oil.
+			77  !   flask of oil.
 			80  ,   food.
-			90  ?	Magic Book.
-			91  ?	Prayer Book.
+			90  ?   Magic Book.
+			91  ?   Prayer Book.
 			100 $   valuable metal.
 			100 *   valuable gems.
 			101 .   Unseen trap.
-			102 ^	Seen trap.
-			103 :	Rubble.
-			104 '	Open door.
-			105 +	Closed door.
-			107 <	Up staircase.
-			108 >	Down staircase.
-			109 #	Secret door.
+			102 ^   Seen trap.
+			103 :   Rubble.
+			104 '   Open door.
+			105 +   Closed door.
+			107 <   Up staircase.
+			108 >   Down staircase.
+			109 #   Secret door.
 			110 1,2,3,4,5,6   Entrance to store.
 
 		Sub value  : separate value for each item of a type.
 		Damage     : amount of damage item can cause.
 		Weight     : relative weight of an item.
-		Number	   : number of items appearing in group.
+		Number     : number of items appearing in group.
 			If items can be added together then
 				subval > 255
 			If items are considered one unit when added
@@ -690,50 +690,50 @@
 				subval > 511
 		To hit     : magical pluses to hit.
 		To damage  : magical pluses to damage.
-		AC	   : objects relative armor class.
+		AC         : objects relative armor class.
 			1 is worse than 5 is worse than 10 ect...
 		To AC      : Magical bonuses to AC.
-		P1	   : Catch all for magical abilities such as
+		P1         : Catch all for magical abilities such as
 			     pluses to strength, minuses to searching...
-		Flags	   : Abilities of object.  Each abilitiy is a 
+		Flags      : Abilities of object.  Each abilitiy is a
 			     bit.  Bits 1-31 are used. (Signed integer)
 
 		Flags used for anything that can be worn or wielded:
-				Bit #	Hex #		Ability
-				1	00000001	Strength
-				2	00000002	Dexterity
-				3	00000004	Constitution
-				4	00000008	Intelligence
-				5	00000010	Wisdom
-				6	00000020	Charisma
-				7	00000040	Searching
-				8	00000080	Slow digestion
-				9	00000100	Stealth
-				10	00000200	Aggravation
-				11	00000400	Teleportation
-				12	00000800	Regeneration
-				13	00001000	Speed
-				14	00002000	Slay Dragon
-				15	00004000	Slay Monster
-				16	00008000	Slay Evil
-				17	00010000	Slay Undead
-				18	00020000	Cold Brand
-				19	00040000	Flame Brand
-				20	00080000	Resist Fire
-				21	00100000	Resist Acid
-				22	00200000	Resist Cold
-				23	00400000	Sustain Stat (P1)
-				24	00800000	Free Action
-				25	01000000	See Invisible
-				26	02000000	Resist Lightning
-				27	04000000	Feather Fall
-				28	08000000	Blindness
-				29	10000000	Timidness
-				30	20000000	Tunneling
-				31	40000000	Infra vision
-				32	80000000	Cursed
-		Level	   : Minimum level on which item can be found.
-		Cost	   : Relative cost of item.
+				Bit #   Hex #           Ability
+				1       00000001        Strength
+				2       00000002        Dexterity
+				3       00000004        Constitution
+				4       00000008        Intelligence
+				5       00000010        Wisdom
+				6       00000020        Charisma
+				7       00000040        Searching
+				8       00000080        Slow digestion
+				9       00000100        Stealth
+				10      00000200        Aggravation
+				11      00000400        Teleportation
+				12      00000800        Regeneration
+				13      00001000        Speed
+				14      00002000        Slay Dragon
+				15      00004000        Slay Monster
+				16      00008000        Slay Evil
+				17      00010000        Slay Undead
+				18      00020000        Cold Brand
+				19      00040000        Flame Brand
+				20      00080000        Resist Fire
+				21      00100000        Resist Acid
+				22      00200000        Resist Cold
+				23      00400000        Sustain Stat (P1)
+				24      00800000        Free Action
+				25      01000000        See Invisible
+				26      02000000        Resist Lightning
+				27      04000000        Feather Fall
+				28      08000000        Blindness
+				29      10000000        Timidness
+				30      20000000        Tunneling
+				31      40000000        Infra vision
+				32      80000000        Cursed
+		Level      : Minimum level on which item can be found.
+		Cost       : Relative cost of item.
 
 		Special Abilities can be added to item by MAGIC_INIT,
 		found in MISC.INC.
@@ -751,8 +751,8 @@
 	Chests:
 		Traps are added randomly by MAGIC.INIT in MISC.INC.
 	}
-	{ Object list (All objects must be defined here)		}
-	object_list	:=	(
+	{ Object list (All objects must be defined here)                }
+	object_list     :=      (
 ('& %M Mushroom~| of Poison'                       ,  80, ',',%X'00000001',
   500,      0, 257,   1,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& %M Mushroom~| of Blindness'                    ,  80, ',',%X'00000002',
@@ -764,11 +764,11 @@
 ('& %M Mushroom~| of Halucination'                 ,  80, ',',%X'00000010',
   500,      0, 261,   1,   1,   0,   0,   0,   0, '0d0'  , 13),
 ('& %M Mushroom~| of Cure Poison'                  ,  80, ',',%X'00000020',
-  500,     60, 262,   1,   1,   0,   0,   0,   0, '0d0'  ,  6),
+  500,     60, 262,   1,   1,   0,   0,   0,   0, '0d0'  ,  8),
 ('& %M Mushroom~| of Cure Blindness'               ,  80, ',',%X'00000040',
-  500,     50, 263,   1,   1,   0,   0,   0,   0, '0d0'  ,  8),
+  500,     50, 263,   1,   1,   0,   0,   0,   0, '0d0'  , 10),
 ('& %M Mushroom~| of Cure Paranoia'                ,  80, ',',%X'00000080',
-  500,     25, 264,   1,   1,   0,   0,   0,   0, '0d0'  ,  9),
+  500,     25, 264,   1,   1,   0,   0,   0,   0, '0d0'  , 12),
 ('& %M Mushroom~| of Cure Confusion'               ,  80, ',',%X'00000100',
   500,     50, 265,   1,   1,   0,   0,   0,   0, '0d0'  ,  6),
 ('& %M Mushroom~| of Weakness'                     ,  80, ',',%X'04000200',
@@ -776,7 +776,7 @@
 ('& %M Mushroom~| of Unhealth'                     ,  80, ',',%X'04000400',
   500,     50, 267,   1,   1,   0,   0,   0,   0, '10d10', 15),
 ('& %M Mushroom~| of Restore Constitution'         ,  80, ',',%X'00010000',
-  500,    350, 268,   1,   1,   0,   0,   0,   0, '0d0'  ,  9),
+  500,    350, 268,   1,   1,   0,   0,   0,   0, '0d0'  , 20),
 ('& %M Mushroom~| of First-Aid'                    ,  80, ',',%X'00200000',
   500,      5, 269,   1,   1,   0,   0,   0,   0, '0d0'  ,  6),
 ('& %M Mushroom~| of Minor Cures'                  ,  80, ',',%X'00400000',
@@ -784,7 +784,7 @@
 ('& %M Mushroom~| of Light Cures'                  ,  80, ',',%X'00800000',
   500,     30, 271,   1,   1,   0,   0,   0,   0, '0d0'  , 10),
 ('& %M Mushroom~| of Restoring'                    ,  80, ',',%X'001F8040',
-  500,   1000, 272,   1,   1,   0,   0,   0,   0, '0d0'  , 18),
+  500,   1000, 272,   1,   1,   0,   0,   0,   0, '0d0'  , 30),
 ('& Hairy %M Mold~| of Poison'                     ,  80, ',',%X'00000001',
  1200,      0, 273,   1,   1,   0,   0,   0,   0, '0d0'  , 15),
 ('& Hairy %M Mold~| of Halucinations'              ,  80, ',',%X'00000010',
@@ -794,13 +794,21 @@
 ('& Hairy %M Mold~| of Unhealth'                   ,  80, ',',%X'00000400',
  1200,     25, 276,   1,   1,   0,   0,   0,   0, '6d8'  , 28),
 ('& Hairy %M Mold~| of Cure Serious Wounds'        ,  80, ',',%X'02000000',
- 1200,     75, 277,   2,   1,   0,   0,   0,   0, '0d0'  , 14),
+ 1200,     75, 277,   2,   1,   0,   0,   0,   0, '0d0'  , 16),
 ('& Ration~ of Food'                               ,  80, ',',%X'00000000',
  5000,      3, 307,  10,   1,   0,   0,   0,   0, '0d0'  ,  0),
+('& Ration~ of Food'                               ,  80, ',',%X'00000000',
+ 5000,      3, 307,  10,   1,   0,   0,   0,   0, '0d0'  ,  5),
+('& Ration~ of Food'                               ,  80, ',',%X'00000000',
+ 5000,      3, 307,  10,   1,   0,   0,   0,   0, '0d0'  , 10),
 ('& Slime Mold~'                                   ,  80, ',',%X'00000000',
- 3000,      2, 308,   5,   1,   0,   0,   0,   0, '0d0'  ,  3),
+ 3000,      2, 308,   5,   1,   0,   0,   0,   0, '0d0'  ,  1),
 ('& Piece~ of Elvish Waybread'                     ,  80, ',',%X'02000020',
- 7500,     10, 311,   3,   1,   0,   0,   0,   0, '0d0'  ,  5),
+ 7500,     10, 313,   3,   1,   0,   0,   0,   0, '0d0'  ,  6),
+('& Piece~ of Elvish Waybread'                     ,  80, ',',%X'02000020',
+ 7500,     10, 313,   3,   1,   0,   0,   0,   0, '0d0'  , 12),
+('& Piece~ of Elvish Waybread'                     ,  80, ',',%X'02000020',
+ 7500,     10, 313,   3,   1,   0,   0,   0,   0, '0d0'  , 20),
 ('& Dagger (Main Gauche)^ (%P2,%P3)'               ,  23, '|',%X'00000000',
     0,     25,   1,  30,   1,   0,   0,   0,   0, '1d5'  ,  2),
 ('& Dagger (Misercorde)^ (%P2,%P3)'                ,  23, '|',%X'00000000',
@@ -822,15 +830,15 @@
 ('& Broadsword^ (%P2,%P3)'                         ,  23, '|',%X'00000000',
     0,    255,  10, 150,   1,   0,   0,   0,   0, '2d5'  ,  9),
 ('& Two Handed Sword (Claymore)^ (%P2,%P3)'        ,  23, '|',%X'00000000',
-    0,    775,  11, 200,   1,   0,   0,   0,   0, '3d6'  , 16),
+    0,    775,  11, 200,   1,   0,   0,   0,   0, '3d6'  , 30),
 ('& Cutlass^ (%P2,%P3)'                            ,  23, '|',%X'00000000',
     0,     85,  12, 110,   1,   0,   0,   0,   0, '1d7'  ,  7),
 ('& Two Handed Sword (Espadon)^ (%P2,%P3)'         ,  23, '|',%X'00000000',
-    0,    655,  13, 180,   1,   0,   0,   0,   0, '3d6'  , 24),
+    0,    655,  13, 180,   1,   0,   0,   0,   0, '3d6'  , 35),
 ('& Executioner''s Sword^ (%P2,%P3)'               ,  23, '|',%X'00000000',
-    0,    850,  14, 260,   1,   0,   0,   0,   0, '4d5'  , 28),
+    0,    850,  14, 260,   1,   0,   0,   0,   0, '4d5'  , 40),
 ('& Two Handed Sword (Flamberge)^ (%P2,%P3)'       ,  23, '|',%X'00000000',
-    0,   1000,  15, 240,   1,   0,   0,   0,   0, '4d5'  , 35),
+    0,   1000,  15, 240,   1,   0,   0,   0,   0, '4d5'  , 45),
 ('& Foil^ (%P2,%P3)'                               ,  23, '|',%X'00000000',
     0,     35,  16,  30,   1,   0,   0,   0,   0, '1d5'  ,  2),
 ('& Katana^ (%P2,%P3)'                             ,  23, '|',%X'00000000',
@@ -838,7 +846,7 @@
 ('& Longsword^ (%P2,%P3)'                          ,  23, '|',%X'00000000',
     0,    300,  18, 130,   1,   0,   0,   0,   0, '1d10' , 12),
 ('& Two Handed Sword (No-Dachi)^ (%P2,%P3)'        ,  23, '|',%X'00000000',
-    0,    675,  19, 200,   1,   0,   0,   0,   0, '4d4'  , 20),
+    0,    675,  19, 200,   1,   0,   0,   0,   0, '4d4'  , 45),
 ('& Rapier^ (%P2,%P3)'                             ,  23, '|',%X'00000000',
     0,     42,  20,  40,   1,   0,   0,   0,   0, '1d6'  ,  4),
 ('& Sabre^ (%P2,%P3)'                              ,  23, '|',%X'00000000',
@@ -846,13 +854,13 @@
 ('& Small Sword^ (%P2,%P3)'                        ,  23, '|',%X'00000000',
     0,     48,  22,  75,   1,   0,   0,   0,   0, '1d6'  ,  5),
 ('& Two Handed Sword (Zweihander)^ (%P2,%P3)'      ,  23, '|',%X'00000000',
-    0,   1000,  23, 280,   1,   0,   0,   0,   0, '4d6'  , 40),
+    0,   1000,  23, 280,   1,   0,   0,   0,   0, '4d6'  , 50),
 ('& Broken sword^ (%P2,%P3)'                       ,  23, '|',%X'00000000',
     0,      0,  24,  75,   1,  -2,  -2,   0,   0, '1d1'  ,  0),
 ('& Battle Axe (Balestarius)^ (%P2,%P3)'           ,  21, '\',%X'00000000',
-    0,    500,   1, 180,   1,   0,   0,   0,   0, '2d8'  , 20),
+    0,    500,   1, 180,   1,   0,   0,   0,   0, '2d8'  , 30),
 ('& Ball and Chain^ (%P2,%P3)'                     ,  21, '\',%X'00000000',
-    0,    200,   2, 150,   1,   0,   0,   0,   0, '2d4'  , 14),
+    0,    200,   2, 150,   1,   0,   0,   0,   0, '2d4'  , 20),
 ('& Battle Axe (European)^ (%P2,%P3)'              ,  21, '\',%X'00000000',
     0,    334,   3, 170,   1,   0,   0,   0,   0, '3d4'  , 13),
 ('& Broad Axe^ (%P2,%P3)'                          ,  21, '\',%X'00000000',
@@ -864,29 +872,29 @@
 ('& Flail^ (%P2,%P3)'                              ,  21, '\',%X'00000000',
     0,    353,   7, 150,   1,   0,   0,   0,   0, '2d6'  , 12),
 ('& Two Handed Great Flail^ (%P2,%P3)'             ,  21, '\',%X'00000000',
-    0,    590,   8, 280,   1,   0,   0,   0,   0, '3d6'  , 24),
+    0,    590,   8, 280,   1,   0,   0,   0,   0, '3d6'  , 45),
 ('& Morningstar^ (%P2,%P3)'                        ,  21, '\',%X'00000000',
-    0,    396,   9, 150,   1,   0,   0,   0,   0, '2d6'  ,  7),
+    0,    396,   9, 150,   1,   0,   0,   0,   0, '2d6'  , 10),
 ('& Mace^ (%P2,%P3)'                               ,  21, '\',%X'00000000',
     0,    130,  10, 120,   1,   0,   0,   0,   0, '2d4'  ,  6),
 ('& War Hammer^ (%P2,%P3)'                         ,  21, '\',%X'00000000',
     0,    225,  11, 120,   1,   0,   0,   0,   0, '3d3'  ,  5),
 ('& Mace (Lead filled)^ (%P2,%P3)'                 ,  21, '\',%X'00000000',
-    0,    502,  12, 180,   1,   0,   0,   0,   0, '3d4'  , 11),
+    0,    502,  12, 180,   1,   0,   0,   0,   0, '3d4'  , 15),
 ('& Awl-Pike^ (%P2,%P3)'                           ,  22, '/',%X'00000000',
     0,    340,   1, 160,   1,   0,   0,   0,   0, '1d8'  ,  8),
 ('& Beaked Axe^ (%P2,%P3)'                         ,  22, '/',%X'00000000',
-    0,    408,   2, 180,   1,   0,   0,   0,   0, '2d6'  , 13),
+    0,    408,   2, 180,   1,   0,   0,   0,   0, '2d6'  , 15),
 ('& Fauchard^ (%P2,%P3)'                           ,  22, '/',%X'00000000',
-    0,    376,   3, 170,   1,   0,   0,   0,   0, '1d10' , 15),
+    0,    376,   3, 170,   1,   0,   0,   0,   0, '1d10' , 17),
 ('& Glaive^ (%P2,%P3)'                             ,  22, '/',%X'00000000',
-    0,    363,   4, 190,   1,   0,   0,   0,   0, '2d6'  , 15),
+    0,    363,   4, 190,   1,   0,   0,   0,   0, '2d6'  , 20),
 ('& Halberd^ (%P2,%P3)'                            ,  22, '/',%X'00000000',
-    0,    430,   5, 190,   1,   0,   0,   0,   0, '3d4'  , 17),
+    0,    430,   5, 190,   1,   0,   0,   0,   0, '3d4'  , 22),
 ('& Lucerne Hammer^ (%P2,%P3)'                     ,  22, '/',%X'00000000',
     0,    376,   6, 120,   1,   0,   0,   0,   0, '2d5'  , 11),
 ('& Pike^ (%P2,%P3)'                               ,  22, '/',%X'00000000',
-    0,    358,   7, 160,   1,   0,   0,   0,   0, '2d5'  , 12),
+    0,    358,   7, 160,   1,   0,   0,   0,   0, '2d5'  , 15),
 ('& Spear^ (%P2,%P3)'                              ,  22, '/',%X'00000000',
     0,     36,   8,  50,   1,   0,   0,   0,   0, '1d6'  ,  5),
 ('& Lance^ (%P2,%P3)'                              ,  22, '/',%X'00000000',
@@ -896,15 +904,15 @@
 ('& Short Bow^ (%P2)'                              ,  20, '}',%X'00000000',
     2,     50,   1,  30,   1,   0,   0,   0,   0, '0d0'  ,  3),
 ('& Long Bow^ (%P2)'                               ,  20, '}',%X'00000000',
-    3,    120,   2,  40,   1,   0,   0,   0,   0, '0d0'  ,  8),
+    3,    120,   2,  40,   1,   0,   0,   0,   0, '0d0'  , 10),
 ('& Composite Bow^ (%P2)'                          ,  20, '}',%X'00000000',
-    4,    240,   3,  40,   1,   0,   0,   0,   0, '0d0'  , 20),
+    4,    240,   3,  40,   1,   0,   0,   0,   0, '0d0'  , 40),
 ('& Light Crossbow^ (%P2)'                         ,  20, '}',%X'00000000',
-    5,    140,  10, 110,   1,   0,   0,   0,   0, '0d0'  , 12),
+    5,    140,  10, 110,   1,   0,   0,   0,   0, '0d0'  , 15),
 ('& Heavy Crossbow^ (%P2)'                         ,  20, '}',%X'00000000',
-    6,    300,  11, 200,   1,   0,   0,   0,   0, '1d1'  , 24),
+    6,    300,  11, 200,   1,   0,   0,   0,   0, '1d1'  , 30),
 ('& Sling^ (%P2)'                                  ,  20, '}',%X'00000000',
-    1,      5,  20,   5,   1,   0,   0,   0,   0, '0d0'  ,  0),
+    1,      5,  20,   5,   1,   0,   0,   0,   0, '0d0'  ,  1),
 ('& Arrow~^ (%P2,%P3)'                             ,  12, '{',%X'00000000',
     0,      1,   1,   2,   1,   0,   0,   0,   0, '1d4'  ,  2),
 ('& Bolt~^ (%P2,%P3)'                              ,  11, '{',%X'00000000',
@@ -922,11 +930,11 @@
 ('& Orcish Pick^ (%P1) (%P2,%P3)'                  ,  25, '\',%X'20000000',
     2,    500,   2, 180,   1,   0,   0,   0,   0, '1d3'  , 20),
 ('& Dwarven Pick^ (%P1) (%P2,%P3)'                 ,  25, '\',%X'20000000',
-    3,   1200,   3, 200,   1,   0,   0,   0,   0, '1d4'  , 40),
+    3,   1200,   3, 200,   1,   0,   0,   0,   0, '1d4'  , 50),
 ('& Gnomish Shovel^ (%P1) (%P2,%P3)'               ,  25, '\',%X'20000000',
-    1,    100,   5,  50,   1,   0,   0,   0,   0, '1d2'  , 15),
+    1,    100,   5,  50,   1,   0,   0,   0,   0, '1d2'  , 20),
 ('& Dwarven Shovel^ (%P1) (%P2,%P3)'               ,  25, '\',%X'20000000',
-    2,    250,   6, 120,   1,   0,   0,   0,   0, '1d3'  , 30),
+    2,    250,   6, 120,   1,   0,   0,   0,   0, '1d3'  , 40),
 ('& Pair of Soft Leather Shoes^ [%P6,%P4]'         ,  30, ']',%X'00000000',
     0,      4,   1,   5,   1,   0,   0,   1,   0, '0d0'  ,  1),
 ('& Pair of Soft Leather Boots^ [%P6,%P4]'         ,  30, ']',%X'00000000',
@@ -940,15 +948,15 @@
 ('& Metal Cap^ [%P6,%P4]'                          ,  33, ']',%X'00000000',
     0,     30,   3,  20,   1,   0,   0,   3,   0, '1d1'  ,  7),
 ('& Iron Helm^ [%P6,%P4]'                          ,  33, ']',%X'00000000',
-    0,     75,   4,  75,   1,   0,   0,   5,   0, '1d3'  , 12),
+    0,     75,   4,  75,   1,   0,   0,   5,   0, '1d3'  , 20),
 ('& Steel Helm^ [%P6,%P4]'                         ,  33, ']',%X'00000000',
-    0,    200,   5,  60,   1,   0,   0,   6,   0, '1d3'  , 30),
+    0,    200,   5,  60,   1,   0,   0,   6,   0, '1d3'  , 40),
 ('& Silver Crown^ (%P1)'                           ,  33, ']',%X'00000000',
-    0,    250,   6,  20,   1,   0,   0,   0,   0, '1d1'  , 34),
+    0,    250,   6,  20,   1,   0,   0,   0,   0, '1d1'  , 44),
 ('& Golden Crown^ (%P1)'                           ,  33, ']',%X'00000000',
-    0,    500,   7,  30,   1,   0,   0,   0,   0, '1d1'  , 37),
+    0,    500,   7,  30,   1,   0,   0,   0,   0, '1d1'  , 47),
 ('& Jewel Encrusted Crown^ (%P1)'                  ,  33, ']',%X'00000000',
-    0,   1000,   8,  40,   1,   0,   0,   0,   0, '1d1'  , 40),
+    0,   1000,   8,  40,   1,   0,   0,   0,   0, '1d1'  , 50),
 ('& Robe^ [%P6,%P4]'                               ,  36, '(',%X'00000000',
     0,      4,   1,  20,   1,   0,   0,   2,   0, '0d0'  ,  1),
 ('Soft Leather Armor^ [%P6,%P4]'                   ,  36, '(',%X'00000000',
@@ -968,60 +976,60 @@
 ('Leather Scale Mail^ [%P6,%P4]'                   ,  36, '(',%X'00000000',
     0,    330,   9, 140,   1,  -1,   0,  11,   0, '1d1'  , 14),
 ('Metal Scale Mail^ [%P6,%P4]'                     ,  35, '[',%X'00000000',
-    0,    430,   1, 250,   1,  -2,   0,  13,   0, '1d4'  , 17),
+    0,    430,   1, 250,   1,  -2,   0,  13,   0, '1d4'  , 24),
 ('Chain Mail^ [%P6,%P4]'                           ,  35, '[',%X'00000000',
-    0,    530,   2, 220,   1,  -2,   0,  14,   0, '1d4'  , 19),
+    0,    530,   2, 220,   1,  -2,   0,  14,   0, '1d4'  , 26),
 ('Rusty Chain Mail^ [%P6,%P4]'                     ,  35, '[',%X'00000000',
-    0,      0,   3, 200,   1,  -5,   0,  14,  -8, '1d4'  , 19),
+    0,      0,   3, 200,   1,  -5,   0,  14,  -8, '1d4'  , 26),
 ('Double Chain Mail^ [%P6,%P4]'                    ,  35, '[',%X'00000000',
-    0,    630,   4, 260,   1,  -2,   0,  15,   0, '1d4'  , 22),
+    0,    630,   4, 260,   1,  -2,   0,  15,   0, '1d4'  , 28),
 ('Augmented Chain Mail^ [%P6,%P4]'                 ,  35, '[',%X'00000000',
-    0,    675,   5, 270,   1,  -2,   0,  16,   0, '1d4'  , 25),
+    0,    675,   5, 270,   1,  -2,   0,  16,   0, '1d4'  , 30),
 ('Bar Chain Mail^ [%P6,%P4]'                       ,  35, '[',%X'00000000',
-    0,    720,   6, 280,   1,  -2,   0,  18,   0, '1d4'  , 27),
+    0,    720,   6, 280,   1,  -2,   0,  18,   0, '1d4'  , 34),
 ('Metal Brigandine Armor^ [%P6,%P4]'               ,  35, '[',%X'00000000',
-    0,    775,   7, 290,   1,  -3,   0,  19,   0, '1d4'  , 29),
+    0,    775,   7, 290,   1,  -3,   0,  19,   0, '1d4'  , 36),
 ('Laminated Armor^ [%P6,%P4]'                      ,  35, '[',%X'00000000',
-    0,    825,   8, 300,   1,  -3,   0,  20,   0, '1d4'  , 32),
+    0,    825,   8, 300,   1,  -3,   0,  20,   0, '1d4'  , 38),
 ('Partial Plate Armor^ [%P6,%P4]'                  ,  35, '[',%X'00000000',
-    0,    900,   9, 260,   1,  -3,   0,  22,   0, '1d6'  , 33),
+    0,    900,   9, 260,   1,  -3,   0,  22,   0, '1d6'  , 42),
 ('Metal Lamellar Armor^ [%P6,%P4]'                 ,  35, '[',%X'00000000',
-    0,    950,  10, 340,   1,  -3,   0,  23,   0, '1d6'  , 34),
+    0,    950,  10, 340,   1,  -3,   0,  23,   0, '1d6'  , 44),
 ('Full Plate Armor^ [%P6,%P4]'                     ,  35, '[',%X'00000000',
-    0,   1050,  11, 380,   1,  -3,   0,  25,   0, '2d4'  , 36),
+    0,   1050,  11, 380,   1,  -3,   0,  25,   0, '2d4'  , 48),
 ('Ribbed Plate Armor^ [%P6,%P4]'                   ,  35, '[',%X'00000000',
-    0,   1200,  12, 380,   1,  -3,   0,  28,   0, '2d4'  , 40),
+    0,   1200,  12, 380,   1,  -3,   0,  28,   0, '2d4'  , 50),
 ('& Cloak^ [%P6,%P4]'                              ,  32, '(',%X'00000000',
     0,      3,   1,  10,   1,   0,   0,   1,   0, '0d0'  ,  1),
 ('& Set of Leather Gloves^ [%P6,%P4]'              ,  31, ']',%X'00000000',
     0,      3,   1,   5,   1,   0,   0,   1,   0, '0d0'  ,  1),
 ('& Set of Gauntlets^ [%P6,%P4]'                   ,  31, ']',%X'00000000',
-    0,     35,   2,  25,   1,   0,   0,   2,   0, '1d1'  , 10),
+    0,     35,   2,  25,   1,   0,   0,   2,   0, '1d1'  , 12),
 ('& Small Leather Shield^ [%P6,%P4]'               ,  34, ')',%X'00000000',
     0,     30,   1,  50,   1,   0,   0,   2,   0, '1d1'  ,  3),
 ('& Medium Leather Shield^ [%P6,%P4]'              ,  34, ')',%X'00000000',
-    0,     60,   2,  75,   1,   0,   0,   3,   0, '1d2'  ,  6),
+    0,     60,   2,  75,   1,   0,   0,   3,   0, '1d2'  ,  8),
 ('& Large Leather Shield^ [%P6,%P4]'               ,  34, ')',%X'00000000',
-    0,    120,   3, 100,   1,   0,   0,   4,   0, '1d2'  , 10),
+    0,    120,   3, 100,   1,   0,   0,   4,   0, '1d2'  , 15),
 ('& Small Metal Shield^ [%P6,%P4]'                 ,  34, ')',%X'00000000',
-    0,     50,   4,  65,   1,   0,   0,   3,   0, '1d2'  ,  8),
+    0,     50,   4,  65,   1,   0,   0,   3,   0, '1d2'  , 10),
 ('& Medium Metal Shield^ [%P6,%P4]'                ,  34, ')',%X'00000000',
-    0,    125,   5,  90,   1,   0,   0,   4,   0, '1d3'  , 14),
+    0,    125,   5,  90,   1,   0,   0,   4,   0, '1d3'  , 20),
 ('& Large Metal Shield^ [%P6,%P4]'                 ,  34, ')',%X'00000000',
-    0,    200,   6, 120,   1,   0,   0,   5,   0, '1d3'  , 20),
+    0,    200,   6, 120,   1,   0,   0,   5,   0, '1d3'  , 30),
 ('& %R Ring| of Gain Strength^ (%P1)'              ,  45, '=',%X'00000001',
-    0,    400,   1,   2,   1,   0,   0,   0,   0, '0d0'  , 20),
+    0,    400,   1,   2,   1,   0,   0,   0,   0, '0d0'  , 30),
 ('& %R Ring| of Gain Dexterity^ (%P1)'             ,  45, '=',%X'00000002',
-    0,    400,   2,   2,   1,   0,   0,   0,   0, '0d0'  , 20),
+    0,    400,   2,   2,   1,   0,   0,   0,   0, '0d0'  , 30),
 ('& %R Ring| of Gain Constitution^ (%P1)'          ,  45, '=',%X'00000004',
-    0,    400,   3,   2,   1,   0,   0,   0,   0, '0d0'  , 20),
+    0,    400,   3,   2,   1,   0,   0,   0,   0, '0d0'  , 30),
 ('& %R Ring| of Gain Intelligence^ (%P1)'          ,  45, '=',%X'00000008',
-    0,    350,   4,   2,   1,   0,   0,   0,   0, '0d0'  , 20),
+    0,    350,   4,   2,   1,   0,   0,   0,   0, '0d0'  , 30),
 ('& %R Ring| of Speed^ (%P1)'                      ,  45, '=',%X'00001000',
-    0,   3000,   7,   2,   1,   0,   0,   0,   0, '0d0'  , 40),
+    0,   3000,   7,   2,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& %R Ring| of Searching^ (%P1)'                  ,  45, '=',%X'00000040',
     0,    250,   8,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
-('& %R Ring| of Telportation^'                     ,  45, '=',%X'80000400',
+('& %R Ring| of Teleportation^'                     ,  45, '=',%X'80000400',
     0,      0,   9,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& %R Ring| of Slow Digestion^'                   ,  45, '=',%X'00000080',
     0,    250,  10,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
@@ -1032,79 +1040,87 @@
 ('& %R Ring| of Feather Falling^'                  ,  45, '=',%X'04000000',
     0,    200,  13,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& %R Ring| of Adornment^'                        ,  45, '=',%X'00000000',
-    0,     20,  14,   2,   1,   0,   0,   0,   0, '0d0'  ,  5),
+    0,     20,  14,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& %R Ring| of Adornment^'                        ,  45, '=',%X'00000000',
-    0,     30,  15,   2,   1,   0,   0,   0,   0, '0d0'  ,  5),
+    0,     30,  15,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& %R Ring| of Weakness^'                         ,  45, '=',%X'00000001',
    -5,      0,  16,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& %R Ring| of Lordly Protection (FIRE)^'         ,  45, '=',%X'00080000',
-    0,   1200,  17,   2,   1,   0,   0,   0,   5, '0d0'  , 40),
+    0,   1200,  17,   2,   1,   0,   0,   0,   5, '0d0'  , 50),
 ('& %R Ring| of Lordly Protection (ACID)^'         ,  45, '=',%X'00100000',
-    0,   1200,  18,   2,   1,   0,   0,   0,   5, '0d0'  , 40),
+    0,   1200,  18,   2,   1,   0,   0,   0,   5, '0d0'  , 50),
 ('& %R Ring| of Lordly Protection (COLD)^'         ,  45, '=',%X'00200000',
-    0,   1200,  19,   2,   1,   0,   0,   0,   5, '0d0'  , 40),
+    0,   1200,  19,   2,   1,   0,   0,   0,   5, '0d0'  , 50),
 ('& %R Ring| of WOE^'                              ,  45, '=',%X'80000640',
-   -5,      0,  20,   2,   1,   0,   0,   0,  -3, '0d0'  , 40),
+   -5,      0,  20,   2,   1,   0,   0,   0,  -3, '0d0'  , 50),
 ('& %R Ring| of Stupidity^'                        ,  45, '=',%X'80000008',
    -5,      0,  21,   2,   1,   0,   0,   0,   0, '0d0'  , 20),
 ('& %R Ring| of Increase Damage^ (%P3)'            ,  45, '=',%X'00000000',
-    0,    100,  22,   2,   1,   0,   0,   0,   0, '0d0'  , 15),
+    0,    100,  22,   2,   1,   0,   0,   0,   0, '0d0'  , 20),
 ('& %R Ring| of Increase To-Hit^ (%P2)'            ,  45, '=',%X'00000000',
-    0,    100,  23,   2,   1,   0,   0,   0,   0, '0d0'  , 15),
+    0,    100,  23,   2,   1,   0,   0,   0,   0, '0d0'  , 20),
 ('& %R Ring| of Protection^ [%P4]'                 ,  45, '=',%X'00000000',
     0,    100,  24,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& %R Ring| of Aggravate Monster^'                ,  45, '=',%X'80000200',
     0,      0,  25,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& %R Ring| of See Invisible^'                    ,  45, '=',%X'01000000',
-    0,    340,  26,   2,   1,   0,   0,   0,   0, '0d0'  , 30),
+    0,    340,  26,   2,   1,   0,   0,   0,   0, '0d0'  , 40),
 ('& %R Ring| of Sustain Strength^'                 ,  45, '=',%X'00400000',
-    1,    750,  27,   2,   1,   0,   0,   0,   0, '0d0'  , 32),
+    1,    750,  27,   2,   1,   0,   0,   0,   0, '0d0'  , 44),
 ('& %R Ring| of Sustain Intelligence^'             ,  45, '=',%X'00400000',
-    2,    600,  28,   2,   1,   0,   0,   0,   0, '0d0'  , 32),
+    2,    600,  28,   2,   1,   0,   0,   0,   0, '0d0'  , 44),
 ('& %R Ring| of Sustain Wisdom^'                   ,  45, '=',%X'00400000',
-    3,    600,  29,   2,   1,   0,   0,   0,   0, '0d0'  , 32),
+    3,    600,  29,   2,   1,   0,   0,   0,   0, '0d0'  , 44),
 ('& %R Ring| of Sustain Constitution^'             ,  45, '=',%X'00400000',
-    4,    750,  30,   2,   1,   0,   0,   0,   0, '0d0'  , 32),
+    4,    750,  30,   2,   1,   0,   0,   0,   0, '0d0'  , 44),
 ('& %R Ring| of Sustain Dexterity^'                ,  45, '=',%X'00400000',
-    5,    750,  31,   2,   1,   0,   0,   0,   0, '0d0'  , 32),
+    5,    750,  31,   2,   1,   0,   0,   0,   0, '0d0'  , 44),
 ('& %R Ring| of Sustain Charisma^'                 ,  45, '=',%X'00400000',
-    6,    500,  32,   2,   1,   0,   0,   0,   0, '0d0'  , 32),
-('& %R Ring| of Slaying^'			   ,  45, '=',%X'00000000',
-    6,   1000,  33,   2,   1,   0,   0,   0,   0, '0d0'  , 40),
+    6,    500,  32,   2,   1,   0,   0,   0,   0, '0d0'  ,  7),
+('& %R Ring| of Slaying^'                          ,  45, '=',%X'00000000',
+    6,   1000,  33,   2,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& %A Amulet| of Adornment^'                      ,  40, '"',%X'00000000',
-    0,     20,  11,   3,   1,   0,   0,   0,   0, '0d0'  , 12),
+    0,     20,  11,   3,   1,   0,   0,   0,   0, '0d0'  , 16),
 ('& %A Amulet| of Adornment^'                      ,  40, '"',%X'00000000',
-    0,     30,  12,   3,   1,   0,   0,   0,   0, '0d0'  , 12),
+    0,     30,  12,   3,   1,   0,   0,   0,   0, '0d0'  , 16),
 ('& %A Amulet| of Wisdom^ (%P1)'                   ,  40, '"',%X'00000010',
-    0,    300,   5,   3,   1,   0,   0,   0,   0, '0d0'  , 16),
+    0,    300,   5,   3,   1,   0,   0,   0,   0, '0d0'  , 20),
 ('& %A Amulet| of Charisma^ (%P1)'                 ,  40, '"',%X'00000020',
-    0,    250,   6,   3,   1,   0,   0,   0,   0, '0d0'  , 16),
+    0,    250,   6,   3,   1,   0,   0,   0,   0, '0d0'  , 20),
 ('& %A Amulet| of Searching^ (%P1)'                ,  40, '"',%X'00000040',
     0,    250,   7,   3,   1,   0,   0,   0,   0, '0d0'  , 14),
-('& %A Amulet| of Telportation^'                   ,  40, '"',%X'80000400',
-    0,      0,   8,   3,   1,   0,   0,   0,   0, '0d0'  , 15),
+('& %A Amulet| of Teleportation^'                   ,  40, '"',%X'80000400',
+    0,      0,   8,   3,   1,   0,   0,   0,   0, '0d0'  , 14),
 ('& %A Amulet| of Slow Digestion^'                 ,  40, '"',%X'00000080',
-    0,    200,   9,   3,   1,   0,   0,   0,   0, '0d0'  , 15),
+    0,    200,   9,   3,   1,   0,   0,   0,   0, '0d0'  , 14),
 ('& %A Amulet| of Resist Acid^'                    ,  40, '"',%X'00100000',
     0,    300,  10,   3,   1,   0,   0,   0,   0, '0d0'  , 24),
 ('& %A Amulet| of the Magi^'                       ,  40, '"',%X'01800040',
-    0,   5000,  13,   3,   1,   0,   0,   0,   3, '0d0'  , 40),
+    0,   5000,  13,   3,   1,   0,   0,   0,   3, '0d0'  , 50),
 ('& %A Amulet| of DOOM^'                           ,  40, '"',%X'8000007F',
-   -5,      0,  14,   3,   1,   0,   0,   0,   0, '0d0'  , 40),
+   -5,      0,  14,   3,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& Scroll~ %T| of Enchant Weapon To-Hit'          ,  70, '?',%X'00000001',
-    0,    125, 257,   5,   1,   0,   0,   0,   0, '0d0'  ,  4),
+    0,    125, 257,   5,   1,   0,   0,   0,   0, '0d0'  , 12),
 ('& Scroll~ %T| of Enchant Weapon To-Dam'          ,  70, '?',%X'00000002',
-    0,    125, 258,   5,   1,   0,   0,   0,   0, '0d0'  ,  4),
+    0,    125, 258,   5,   1,   0,   0,   0,   0, '0d0'  , 12),
 ('& Scroll~ %T| of Enchant Armor'                  ,  70, '?',%X'00000004',
-    0,    125, 259,   5,   1,   0,   0,   0,   0, '0d0'  ,  4),
+    0,    125, 259,   5,   1,   0,   0,   0,   0, '0d0'  , 12),
 ('& Scroll~ %T| of Identify'                       ,  70, '?',%X'00000008',
     0,     50, 260,   5,   1,   0,   0,   0,   0, '0d0'  ,  1),
+('& Scroll~ %T| of Identify'                       ,  70, '?',%X'00000008',
+    0,     50, 260,   5,   1,   0,   0,   0,   0, '0d0'  ,  5),
+('& Scroll~ %T| of Identify'                       ,  70, '?',%X'00000008',
+    0,     50, 260,   5,   1,   0,   0,   0,   0, '0d0'  , 10),
 ('& Scroll~ %T| of Remove Curse'                   ,  70, '?',%X'00000010',
-    0,    100, 261,   5,   1,   0,   0,   0,   0, '0d0'  ,  2),
+    0,    100, 261,   5,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& Scroll~ %T| of Light'                          ,  70, '?',%X'00000020',
     0,     15, 262,   5,   1,   0,   0,   0,   0, '0d0'  ,  0),
+('& Scroll~ %T| of Light'                          ,  70, '?',%X'00000020',
+    0,     15, 262,   5,   1,   0,   0,   0,   0, '0d0'  ,  3),
+('& Scroll~ %T| of Light'                          ,  70, '?',%X'00000020',
+    0,     15, 262,   5,   1,   0,   0,   0,   0, '0d0'  ,  7),
 ('& Scroll~ %T| of Summon Monster'                 ,  70, '?',%X'00000040',
-    0,      0, 263,   5,   1,   0,   0,   0,   0, '0d0'  ,  2),
+    0,      0, 263,   5,   1,   0,   0,   0,   0, '0d0'  ,  1),
 ('& Scroll~ %T| of Phase Door'                     ,  70, '?',%X'00000080',
     0,     15, 264,   5,   1,   0,   0,   0,   0, '0d0'  ,  1),
 ('& Scroll~ %T| of Teleport'                       ,  70, '?',%X'00000100',
@@ -1118,21 +1134,29 @@
 ('& Scroll~ %T| of Sleep Monster'                  ,  70, '?',%X'00001000',
     0,     35, 269,   5,   1,   0,   0,   0,   0, '0d0'  ,  5),
 ('& Scroll~ %T| of Rune of Protection'             ,  70, '?',%X'00002000',
-    0,    500, 270,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
+    0,    500, 270,   5,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& Scroll~ %T| of Treasure Detection'             ,  70, '?',%X'00004000',
     0,     15, 271,   5,   1,   0,   0,   0,   0, '0d0'  ,  0),
 ('& Scroll~ %T| of Object Detection'               ,  70, '?',%X'00008000',
     0,     15, 272,   5,   1,   0,   0,   0,   0, '0d0'  ,  0),
 ('& Scroll~ %T| of Trap Detection'                 ,  70, '?',%X'00010000',
-    0,     35, 273,   5,   1,   0,   0,   0,   0, '0d0'  ,  7),
+    0,     35, 273,   5,   1,   0,   0,   0,   0, '0d0'  ,  5),
+('& Scroll~ %T| of Trap Detection'                 ,  70, '?',%X'00010000',
+    0,     35, 273,   5,   1,   0,   0,   0,   0, '0d0'  ,  8),
+('& Scroll~ %T| of Trap Detection'                 ,  70, '?',%X'00010000',
+    0,     35, 273,   5,   1,   0,   0,   0,   0, '0d0'  , 12),
 ('& Scroll~ %T| of Door/Stair Location'            ,  70, '?',%X'00020000',
-    0,     35, 274,   5,   1,   0,   0,   0,   0, '0d0'  ,  7),
+    0,     35, 274,   5,   1,   0,   0,   0,   0, '0d0'  ,  5),
+('& Scroll~ %T| of Door/Stair Location'            ,  70, '?',%X'00020000',
+    0,     35, 274,   5,   1,   0,   0,   0,   0, '0d0'  , 10),
+('& Scroll~ %T| of Door/Stair Location'            ,  70, '?',%X'00020000',
+    0,     35, 274,   5,   1,   0,   0,   0,   0, '0d0'  , 15),
 ('& Scroll~ %T| of Mass Genocide'                  ,  70, '?',%X'00040000',
-    0,   1000, 275,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
+    0,   1000, 275,   5,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& Scroll~ %T| of Detect Invisible'               ,  70, '?',%X'00080000',
-    0,     15, 276,   5,   1,   0,   0,   0,   0, '0d0'  ,  3),
+    0,     15, 276,   5,   1,   0,   0,   0,   0, '0d0'  ,  1),
 ('& Scroll~ %T| of Aggravate Monster'              ,  70, '?',%X'00100000',
-    0,      0, 277,   5,   1,   0,   0,   0,   0, '0d0'  ,  2),
+    0,      0, 277,   5,   1,   0,   0,   0,   0, '0d0'  ,  5),
 ('& Scroll~ %T| of Trap Creation'                  ,  70, '?',%X'00200000',
     0,      0, 278,   5,   1,   0,   0,   0,   0, '0d0'  , 12),
 ('& Scroll~ %T| of Trap/Door Destruction'          ,  70, '?',%X'00400000',
@@ -1140,61 +1164,61 @@
 ('& Scroll~ %T| of Door Creation'                  ,  70, '?',%X'00800000',
     0,    100, 280,   5,   1,   0,   0,   0,   0, '0d0'  , 12),
 ('& Scroll~ %T| of Recharging'                     ,  70, '?',%X'01000000',
-    0,    200, 281,   5,   1,   0,   0,   0,   0, '0d0'  , 20),
+    0,    200, 281,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
 ('& Scroll~ %T| of Genocide'                       ,  70, '?',%X'02000000',
-    0,    750, 282,   5,   1,   0,   0,   0,   0, '0d0'  , 25),
+    0,    750, 282,   5,   1,   0,   0,   0,   0, '0d0'  , 35),
 ('& Scroll~ %T| of Darkness'                       ,  70, '?',%X'04000000',
-    0,      0, 283,   5,   1,   0,   0,   0,   0, '0d0'  ,  3),
+    0,      0, 283,   5,   1,   0,   0,   0,   0, '0d0'  ,  1),
 ('& Scroll~ %T| of Protection from Evil'           ,  70, '?',%X'08000000',
-    0,     50, 284,   5,   1,   0,   0,   0,   0, '0d0'  , 20),
+    0,     50, 284,   5,   1,   0,   0,   0,   0, '0d0'  , 30),
 ('& Scroll~ %T| of Create Food'                    ,  70, '?',%X'10000000',
-    0,     10, 285,   5,   1,   0,   0,   0,   0, '0d0'  ,  4),
+    0,     10, 285,   5,   1,   0,   0,   0,   0, '0d0'  ,  5),
 ('& Scroll~ %T| of Dispell Undead'                 ,  70, '?',%X'20000000',
-    0,    200, 286,   5,   1,   0,   0,   0,   0, '0d0'  , 30),
+    0,    200, 286,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
 ('& Scroll~ %T| of *Enchant Weapon*'               ,  71, '?',%X'00000001',
-    0,    500, 257,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
+    0,    500, 257,   5,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& Scroll~ %T| of Curse Weapon'                   ,  71, '?',%X'00000002',
-    0,      0, 258,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
+    0,      0, 258,   5,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& Scroll~ %T| of *Enchant Armor*'                ,  71, '?',%X'00000004',
-    0,    500, 259,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
+    0,    500, 259,   5,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& Scroll~ %T| of Curse Armor'                    ,  71, '?',%X'00000008',
-    0,      0, 260,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
+    0,      0, 260,   5,   1,   0,   0,   0,   0, '0d0'  , 50),
 ('& Scroll~ %T| of Summon Undead'                  ,  71, '?',%X'00000010',
-    0,      0, 261,   5,   1,   0,   0,   0,   0, '0d0'  , 25),
+    0,      0, 261,   5,   1,   0,   0,   0,   0, '0d0'  , 15),
 ('& Scroll~ %T| of Blessing'                       ,  71, '?',%X'00000020',
-    0,     15, 262,   5,   1,   0,   0,   0,   0, '0d0'  ,  3),
+    0,     15, 262,   5,   1,   0,   0,   0,   0, '0d0'  ,  1),
 ('& Scroll~ %T| of Holy Chant'                     ,  71, '?',%X'00000040',
     0,     40, 263,   5,   1,   0,   0,   0,   0, '0d0'  , 12),
 ('& Scroll~ %T| of Holy Prayer'                    ,  71, '?',%X'00000080',
     0,     80, 264,   5,   1,   0,   0,   0,   0, '0d0'  , 24),
 ('& Scroll~ %T| of Word-of-Recall'                 ,  71, '?',%X'00000100',
-    0,    150, 265,   5,   1,   0,   0,   0,   0, '0d0'  , 10),
+    0,    150, 265,   5,   1,   0,   0,   0,   0, '0d0'  ,  5),
 ('& Scroll~ %T| of *Destruction*'                  ,  71, '?',%X'00000200',
     0,    250, 266,   5,   1,   0,   0,   0,   0, '0d0'  , 40),
 ('& %C Potion~| of Gain Strength'                  ,  75, '!',%X'00000001',
-    0,    200, 257,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
+    0,    200, 257,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Poison'                         ,  75, '!',%X'00000002',
     0,      0, 258,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
 ('& %C Potion~| of Restore Strength'               ,  75, '!',%X'00000004',
-    0,    300, 259,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,    300, 259,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %C Potion~| of Gain Intelligence'              ,  75, '!',%X'00000008',
-    0,    300, 260,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
+    0,    300, 260,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Lose Intelligence'              ,  75, '!',%X'00000010',
-    0,      0, 261,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
+    0,      0, 261,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Restore Intelligence'           ,  75, '!',%X'00000020',
-    0,    300, 262,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,    300, 262,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %C Potion~| of Gain Wisdom'                    ,  75, '!',%X'00000040',
-    0,    300, 263,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
+    0,    300, 263,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Lose Wisdom'                    ,  75, '!',%X'00000080',
-    0,      0, 264,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
+    0,      0, 264,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Restore Wisdom'                 ,  75, '!',%X'00000100',
-    0,    300, 265,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,    300, 265,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %C Potion~| of Charisma'                       ,  75, '!',%X'00000200',
-    0,    300, 266,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
+    0,    300, 266,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Ugliness'                       ,  75, '!',%X'00000400',
-    0,      0, 267,   4,   1,   0,   0,   0,   0, '1d1'  ,  1),
+    0,      0, 267,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Restore Charisma'               ,  75, '!',%X'00000800',
-    0,    300, 268,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
+    0,    300, 268,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %C Potion~| of Cure Light Wounds'              ,  75, '!',%X'10001000',
    50,     15, 269,   4,   1,   0,   0,   0,   0, '1d1'  ,  0),
 ('& %C Potion~| of Cure Light Wounds'              ,  75, '!',%X'10001000',
@@ -1202,15 +1226,15 @@
 ('& %C Potion~| of Cure Light Wounds'              ,  75, '!',%X'10001000',
    50,     15, 269,   4,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %C Potion~| of Cure Serious Wounds'            ,  75, '!',%X'30002000',
-  100,     40, 270,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+  100,     40, 270,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
 ('& %C Potion~| of Cure Critical Wounds'           ,  75, '!',%X'70004000',
-  100,    100, 271,   4,   1,   0,   0,   0,   0, '1d1'  , 10),
+  100,    100, 271,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
 ('& %C Potion~| of Healing'                        ,  75, '!',%X'70008000',
-  200,    200, 272,   4,   1,   0,   0,   0,   0, '1d1'  , 20),
+  200,    200, 272,   4,   1,   0,   0,   0,   0, '1d1'  , 12),
 ('& %C Potion~| of Gain Constitution'              ,  75, '!',%X'00010000',
-    0,    300, 273,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,    300, 273,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Gain Experience'                ,  75, '!',%X'00020000',
-    0,   2500, 274,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
+    0,   2500, 274,   4,   1,   0,   0,   0,   0, '1d1'  , 50),
 ('& %C Potion~| of Sleep'                          ,  75, '!',%X'10040000',
   100,      0, 275,   4,   1,   0,   0,   0,   0, '1d1'  ,  0),
 ('& %C Potion~| of Blindness'                      ,  75, '!',%X'00080000',
@@ -1230,91 +1254,91 @@
 ('& Clear Potion~| of Water'                       ,  75, '!',%X'00000000',
   200,      0, 283,   4,   1,   0,   0,   0,   0, '1d1'  ,  0),
 ('& %C Potion~| of Gain Dexterity'                 ,  75, '!',%X'02000000',
-    0,    300, 284,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,    300, 284,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| of Restore Dexterity'              ,  75, '!',%X'04000000',
-    0,    300, 285,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,    300, 285,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %C Potion~| of Restore Constitution'           ,  75, '!',%X'68000000',
-    0,    300, 286,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,    300, 286,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %C Potion~| of Learning'                       ,  76, '!',%X'00000001',
-    0,    200, 287,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
+    0,    200, 287,   4,   1,   0,   0,   0,   0, '1d1'  , 45),
 ('& %C Potion~| of Lose Memories'                  ,  76, '!',%X'00000002',
-    0,      0, 288,   4,   1,   0,   0,   0,   0, '1d1'  , 20),
+    0,      0, 288,   4,   1,   0,   0,   0,   0, '1d1'  , 10),
 ('& %C Potion~| of Salt Water'                     ,  76, '!',%X'00000004',
     0,      0, 289,   4,   1,   0,   0,   0,   0, '1d1'  ,  0),
 ('& %C Potion~| of Invulnerability'                ,  76, '!',%X'00000008',
-    0,    250, 290,   4,   1,   0,   0,   0,   0, '1d1'  , 30),
+    0,    250, 290,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %C Potion~| of Heroism'                        ,  76, '!',%X'00000010',
     0,     35, 291,   4,   1,   0,   0,   0,   0, '1d1'  ,  1),
 ('& %C Potion~| of Super Heroism'                  ,  76, '!',%X'00000020',
-    0,    100, 292,   4,   1,   0,   0,   0,   0, '1d1'  , 20),
+    0,    100, 292,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
 ('& %C Potion~| of Boldliness'                     ,  76, '!',%X'00000040',
     0,     10, 293,   4,   1,   0,   0,   0,   0, '1d1'  ,  1),
 ('& %C Potion~| of Restore Life Levels'            ,  76, '!',%X'00000080',
     0,    400, 294,   4,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %C Potion~| of Resist Heat'                    ,  76, '!',%X'00000100',
-    0,     30, 295,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,     30, 295,   4,   1,   0,   0,   0,   0, '1d1'  ,  1),
 ('& %C Potion~| of Resist Cold'                    ,  76, '!',%X'00000200',
-    0,     30, 296,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,     30, 296,   4,   1,   0,   0,   0,   0, '1d1'  ,  1),
 ('& %C Potion~| of Detect Invisible'               ,  76, '!',%X'00000400',
-    0,     50, 297,   4,   1,   0,   0,   0,   0, '1d1'  ,  4),
+    0,     50, 297,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
 ('& %C Potion~| of Slow Poison'                    ,  76, '!',%X'00000800',
     0,     25, 298,   4,   1,   0,   0,   0,   0, '1d1'  ,  1),
 ('& %C Potion~| of Neutralize Poison'              ,  76, '!',%X'00001000',
-    0,     75, 299,   4,   1,   0,   0,   0,   0, '1d1'  ,  7),
+    0,     75, 299,   4,   1,   0,   0,   0,   0, '1d1'  ,  5),
 ('& %C Potion~| of Restore Mana'                   ,  76, '!',%X'00002000',
-    0,     35, 300,   4,   1,   0,   0,   0,   0, '1d1'  ,  4),
+    0,     35, 300,   4,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %C Potion~| Infra-Vision'                      ,  76, '!',%X'00004000',
-    0,     20, 301,   4,   1,   0,   0,   0,   0, '1d1'  ,  4),
+    0,     20, 301,   4,   1,   0,   0,   0,   0, '1d1'  ,  3),
 ('& Flask~ of oil'                                 ,  77, '!',%X'00040000',
  7500,      3, 257,  10,   1,   0,   0,   0,   0, '2d6'  ,  1),
 ('& %M Wand| of Light^ (%P1 charges)'              ,  65, '-',%X'00000001',
     0,    200,   1,  10,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %M Wand| of Lightning Bolts^ (%P1 charges)'    ,  65, '-',%X'00000002',
-    0,    600,   2,  10,   1,   0,   0,   0,   0, '1d1'  ,  9),
+    0,    600,   2,  10,   1,   0,   0,   0,   0, '1d1'  , 15),
 ('& %M Wand| of Frost Bolts^ (%P1 charges)'        ,  65, '-',%X'00000004',
-    0,    800,   3,  10,   1,   0,   0,   0,   0, '1d1'  , 12),
+    0,    800,   3,  10,   1,   0,   0,   0,   0, '1d1'  , 20),
 ('& %M Wand| of Fire Bolts^ (%P1 charges)'         ,  65, '-',%X'00000008',
-    0,   1000,   4,  10,   1,   0,   0,   0,   0, '1d1'  , 20),
+    0,   1000,   4,  10,   1,   0,   0,   0,   0, '1d1'  , 30),
 ('& %M Wand| of Stone-to-Mud^ (%P1 charges)'       ,  65, '-',%X'00000010',
-    0,    300,   5,  10,   1,   0,   0,   0,   0, '1d1'  , 10),
+    0,    300,   5,  10,   1,   0,   0,   0,   0, '1d1'  , 12),
 ('& %M Wand| of Polymorph^ (%P1 charges)'          ,  65, '-',%X'00000020',
-    0,    400,   6,  10,   1,   0,   0,   0,   0, '1d1'  , 10),
+    0,    400,   6,  10,   1,   0,   0,   0,   0, '1d1'  , 20),
 ('& %M Wand| of Heal Monster^ (%P1 charges)'       ,  65, '-',%X'00000040',
-    0,      0,   7,  10,   1,   0,   0,   0,   0, '1d1'  ,  7),
+    0,      0,   7,  10,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %M Wand| of Haste Monster^ (%P1 charges)'      ,  65, '-',%X'00000080',
-    0,      0,   8,  10,   1,   0,   0,   0,   0, '1d1'  ,  7),
+    0,      0,   8,  10,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %M Wand| of Slow Monster^ (%P1 charges)'       ,  65, '-',%X'00000100',
-    0,    500,   9,  10,   1,   0,   0,   0,   0, '1d1'  ,  7),
+    0,    500,   9,  10,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %M Wand| of Confuse Monster^ (%P1 charges)'    ,  65, '-',%X'00000200',
-    0,    400,  10,  10,   1,   0,   0,   0,   0, '1d1'  ,  7),
+    0,    400,  10,  10,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %M Wand| of Sleep Monster^ (%P1 charges)'      ,  65, '-',%X'00000400',
     0,    500,  11,  10,   1,   0,   0,   0,   0, '1d1'  ,  7),
 ('& %M Wand| of Drain Life^ (%P1 charges)'         ,  65, '-',%X'00000800',
-    0,   1200,  12,  10,   1,   0,   0,   0,   0, '1d1'  , 30),
+    0,   1200,  12,  10,   1,   0,   0,   0,   0, '1d1'  , 50),
 ('& %M Wand| of Trap/Door destruction^ (%P1 charges)',  65, '-',%X'00001000',
-    0,    100,  13,  10,   1,   0,   0,   0,   0, '1d1'  , 11),
-('& %M Wand| of Magic Missle^ (%P1 charges)'       ,  65, '-',%X'00002000',
+    0,    100,  13,  10,   1,   0,   0,   0,   0, '1d1'  , 12),
+('& %M Wand| of Magic Missile^ (%P1 charges)'       ,  65, '-',%X'00002000',
     0,    200,  14,  10,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %M Wand| of Wall Building^ (%P1 charges)'      ,  65, '-',%X'00004000',
-    0,    400,  15,  10,   1,   0,   0,   0,   0, '1d1'  , 17),
+    0,    400,  15,  10,   1,   0,   0,   0,   0, '1d1'  , 25),
 ('& %M Wand| of Clone Monster^ (%P1 charges)'      ,  65, '-',%X'00008000',
     0,      0,  16,  10,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %M Wand| of Teleport Away^ (%P1 charges)'      ,  65, '-',%X'00010000',
-    0,    350,  17,  10,   1,   0,   0,   0,   0, '1d1'  ,  9),
+    0,    350,  17,  10,   1,   0,   0,   0,   0, '1d1'  , 20),
 ('& %M Wand| of Disarming^ (%P1 charges)'          ,  65, '-',%X'00020000',
     0,    700,  18,  10,   1,   0,   0,   0,   0, '1d1'  , 20),
 ('& %M Wand| of Lightning Balls^ (%P1 charges)'    ,  65, '-',%X'00040000',
-    0,   1200,  19,  10,   1,   0,   0,   0,   0, '1d1'  , 30),
+    0,   1200,  19,  10,   1,   0,   0,   0,   0, '1d1'  , 35),
 ('& %M Wand| of Cold Balls^ (%P1 charges)'         ,  65, '-',%X'00080000',
-    0,   1500,  20,  10,   1,   0,   0,   0,   0, '1d1'  , 34),
+    0,   1500,  20,  10,   1,   0,   0,   0,   0, '1d1'  , 40),
 ('& %M Wand| of Fire Balls^ (%P1 charges)'         ,  65, '-',%X'00100000',
-    0,   1800,  21,  10,   1,   0,   0,   0,   0, '1d1'  , 38),
+    0,   1800,  21,  10,   1,   0,   0,   0,   0, '1d1'  , 50),
 ('& %M Wand| of Stinking Cloud^ (%P1 charges)'     ,  65, '-',%X'00200000',
-    0,    400,  21,  10,   1,   0,   0,   0,   0, '1d1'  ,  5),
+    0,    400,  22,  10,   1,   0,   0,   0,   0, '1d1'  ,  5),
 ('& %M Wand| of Acid Balls^ (%P1 charges)'         ,  65, '-',%X'00400000',
-    0,   1650,  21,  10,   1,   0,   0,   0,   0, '1d1'  , 37),
+    0,   1650,  23,  10,   1,   0,   0,   0,   0, '1d1'  , 48),
 ('& %M Wand| of Wonder^ (%P1 charges)'             ,  65, '-',%X'00800000',
-    0,    250,  22,  10,   1,   0,   0,   0,   0, '1d1'  ,  7),
+    0,    250,  24,  10,   1,   0,   0,   0,   0, '1d1'  ,  2),
 ('& %W Staff| of Light^ (%P1 charges)'             ,  55, '_',%X'00000001',
     0,    250,   1,  50,   1,   0,   0,   0,   0, '1d2'  ,  5),
 ('& %W Staff| of Door/Stair Location^ (%P1 charges)',  55, '_',%X'00000002',
@@ -1326,19 +1350,19 @@
 ('& %W Staff| of Object Location^ (%P1 charges)'   ,  55, '_',%X'00000010',
     0,    200,   5,  50,   1,   0,   0,   0,   0, '1d2'  ,  5),
 ('& %W Staff| of Teleportation^ (%P1 charges)'     ,  55, '_',%X'00000020',
-    0,    400,   6,  50,   1,   0,   0,   0,   0, '1d2'  , 18),
+    0,    400,   6,  50,   1,   0,   0,   0,   0, '1d2'  , 20),
 ('& %W Staff| of Earthquakes^ (%P1 charges)'       ,  55, '_',%X'00000040',
     0,    350,   7,  50,   1,   0,   0,   0,   0, '1d2'  , 40),
 ('& %W Staff| of Summoning^ (%P1 charges)'         ,  55, '_',%X'00000080',
-    0,      0,   8,  50,   1,   0,   0,   0,   0, '1d2'  ,  9),
-('& %W Staff| of Genocide^ (%P1 charges)'          ,  55, '_',%X'00000100',
-    0,   3000,   9,  50,   1,   0,   0,   0,   0, '1d2'  , 40),
+    0,      0,   8,  50,   1,   0,   0,   0,   0, '1d2'  , 10),
+('& %W Staff| of Summoning^ (%P1 charges)'         ,  55, '_',%X'00000080',
+    0,      0,   8,  50,   1,   0,   0,   0,   0, '1d2'  , 50),
 ('& %W Staff| of *Destruction*^ (%P1 charges)'     ,  55, '_',%X'00000200',
-    0,   2500,  10,  50,   1,   0,   0,   0,   0, '1d2'  , 40),
+    0,   2500,  10,  50,   1,   0,   0,   0,   0, '1d2'  , 50),
 ('& %W Staff| of Starlite^ (%P1 charges)'          ,  55, '_',%X'00000400',
     0,    800,  11,  50,   1,   0,   0,   0,   0, '1d2'  , 20),
 ('& %W Staff| of Haste Monsters^ (%P1 charges)'    ,  55, '_',%X'00000800',
-    0,      0,  12,  50,   1,   0,   0,   0,   0, '1d2'  ,  7),
+    0,      0,  12,  50,   1,   0,   0,   0,   0, '1d2'  , 10),
 ('& %W Staff| of Slow Monsters^ (%P1 charges)'     ,  55, '_',%X'00001000',
     0,    800,  13,  50,   1,   0,   0,   0,   0, '1d2'  , 10),
 ('& %W Staff| of Sleep Monsters^ (%P1 charges)'    ,  55, '_',%X'00002000',
@@ -1348,21 +1372,21 @@
 ('& %W Staff| of Detect Invisible^ (%P1 charges)'  ,  55, '_',%X'00008000',
     0,    200,  16,  50,   1,   0,   0,   0,   0, '1d2'  ,  5),
 ('& %W Staff| of Speed^ (%P1 charges)'             ,  55, '_',%X'00010000',
-    0,    800,  17,  50,   1,   0,   0,   0,   0, '1d2'  , 30),
+    0,    800,  17,  50,   1,   0,   0,   0,   0, '1d2'  , 40),
 ('& %W Staff| of Slowness^ (%P1 charges)'          ,  55, '_',%X'00020000',
-    0,      0,  18,  50,   1,   0,   0,   0,   0, '1d2'  , 30),
+    0,      0,  18,  50,   1,   0,   0,   0,   0, '1d2'  , 40),
 ('& %W Staff| of Mass Polymorph^ (%P1 charges)'    ,  55, '_',%X'00040000',
-    0,    750,  19,  50,   1,   0,   0,   0,   0, '1d2'  , 40),
+    0,    750,  19,  50,   1,   0,   0,   0,   0, '1d2'  , 46),
 ('& %W Staff| of Remove Curse^ (%P1 charges)'      ,  55, '_',%X'00080000',
-    0,    500,  20,  50,   1,   0,   0,   0,   0, '1d2'  , 40),
+    0,    500,  20,  50,   1,   0,   0,   0,   0, '1d2'  , 47),
 ('& %W Staff| of Detect Evil^ (%P1 charges)'       ,  55, '_',%X'00100000',
-    0,    350,  21,  50,   1,   0,   0,   0,   0, '1d2'  , 10),
+    0,    350,  21,  50,   1,   0,   0,   0,   0, '1d2'  , 20),
 ('& %W Staff| of Curing^ (%P1 charges)'            ,  55, '_',%X'00200000',
-    0,   1000,  22,  50,   1,   0,   0,   0,   0, '1d2'  , 15),
+    0,   1000,  22,  50,   1,   0,   0,   0,   0, '1d2'  , 25),
 ('& %W Staff| of Dispell Evil^ (%P1 charges)'      ,  55, '_',%X'00400000',
-    0,   1200,  23,  50,   1,   0,   0,   0,   0, '1d2'  , 36),
-('& %W Staff| of Mass Genocide^ (%P1 charges)'     ,  55, '_',%X'00800000',
-    0,   5000,  24,  50,   1,   0,   0,   0,   0, '1d2'  , 40),
+    0,   1200,  23,  50,   1,   0,   0,   0,   0, '1d2'  , 49),
+('& %W Staff| of Darkness^ (%P1 charges)'          ,  55, '_',%X'01000000',
+    0,      0,  25,  50,   1,   0,   0,   0,   0, '1d2'  , 50),
 ('& %W Staff| of Darkness^ (%P1 charges)'          ,  55, '_',%X'01000000',
     0,      0,  25,  50,   1,   0,   0,   0,   0, '1d2'  ,  5),
 ('& Book of Magic Spells [Beginners-Magik]'        ,  90, '?',%X'0000007F',
@@ -1382,17 +1406,17 @@
 ('& Holy Book of Prayers [Exorcism and Dispelling]',  91, '?',%X'7E000000',
     0,    900, 261,  30,   1,-100,   0,   0,   0, '1d1'  , 40),
 ('& Small wooden chest'                            ,   2, '&',%X'0F000000',
-    0,     20,   1, 250,   1,   0,   0,   0,   0, '2d3'  ,  5),
+    0,     20,   1, 250,   1,   0,   0,   0,   0, '2d3'  ,  7),
 ('& Large wooden chest'                            ,   2, '&',%X'15000000',
-    0,     60,   4, 500,   1,   0,   0,   0,   0, '2d5'  , 10),
+    0,     60,   4, 500,   1,   0,   0,   0,   0, '2d5'  , 15),
 ('& Small iron chest'                              ,   2, '&',%X'0F000000',
-    0,    100,   7, 300,   1,   0,   0,   0,   0, '2d4'  , 15),
+    0,    100,   7, 300,   1,   0,   0,   0,   0, '2d4'  , 25),
 ('& Large iron chest'                              ,   2, '&',%X'1F000000',
-    0,    150,  10,1000,   1,   0,   0,   0,   0, '2d6'  , 20),
+    0,    150,  10,1000,   1,   0,   0,   0,   0, '2d6'  , 35),
 ('& Small steel chest'                             ,   2, '&',%X'0F000000',
-    0,    200,  13, 500,   1,   0,   0,   0,   0, '2d4'  , 25),
+    0,    200,  13, 500,   1,   0,   0,   0,   0, '2d4'  , 45),
 ('& Large steel chest'                             ,   2, '&',%X'23000000',
-    0,    250,  16,1000,   1,   0,   0,   0,   0, '2d6'  , 30),
+    0,    250,  16,1000,   1,   0,   0,   0,   0, '2d6'  , 50),
 ('& Rat Skeleton'                                  ,   1, 's',%X'00000000',
     0,      0,   1,  10,   1,   0,   0,   0,   0, '1d1'  ,  1),
 ('& Giant Centipede Skeleton'                      ,   1, 's',%X'00000000',
@@ -1420,10 +1444,10 @@
 				);
 
 
-	{ Items which are sold in the stores are different from dungeon	}
-	{ items so that identify works properly.  Note that the players	}
-	{ recieve their initial items from this list, so position is	}
-	{ very important...						}
+	{ Items which are sold in the stores are different from dungeon }
+	{ items so that identify works properly.  Note that the players }
+	{ recieve their initial items from this list, so position is    }
+	{ very important...                                             }
 
 	inventory_init :=	(
 ('& Ration~ of Food'                               ,  80, ',',%X'00000000',
@@ -1435,7 +1459,7 @@
 ('& Pint of Fine Ale'                              ,  80, ',',%X'00000000',
   500,      1, 311,  10,   3,   0,   0,   0,   0, '0d0'  ,  0), {  4}
 ('& Pint of Fine Wine'                             ,  80, ',',%X'00000000',
-  400,      2, 311,  10,   1,   0,   0,   0,   0, '0d0'  ,  0), {  5}
+  400,      2, 312,  10,   1,   0,   0,   0,   0, '0d0'  ,  0), {  5}
 ('& Dagger (Misercorde) (%P2,%P3)'                 ,  23, '|',%X'00000000',
     0,     10,   2,  15,   1,   0,   0,   0,   0, '1d4'  ,  0), {  6}
 ('& Dagger (Stiletto) (%P2,%P3)'                   ,  23, '|',%X'00000000',
@@ -1600,14 +1624,14 @@
     0,    200,   1,  10,   1,   0,   0,   0,   0, '1d1'  ,  2), { 86}
 ('& Wand of Lightning Bolts (%P1 charges)'         ,  65, '-',%X'00000002',
     0,    600,   2,  10,   1,   0,   0,   0,   0, '1d1'  ,  6), { 87}
-('& Wand of Magic Missle (%P1 charges)'            ,  65, '-',%X'00002000',
+('& Wand of Magic Missile (%P1 charges)'            ,  65, '-',%X'00002000',
     0,    200,  14,  10,   1,   0,   0,   0,   0, '1d1'  ,  2), { 88}
 ('& Wand of Disarming (%P1 charges)'               ,  65, '-',%X'00020000',
     0,    700,  18,  10,   1,   0,   0,   0,   0, '1d1'  , 12), { 89}
 ('& Wand of Lightning Balls (%P1 charges)'         ,  65, '-',%X'00040000',
     0,   1200,  19,  10,   1,   0,   0,   0,   0, '1d1'  , 20), { 90}
-('& Wand of Wonder (%P1 charges)'                  ,  65, '-',%X'00200000',
-    0,    250,  22,  10,   1,   0,   0,   0,   0, '1d1'  , 10), { 91}
+('& Wand of Wonder (%P1 charges)'                  ,  65, '-',%X'00800000',
+    0,    250,  24,  10,   1,   0,   0,   0,   0, '1d1'  , 10), { 91}
 ('& Staff of Light (%P1 charges)'                  ,  55, '_',%X'00000001',
     0,    250,   1,  50,   1,   0,   0,   0,   0, '1d2'  ,  3), { 92}
 ('& Staff of Door/Stair Location (%P1 charges)'    ,  55, '_',%X'00000002',
@@ -1627,7 +1651,7 @@
 ('& Potion~ of Neutralize Poison'                  ,  76, '!',%X'00001000',
     0,     75, 323,   4,   1,   0,   0,   0,   0, '1d1'  ,  0), {100}
 ('& Wand of Stinking Cloud (%P1 charges)'          ,  65, '-',%X'00200000',
-    0,    400,  21,  10,   1,   0,   0,   0,   0, '1d1'  ,  5), {101}
+    0,    400,  22,  10,   1,   0,   0,   0,   0, '1d1'  ,  5), {101}
 ('& Iron Spike~'                                   ,  13, '~',%X'00000000',
     0,      1,   1,  10,   1,   0,   0,   0,   0, '1d1'  ,  1), {102}
 ('& Brass Lantern~ with %P5 turns of light'        ,  15, '~',%X'00000000',
@@ -1638,20 +1662,20 @@
  7500,      3, 257,  10,   5,   0,   0,   0,   0, '2d6'  ,  1)  {105}
 					);
 
-	store_choice    :=	(
-	{ General Store	}
+	store_choice	:=	(
+	{ General Store }
 (105,104,103,102,102,104,42,105,104,27,26,5,4,3,3,2,2,2,1,1,1,1,1,1,1,1
 ),
-	{ Armory	}
+	{ Armory        }
 (30,31,32,33,34,35,36,37,38,39,40,41,43,44,45,46,47,30,33,34,43,44,28,29,30,31
 ),
-	{ Weaponsmith	}
+	{ Weaponsmith   }
 ( 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25, 6, 7,23,25,23,25
 ),
-	{ Temple	}
+	{ Temple        }
 (71,72,73,74,59,59,77,79,80,81,84,85,13,14,15,96,97,98,100,79,79,80,80,81,72,98
 ),
-	{ Alchemy shop	}
+	{ Alchemy shop  }
 (55,56,57,58,58,60,61,62,63,64,65,66,75,76,78,82,83,60,61,62,63,64,98,99,98,98
 ),
 	{ Magic-User store}
@@ -1659,8 +1683,8 @@
 )
 				);
 
-	{ Each store will buy only certain items, based on TVAL	}
-	store_buy	:= 	(
+	{ Each store will buy only certain items, based on TVAL }
+	store_buy       :=      (
 				[25,30,32,80,77,15,13],
 				[30,31,33,34,35,36],
 				[10,11,12,20,21,22,23],
@@ -1671,14 +1695,14 @@
 
 	{ Store owners have different characteristics for pricing and haggling}
 	{ Note: Store owners should be added in groups, one for each store    }
-	owners		:=	(
+	owners          :=      (
 ('Erick the Honest       (Human)      General Store',
 	  250, 0.75, 0.08, 0.04, 1, 12),
-('Mauglin the Grumpy     (Dwarf)      Armory'	    ,
+('Mauglin the Grumpy     (Dwarf)      Armory'       ,
 	32000, 1.00, 0.12, 0.04, 6,  5),
 ('Arndal Beast-Slayer    (Half-Elf)   Weaponsmith'  ,
 	10000, 0.85, 0.10, 0.05, 2,  8),
-('Hardblow the Humble    (Human)      Temple'	    ,
+('Hardblow the Humble    (Human)      Temple'       ,
 	 3500, 0.75, 0.09, 0.06, 1, 15),
 ('Ga-nat the Greedy      (Gnome)      Alchemist'    ,
 	12000, 1.20, 0.15, 0.04, 5,  9),
@@ -1712,13 +1736,13 @@
 
 	{ Each type of character starts out with a few provisions...	}
 	{ Note the the entries refer to array elements of INVENTORY_INIT array}
-	player_init	:=	(
-		(   1, 104,  42,   7,  33),	{ Warrior	}
-		(   1, 104,  42,   7,  67),	{ Mage		}
-		(   1, 104,  42,   7,  71),	{ Priest	}
-		(   1, 104,  42,   7,  33),	{ Rogue		}
-		(   1, 104,  42,   7,  67),	{ Ranger	}
-		(   1, 104,  42,   7,  71)	{ Paladin	}
+	player_init     :=      (
+		(   1, 104,  42,   7,  33),     { Warrior       }
+		(   1, 104,  42,   7,  67),     { Mage          }
+		(   1, 104,  42,   7,  71),     { Priest        }
+		(   1, 104,   7,  33,  67),     { Rogue         }
+		(   1, 104,  42,   7,  67),     { Ranger        }
+		(   1, 104,  42,   7,  71)      { Paladin       }
 				);
 
 
@@ -1726,7 +1750,7 @@
 	object_ident := (max_objects of false);
 
 	{ Traps are just Nasty treasures...				}
-	trap_lista	:=	(
+	trap_lista      :=      (
 ('an open pit'                                     , 102, ' ',%X'00000000',
     0,      0,   1,   0,   0,   0,   0,   0,   0, '2d6'  ,-50),
 ('an arrow trap'                                   , 101, '.',%X'00000000',
@@ -1767,7 +1791,7 @@
 
 	{ Traps: Level represents the difficulty of disarming;	}
 	{ and P1 represents the experienced gained when disarmed}
-	trap_listb	:=	(
+	trap_listb      :=      (
 ('an open pit'                                     , 102, ' ',%X'00000000',
     1,      0,   1,   0,   0,   0,   0,   0,   0, '2d6'  ,-50),
 ('an arrow trap'                                   , 102, '^',%X'00000000',
@@ -1804,13 +1828,13 @@
     5,      0,  17,   0,   0,   0,   0,   0,   0, '1d8'  , 10),
 ('a dart trap'                                     , 102, '^',%X'00000000',
     5,      0,  18,   0,   0,   0,   0,   0,   0, '1d8'  , 10),
-	{ Special case, see DOOR_LIST below (subvals must agree)	}
+	{ Special case, see DOOR_LIST below (subvals must agree)        }
 ('a closed door'                                   , 105, '+',%X'00000000',
     0,      0,  19,   0,   0,   0,   0,   0,   0, '1d1'  ,  0)
 				);
 
-	{ Stores are just special traps			}
-	store_door	:= (
+	{ Stores are just special traps 		}
+	store_door      := (
 ('The entrance to the General Store.'              , 110, '1',%X'00000000',
     0,      0, 101,   0,   0,   0,   0,   0,   0, '0d0'  ,  0),
 ('The entrance to the Armory.'                     , 110, '2',%X'00000000',
@@ -1830,14 +1854,14 @@
 ('a strange rune'                                  , 102, '^',%X'00000000',
     0,      0,  99,   0,   0,   0,   0,   0,   0, '0d0'  ,-90);
 
- rubble :=  
+ rubble :=
 ('some rubble'                                     , 103, ':',%X'00000000',
     0,      0,   1,   0,   0,   0,   0,   0,   0, '0d0'  ,  0);
 
 
-	{ Secret door must have same subval as closed door in 	}
-	{ TRAP_LISTB.  See CHANGE_TRAP				}
-	door_list	:=	(
+	{ Secret door must have same subval as closed door in	}
+	{ TRAP_LISTB.  See CHANGE_TRAP                          }
+	door_list       :=      (
 ('an open door'                                    , 104,'''',%X'00000000',
     0,      0,   1,   0,   0,   0,   0,   0,   0, '1d1'  ,  0),
 ('a closed door'                                   , 105, '+',%X'00000000',
@@ -1846,11 +1870,11 @@
     0,      0,  19,   0,   0,   0,   0,   0,   0, '1d1'  ,  0)
 				);
 
- up_stair   := 
+ up_stair   :=
 ('an up staircase '                                , 107, '<',%X'00000000',
     0,      0,   1,   0,   0,   0,   0,   0,   0, '1d1'  ,  0);
 
- down_stair := 
+ down_stair :=
 ('a down staircase'                                , 108, '>',%X'00000000',
     0,      0,   1,   0,   0,   0,   0,   0,   0, '1d1'  ,  0);
 
@@ -1864,7 +1888,7 @@
 	light_set   := [102,103,104,105,107,108,109,110];
 
 	{ Descriptive phrases						}
-	colors	:=   ('Amber','Azure','Blue','Blue Speckled','Blue Spotted',
+	colors  :=   ('Amber','Azure','Blue','Blue Speckled','Blue Spotted',
 		      'Black','Black Speckled','Black Spotted',
 		      'Brown','Brown Speckled','Brown Spotted',
 		      'Bubbling',
@@ -1895,7 +1919,7 @@
 		      'Spotted','Furry'
 		     );
 	woods   :=   ('Applewood','Ashen','Aspen','Avocado wood',
-		      'Balsa','Banyan','Birch','Ceder','Cherrywood',
+		      'Balsa','Banyan','Birch','Cedar','Cherrywood',
 		      'Cinnibar','Cottonwood','Cypress','Dogwood',
 		      'Driftwood','Ebony','Elm wood','Eucalyptus',
 		      'Grapevine','Hawthorn','Hemlock','Hickory',
@@ -1913,7 +1937,7 @@
 		      'Aluminium Plated','Brass Plated','Copper Plated',
 		      'Gold Plated','Nickel Plated','Silver Plated',
 		      'Steel Plated','Tin Plated','Zinc Plated'
-                     );
+		     );
 	rocks   :=   ('Amber','Agate','Alexandrite','Amethyst','Antlerite',
 		      'Aquamarine','Argentite','Azurite','Beryl','Bloodstone',
 		      'Calcite','Carnelian','Coral','Corundum','Cryolite',
@@ -1926,7 +1950,7 @@
 		      'Saphire','Sphalerite','Staurolite','Tiger eye','Topaz',
 		      'Turquoise','Zircon'
 		     );
-	amulets	:=   ('Birch','Ceder','Dogwood','Driftwood',
+	amulets :=   ('Birch','Cedar','Dogwood','Driftwood',
 		      'Elm wood','Hemlock','Hickory','Mahogany',
 		      'Maple','Oak','Pine','Redwood','Rosewood',
 		      'Walnut','Aluminium','Bone','Brass','Bronze',
@@ -1958,10 +1982,10 @@
 		     );
 
 	{ Used in DESC.INC for replacing the & in descriptions		}
-	vowel_set	:= ['a','e','i','o','u','A','E','I','O','U'];
+	vowel_set       := ['a','e','i','o','u','A','E','I','O','U'];
 
 	{ Creatures must be defined here				}
-	{	See TYPES.INC under creature_type for a complete list
+	{       See TYPES.INC under creature_type for a complete list
 		of all variables for creatures.  Some of the less obvious
 		are explained below.
 
@@ -1971,128 +1995,130 @@
 			is given '5d8'.
 
 		Attack types:
-		1	Normal attack	
-		2	Poison Strength
-		3	Confusion attack
-		4	Fear attack	
-		5	Fire attack	
-		6	Acid attack	
-		7	Cold attack	
-		8	Lightning attack
-		9	Corrosion attack
-		10	Blindness attack
-		11	Paralysis attack
-		12	Steal Money	
-		13	Steal Object	
-		14	Poison		
-		15	Lose dexterity
-		16	Lose constitution
-		17	Lose intelligence
-		18	Lose wisdom
-		19	Lose experience
-		20	Aggravation
-		21	Disenchants
-		22	Eats food
-		23	Eats light
-		99	Blank		
+		1       Normal attack
+		2       Poison Strength
+		3       Confusion attack
+		4       Fear attack
+		5       Fire attack
+		6       Acid attack
+		7       Cold attack
+		8       Lightning attack
+		9       Corrosion attack
+		10      Blindness attack
+		11      Paralysis attack
+		12      Steal Money
+		13      Steal Object
+		14      Poison
+		15      Lose dexterity
+		16      Lose constitution
+		17      Lose intelligence
+		18      Lose wisdom
+		19      Lose experience
+		20      Aggravation
+		21      Disenchants
+		22      Eats food
+		23      Eats light
+		24      Eats charges
+		99      Blank
 
 		Attack descriptions:
-		1	hits you.
-		2	bites you.
-		3	claws you.
-		4	stings you.
-		5	touches you.
-		6	kicks you.
-		7	gazes at you.
-		8	breathes on you.
-		9	spits on you.
-		10	makes a horrible wail.
-		11	embraces you.
-		12	crawls on you.
-		13	releases a cloud of spores.
-		14	begs you for money.
-		15	You've been slimed.
-		16	crushes you.
-		17	tramples you.
-		18	drools on you.
-		99	is repelled.
+		1       hits you.
+		2       bites you.
+		3       claws you.
+		4       stings you.
+		5       touches you.
+		6       kicks you.
+		7       gazes at you.
+		8       breathes on you.
+		9       spits on you.
+		10      makes a horrible wail.
+		11      embraces you.
+		12      crawls on you.
+		13      releases a cloud of spores.
+		14      begs you for money.
+		15      You've been slimed.
+		16      crushes you.
+		17      tramples you.
+		18      drools on you.
+		19      insults you.
+		99      is repelled.
 
 	Example:  For a creature which bites for 1d6, then stings for
 		  2d4 and loss of dex you would use:
 			'1 2 1d6|15 4 2d4'
 
 		CMOVE flags:
-Movement.	00000001	Move only to attack
-	.	00000002	Move, attack normal
-	.	00000008	20% random movement
-	.	00000010	40% random movement
-	.	00000020	75% random movement
-Special	+	00010000	Invisible movement
-	+	00020000	Move through door
-	+	00040000	Move through wall
-	+	00080000	Move through creatures
-	+	00100000	Picks up objects
-	+	00200000	Multiply monster
-Carries	=	01000000	Carries objects.
-	=	02000000	Carries gold.
-	=	04000000	Has 60% of time.
-	=	08000000	Has 90% of time.
-	=	10000000	1d2 objects/gold.
-	=	20000000	2d2 objects/gold.
-	=	40000000	4d2 objects/gold.
-Special	~	80000000	Win-the-Game creature.
+Movement.       00000001        Move only to attack
+	.       00000002        Move, attack normal
+	.       00000008        20% random movement
+	.       00000010        40% random movement
+	.       00000020        75% random movement
+Special +       00010000        Invisible movement
+	+       00020000        Move through door
+	+       00040000        Move through wall
+	+       00080000        Move through creatures
+	+       00100000        Picks up objects
+	+       00200000        Multiply monster
+Carries =       01000000        Carries objects.
+	=       02000000        Carries gold.
+	=       04000000        Has 60% of time.
+	=       08000000        Has 90% of time.
+	=       10000000        1d2 objects/gold.
+	=       20000000        2d2 objects/gold.
+	=       40000000        4d2 objects/gold.
+Special ~       80000000        Win-the-Game creature.
 
 		SPELL Flags:
-Frequency	000001	  1	These add up to x.  Then
-(1 in x).	000002	  2	if RANDINT(X) = 1 the
-	.	000004	  4	creature casts a spell.
-	.	000008	  8
-Spells  =	000010	Teleport short (blink)
-	=	000020	Teleport long
-	=	000040	Teleport player to monster
-	=	000080	Cause light wound
-	=	000100	Cause serious wound
-	=	000200	Hold person (Paralysis)
-	=	000400	Cause blindness
-	=	000800	Cause confusion
-	=	001000	Cause fear
-	=	002000	Summon monster
-	=	004000	Summon undead
-	=	008000	Slow Person
-	=	010000	Not Used
-	=	020000	Not Used
-	=	040000	Not Used
-Breaths	+	080000	Breath Lightning
-	+	100000	Breath Gas
-	+	200000	Breath Acid
-	+	400000	Breath Frost
-	+	800000	Breath Fire
+Frequency       000001    1     These add up to x.  Then
+(1 in x).       000002    2     if RANDINT(X) = 1 the
+	.       000004    4     creature casts a spell.
+	.       000008    8
+Spells  =       000010  Teleport short (blink)
+	=       000020  Teleport long
+	=       000040  Teleport player to monster
+	=       000080  Cause light wound
+	=       000100  Cause serious wound
+	=       000200  Hold person (Paralysis)
+	=       000400  Cause blindness
+	=       000800  Cause confusion
+	=       001000  Cause fear
+	=       002000  Summon monster
+	=       004000  Summon undead
+	=       008000  Slow Person
+	=       010000  Drain Mana
+	=       020000  Not Used
+	=       040000  Not Used
+Breaths +       080000  Breath Lightning
+	+       100000  Breath Gas
+	+       200000  Breath Acid
+	+       400000  Breath Frost
+	+       800000  Breath Fire
 
 		CDEFENSE flags:
-		0001	Hurt by Slay Dragon.
-		0002	Hurt by Slay Monster.
-		0004	Hurt by Slay Evil.
-		0008	Hurt by Slay Undead.
-		0010	Hurt by Frost.
-		0020	Hurt by Fire.
-		0040	Hurt by Poison.
-		0080	Hurt by Acid.
-		0100	Hurt by Light-Wand.
-		0200	Hurt by Stone-to-Mud.
-		0400	Not used.
-		0800	Not used.
-		1000	Cannot be charmed or slept.
-		2000	Can be seen with infra-vision.
-		4000	Max Hit points.
-		8000	Not used.
+		0001    Hurt by Slay Dragon.
+		0002    Hurt by Slay Monster.
+		0004    Hurt by Slay Evil.
+		0008    Hurt by Slay Undead.
+		0010    Hurt by Frost.
+		0020    Hurt by Fire.
+		0040    Hurt by Poison.
+		0080    Hurt by Acid.
+		0100    Hurt by Light-Wand.
+		0200    Hurt by Stone-to-Mud.
+		0400    Not used.
+		0800    Not used.
+		1000    Cannot be charmed or slept.
+		2000    Can be seen with infra-vision.
+		4000    Max Hit points.
+		8000    Not used.
 
 
 	Sleep (sleep)	:	A measure in turns of how fast creature
 				will notice player (on the average).
-	Area of affect (aaf) :	Max range that creature is able to "notice"
+	Area of affect (aaf) :  Max range that creature is able to "notice"
 				the player.
 									}
-	c_list	:=		(
+	c_list  :=              (
 ('Filthy Street Urchin'     ,%X'0012000A',%X'00000000',%X'2034',  400,    0,
    4,   1, 1, 'p', '1d4'   , '1 14 0d0|12 5 0d0'              ,    0),
 ('Blubbering Idiot'         ,%X'0012000A',%X'00000000',%X'2030',  000,    0,
@@ -2127,9 +2153,9 @@ Breaths	+	080000	Breath Lightning
    4,  30, 1, 'R', '3d6'   , '1 2 1d1'                        ,    1),
 ('Kobold'                   ,%X'07020002',%X'00000000',%X'2032',  100,    5,
   20,  16, 1, 'k', '3d7'   , '1 1 1d6'                        ,    1),
-('IBM Sales rep'            ,%X'00200022',%X'00000000',%X'01B0',    1,    2,
-   6,   1, 0, 'i', '4d4'   , '14 12 1d2'                      ,    1),
-('Floating Eye'             ,%X'00000001',%X'00000000',%X'2102',  100,    1,
+('White Worm mass'          ,%X'00200022',%X'00000000',%X'01B0',    1,    2,
+   6,   1, 0, 'w', '4d4'   , '14 12 1d2'                      ,    1),
+('Floating Eye'             ,%X'00000001',%X'0001000D',%X'2102',  100,    1,
    2,   6, 1, 'e', '3d6'   , '11 7 0d0'                       ,    1),
 ('Shrieker Mushroom patch'  ,%X'00000001',%X'00000000',%X'10A0',    0,    1,
    2,   1, 1, ',', '1d1'   , '20 10 0d0'                      ,    2),
@@ -2168,10 +2194,10 @@ Breaths	+	080000	Breath Lightning
 ('Giant White Lice'         ,%X'00200022',%X'00000000',%X'01F0',  100,    1,
    6,   5, 2, 'l', '1d1'   , '1 2 1d1'                        ,    3),
 ('Black Naga'               ,%X'0710000A',%X'00000000',%X'20E6', 1200,   20,
-  16,  40, 1, 'n', '7d8'   , '1 16 1d8'                       ,    3),
+  16,  40, 1, 'n', '6d8'   , '1 16 1d8'                       ,    3),
 ('Spotted Mushroom patch'   ,%X'00000001',%X'00000000',%X'10A0',    0,    3,
    2,   1, 1, ',', '1d1'   , '14 13 2d4'                      ,    3),
-('Yellow Jelly'             ,%X'0B000001',%X'00000000',%X'01A0',  999,   12,
+('Yellow Jelly'             ,%X'0B000001',%X'0001000F',%X'01A0',  999,   12,
    2,   1, 2, 'J', '10d8'  , '14 5 1d3'                       ,    3),
 ('Scruffy looking Hobbit'   ,%X'05020002',%X'00000000',%X'2030',  100,    4,
   16,   8, 1, 'p', '3d5'   , '1 1 1d4|12 5 0d0'               ,    3),
@@ -2187,7 +2213,7 @@ Breaths	+	080000	Breath Lightning
    7,   4, 0, 'w', '4d8'   , '15 12 1d3'                      ,    3),
 ('Large Grey Snake'         ,%X'0000000A',%X'00000000',%X'00B0',  700,   10,
    5,  40, 0, 'R', '6d8'   , '1 2 1d4|1 16 1d6'               ,    3),
-('Radiation Eye'            ,%X'00000001',%X'00000000',%X'2102',  100,    6,
+('Radiation Eye'            ,%X'00000001',%X'0001000B',%X'2102',  100,    6,
    2,   6, 1, 'e', '3d6'   , '2 7 1d6'                        ,    3),
 ('Drooling Harpy'           ,%X'00000012',%X'00000000',%X'2036',  100,    7,
   16,  22, 1, 'h', '2d8'   , '1 3 1d1|1 3 1d1|1 2 1d2|1 18 0d0',   3),
@@ -2227,7 +2253,7 @@ Breaths	+	080000	Breath Lightning
   12,  18, 1, 'f', '4d8'   , '1 2 1d6'                        ,    5),
 ('Grey Icky-Thing'          ,%X'00000012',%X'00000000',%X'0022',  150,   10,
   14,  12, 1, 'i', '4d8'   , '1 5 1d5'                        ,    5),
-('Disenchanter Eye'         ,%X'00000009',%X'00000000',%X'2102',  100,   20,
+('Disenchanter Eye'         ,%X'00000009',%X'00010009',%X'2102',  100,   20,
    4,  10, 0, 'e', '7d8'   , '21 7 0d0'                       ,    5),
 ('Black Yeek'               ,%X'07020002',%X'00000000',%X'2030',  100,    8,
   18,  16, 1, 'y', '2d8'   , '1 1 1d5'                        ,    5),
@@ -2255,7 +2281,7 @@ Breaths	+	080000	Breath Lightning
   18,  14, 1, 'i', '4d8'   , '7 5 2d3'                        ,    6),
 ('Rattlesnake'              ,%X'00000012',%X'00000000',%X'00B0',    1,   20,
    6,  24, 1, 'R', '6d7'   , '14 2 2d5'                       ,    6),
-('Bloodshot Eye'            ,%X'00000001',%X'00000000',%X'2102',  100,   15,
+('Bloodshot Eye'            ,%X'00000001',%X'00010007',%X'2102',  100,   15,
    2,   6, 1, 'e', '4d8'   , '10 7 2d6'                       ,    7),
 ('Red Naga'                 ,%X'0710000A',%X'00000000',%X'20E6', 1200,   40,
   20,  40, 1, 'n', '11d8'  , '1 16 1d10|2 2 1d4'              ,    7),
@@ -2267,7 +2293,7 @@ Breaths	+	080000	Breath Lightning
   14,  12, 1, 'i', '5d8'   , '9 5 2d5'                        ,    7),
 ('Zombie Kobold'            ,%X'00020002',%X'00000000',%X'002E',  300,   14,
   20,  14, 1, 'z', '6d8'   , '1 1 1d2|1 1 1d2'                ,    7),
-('Lost Soul'                ,%X'0015001A',%X'0000002F',%X'100C',  100,   18,
+('Lost Soul'                ,%X'0015001A',%X'0001002F',%X'100C',  100,   18,
    4,  10, 1, 'G', '2d8'   , '1 1 2d2|18 5 0d0'               ,    7),
 ('Greedy little Gnome'      ,%X'0B020002',%X'00000000',%X'2030',  100,   13,
   18,  14, 1, 'p', '3d8'   , '1 1 1d7|13 5 0d0'               ,    7),
@@ -2287,7 +2313,7 @@ Breaths	+	080000	Breath Lightning
   20,  24, 1, 'p', '8d8'   , '1 1 2d4|12 5 0d0'               ,    8),
 ('Yeti'                     ,%X'00020002',%X'00000000',%X'2024',  100,   30,
   20,  24, 1, 'Y', '11d8'  , '1 3 1d3|1 3 1d3|1 2 1d4'        ,    9),
-('Bloodshot Icky-Thing'     ,%X'0000000A',%X'00000000',%X'2022',  800,   24,
+('Bloodshot Icky-Thing'     ,%X'0000000A',%X'0001000B',%X'2022',  800,   24,
   14,  18, 1, 'i', '7d8'   , '1 5 1d4|9 8 2d4'                ,    9),
 ('Giant Grey Rat'           ,%X'0020000A',%X'00000000',%X'2070',  200,    2,
   10,  12, 1, 'r', '2d3'   , '14 2 1d4'                       ,    9),
@@ -2309,7 +2335,7 @@ Breaths	+	080000	Breath Lightning
   12,  40, 0, 't', '15d8'  , '14 2 2d6'                       ,   10),
 ('Hairy Mold'               ,%X'0B000001',%X'00000000',%X'10A0',  700,   32,
    2,  15, 1, 'm', '15d8'  , '14 1 1d3'                       ,   10),
-('Disenchanter Mold'        ,%X'0B000001',%X'00000000',%X'10A0',  100,   40,
+('Disenchanter Mold'        ,%X'0B000001',%X'0001000B',%X'10A0',  100,   40,
    2,  20, 1, 'm', '16d8'  , '21 5 1d6'                       ,   10),
 ('Giant Red Centipede'      ,%X'00000002',%X'00000000',%X'0082',  500,   24,
   12,  26, 2, 'c', '3d8'   , '1 2 1d2|14 4 1d2'               ,   10),
@@ -2331,7 +2357,7 @@ Breaths	+	080000	Breath Lightning
   20,  38, 1, 'H', '12d8'  , '1 1 1d10'                       ,   11),
 ('Black Mamba'              ,%X'00000012',%X'00000000',%X'00B0',    1,   40,
   20,  32, 2, 'R', '10d8'  , '14 2 4d4'                       ,   12),
-('Grape Jelly'              ,%X'0B000001',%X'00000000',%X'01A0',  999,   60,
+('Grape Jelly'              ,%X'0B000001',%X'0001000B',%X'01A0',  999,   60,
    2,   1, 1, 'J', '52d8'  , '19 5 5d8'                       ,   12),
 ('Master Yeek'              ,%X'07020002',%X'00008018',%X'2030',  100,   28,
   18,  24, 1, 'y', '5d8'   , '1 1 1d8'                        ,   12),
@@ -2345,12 +2371,12 @@ Breaths	+	080000	Breath Lightning
   20,  30, 1, 's', '12d8'  , '1 1 1d8'                        ,   12),
 ('Human Zombie'             ,%X'00020002',%X'00000000',%X'102E',  200,   34,
   20,  24, 1, 'z', '11d8'  , '1 1 1d4|1 1 1d4'                ,   12),
-('Moaning Spirit'           ,%X'0F15000A',%X'0000002E',%X'100C',  300,   44,
+('Moaning Spirit'           ,%X'0F15000A',%X'0001002E',%X'100C',  300,   44,
    6,  20, 1, 'G', '4d8'   , '4 10 0d0|15 5 1d8'              ,   12),
 ('Swordsman'                ,%X'13020002',%X'00000000',%X'2030',  999,   40,
   20,  34, 1, 'p', '11d8'  , '1 1 3d5'                        ,   12),
-('Giant Brown Beetle'       ,%X'0000000A',%X'00000000',%X'0002',  300,   38,
-  10,  40, 1, 'B', '13d8'  , '1 2 3d4'                        ,   13),
+('Killer Brown Beetle'      ,%X'0000000A',%X'00000000',%X'0002',  300,   38,
+  10,  40, 1, 'K', '13d8'  , '1 2 3d4'                        ,   13),
 ('Ogre'                     ,%X'07020002',%X'00000000',%X'2036',  300,   42,
   20,  32, 1, 'o', '13d8'  , '1 1 2d8'                        ,   13),
 ('Giant Red Speckled Frog'  ,%X'0000000A',%X'00000000',%X'00A2',  300,   32,
@@ -2363,12 +2389,12 @@ Breaths	+	080000	Breath Lightning
   12,  20, 3, 'b', '5d8'   , '1 2 1d4|1 3 1d2|1 3 1d2'        ,   13),
 ('Giant Gnat'               ,%X'00200022',%X'00000000',%X'0062',  100,    1,
    8,   4, 3, 'F', '1d2'   , '1 2 1d1'                        ,   13),
-('Giant Green Beetle'       ,%X'00000012',%X'00000000',%X'0002',  300,   46,
-  12,  45, 1, 'B', '16d8'  , '1 2 4d4'                        ,   14),
+('Killer Green Beetle'      ,%X'00000012',%X'00000000',%X'0002',  300,   46,
+  12,  45, 1, 'K', '16d8'  , '1 2 4d4'                        ,   14),
 ('Giant Flea'               ,%X'00200022',%X'00000000',%X'0062',  100,    1,
    8,  25, 2, 'F', '2d2'   , '1 2 1d2'                        ,   14),
 ('Giant White Dragon Fly'   ,%X'00000012',%X'0040000A',%X'0060',  500,   54,
-  20,  20, 1, 'F', '4d8'   , '7 2 1d6'                        ,   14),
+  20,  20, 1, 'F', '5d8'   , '7 2 1d6'                        ,   14),
 ('Hill Giant'               ,%X'07020002',%X'00000000',%X'2034',  500,   52,
   20,  36, 1, 'P', '16d8'  , '1 1 3d6'                        ,   14),
 ('Skeleton Hobgoblin'       ,%X'00020002',%X'00000000',%X'100C',  300,   46,
@@ -2397,7 +2423,7 @@ Breaths	+	080000	Breath Lightning
    7,  12, 2, 'b', '3d8'   , '1 2 1d6'                        ,   15),
 ('Giant Tan Bat'            ,%X'00000012',%X'00000000',%X'2160',  400,   18,
   12,  18, 2, 'b', '3d8'   , '4 2 1d2|1 3 1d1|1 3 1d1'        ,   15),
-('Violet Mold'              ,%X'0B000001',%X'00000000',%X'10A0',  700,   50,
+('Violet Mold'              ,%X'0B000001',%X'00010009',%X'10A0',  700,   50,
    2,  15, 1, 'm', '17d8'  , '11 1 1d2'                       ,   15),
 ('Umber Hulk'               ,%X'00020002',%X'00000000',%X'2126',  100,   75,
   20,  20, 1, 'U', '20d8'  , '3 7 0d0|1 1 1d6|1 1 1d6|1 2 2d6',   16),
@@ -2406,7 +2432,7 @@ Breaths	+	080000	Breath Lightning
 ('Giant Black Rat'          ,%X'0020000A',%X'00000000',%X'2070',  200,    3,
    8,  16, 1, 'r', '3d4'   , '14 2 1d5'                       ,   16),
 ('Giant Green Dragon Fly'   ,%X'00000012',%X'0010000A',%X'0070',  500,   58,
-  20,  20, 1, 'F', '4d8'   , '14 2 1d6'                       ,   16),
+  20,  20, 1, 'F', '5d8'   , '14 2 1d6'                       ,   16),
 ('Fire Giant'               ,%X'07020002',%X'00000000',%X'2014',  500,   62,
   20,  40, 1, 'P', '20d8'  , '5 1 3d7'                        ,   16),
 ('Green Dragon Bat'         ,%X'00000012',%X'00100004',%X'2150',  500,   44,
@@ -2437,66 +2463,68 @@ Breaths	+	080000	Breath Lightning
    8,  20, 1, 'r', '4d3'   , '14 2 1d5'                       ,   19),
 ('Mummified Kobold'         ,%X'0B020002',%X'00000000',%X'102C',  750,   46,
   20,  24, 1, 'M', '13d8'  , '1 1 1d6|1 1 1d6'                ,   19),
-('Giant Black Beetle'       ,%X'0000000A',%X'00000000',%X'0002',  300,   75,
-  14,  46, 1, 'B', '18d8'  , '1 2 4d5'                        ,   19),
+('Killer Black Beetle'      ,%X'0000000A',%X'00000000',%X'0002',  300,   75,
+  14,  46, 1, 'K', '18d8'  , '1 2 4d5'                        ,   19),
 ('Red Mold'                 ,%X'0B000001',%X'00000000',%X'30A0',  700,   64,
    2,  16, 1, 'm', '17d8'  , '5 5 4d4'                        ,   19),
+('Quythulg'                 ,%X'00010000',%X'00002010',%X'5000',    0,  200,
+  10,   1, 1, 'Q', '4d8'   , '0 0 0d0'                        ,   20),
 ('Giant Red Bat'            ,%X'0000000A',%X'00000000',%X'2060',  200,   40,
-  12,  24, 2, 'b', '6d8'   , '1 2 1d7|1 3 1d3|1 3 1d3'        ,   20),
+  12,  24, 2, 'b', '5d8'   , '1 2 1d7|1 3 1d3|1 3 1d3'        ,   20),
 ('Giant Black Dragon Fly'   ,%X'00000012',%X'00200009',%X'0072',  500,   58,
   20,  22, 1, 'F', '4d8'   , '10 2 1d6'                       ,   20),
 ('Cloud Giant'              ,%X'07020002',%X'00000000',%X'2134',  500,  125,
-  20,  44, 1, 'P', '26d8'  , '8 1 3d8'                        ,   20),
+  20,  44, 1, 'P', '24d8'  , '8 1 3d8'                        ,   20),
 ('Black Dragon Bat'         ,%X'00000012',%X'00200004',%X'2150',  500,   50,
   12,  24, 3, 'b', '2d8'   , '6 2 1d3'                        ,   21),
 ('Blue Dragon Bat'          ,%X'00000012',%X'00080004',%X'2150',  500,   54,
   12,  26, 3, 'b', '3d6'   , '8 2 1d3'                        ,   21),
 ('Mummified Orc'            ,%X'0B020002',%X'00000000',%X'102C',  750,   56,
-  20,  28, 1, 'M', '15d8'  , '1 1 2d4|1 1 2d4'                ,   21),
-('Giant Boring Beetle'      ,%X'00000002',%X'00000000',%X'0002',  300,   70,
-  12,  48, 1, 'B', '20d8'  , '1 2 4d5'                        ,   21),
-('Giant Stag Beetle'        ,%X'0000000A',%X'00000000',%X'0002',  300,   80,
-  12,  50, 1, 'B', '21d8'  , '1 2 3d4|1 1 1d12'               ,   22),
+  20,  28, 1, 'M', '14d8'  , '1 1 2d4|1 1 2d4'                ,   21),
+('Killer Boring Beetle'     ,%X'00000002',%X'00000000',%X'0002',  300,   70,
+  12,  48, 1, 'K', '18d8'  , '1 2 4d5'                        ,   21),
+('Killer Stag Beetle'       ,%X'0000000A',%X'00000000',%X'0002',  300,   80,
+  12,  50, 1, 'K', '20d8'  , '1 2 3d4|1 1 1d12'               ,   22),
 ('Black Mold'               ,%X'0B000081',%X'00000000',%X'10A0',  500,   68,
-   2,  18, 1, 'm', '16d8'  , '1 1 4d3'                        ,   22),
+   2,  18, 1, 'm', '15d8'  , '1 1 4d3'                        ,   22),
 ('Iron Golem'               ,%X'00020002',%X'00000000',%X'1080',  100,  160,
-  12,  99,-1, 'g', '84d8'  , '1 1 1d12|1 1 1d12'              ,   22),
+  12,  99,-1, 'g', '80d8'  , '1 1 1d12|1 1 1d12'              ,   22),
 ('Giant Yellow Scorpion'    ,%X'0000000A',%X'00000000',%X'0002',  200,   60,
-  12,  38, 1, 'S', '13d8'  , '1 2 1d8|14 4 2d5'               ,   22),
+  12,  38, 1, 'S', '12d8'  , '1 2 1d8|14 4 2d5'               ,   22),
 ('Green Ooze'               ,%X'00200001',%X'00000000',%X'00B2',    1,    6,
   15,   5, 0, 'O', '4d8'   , '6 5 2d3'                        ,   22),
-('Black Ooze'               ,%X'003A0012',%X'00000000',%X'0192',    1,    7,
-  10,   6,-1, 'O', '7d8'   , '9 5 2d6'                        ,   23),
+('Black Ooze'               ,%X'003A0012',%X'0001000B',%X'0192',    1,    7,
+  10,   6,-1, 'O', '6d8'   , '9 5 2d6'                        ,   23),
 ('Warrior'                  ,%X'13120002',%X'00000000',%X'2030',  400,   60,
-  20,  40, 1, 'p', '16d8'  , '1 1 3d5'                        ,   23),
+  20,  40, 1, 'p', '15d8'  , '1 1 3d5'                        ,   23),
 ('Red Dragon Bat'           ,%X'00000012',%X'00800004',%X'2150',  500,   60,
   12,  28, 3, 'b', '3d8'   , '5 2 1d3'                        ,   23),
-('Giant Blue Beetle'        ,%X'0000000A',%X'00000000',%X'0002',  300,   85,
-  15,  50, 1, 'B', '22d8'  , '1 2 4d5'                        ,   23),
+('Killer Blue Beetle'       ,%X'0000000A',%X'00000000',%X'0002',  300,   85,
+  15,  50, 1, 'K', '20d8'  , '1 2 4d5'                        ,   23),
 ('Giant Silver Ant'         ,%X'0000000A',%X'00000000',%X'0002',  600,   45,
   15,  38, 1, 'a', '6d8'   , '6 2 4d4'                        ,   23),
 ('Crimson Mold'             ,%X'0B000001',%X'00000000',%X'10A0',  500,   65,
-   2,  18, 1, 'm', '18d8'  , '1 1 1d3|4 5 0d0'                ,   23),
+   2,  18, 1, 'm', '16d8'  , '1 1 1d3|4 5 0d0'                ,   23),
 ('Forest Wight'             ,%X'0F00000A',%X'0000100F',%X'112E',  300,  140,
   20,  30, 1, 'W', '12d8'  , '1 1 1d6|1 1 1d6|19 5 12d8'      ,   24),
 ('Berzerker'                ,%X'07020002',%X'00000000',%X'2030',  100,   65,
   20,  20, 1, 'p', '15d8'  , '1 1 1d8|1 1 1d8'                ,   24),
 ('Mummified Human'          ,%X'0B020002',%X'00000000',%X'102C',  600,   70,
   20,  34, 1, 'M', '17d8'  , '1 1 2d4|1 1 2d4'                ,   24),
-('Banshee'                  ,%X'0F15001A',%X'0000002F',%X'100C',  100,   60,
+('Banshee'                  ,%X'0F15001A',%X'0001002F',%X'100C',  100,   60,
   20,  24, 2, 'G', '6d8'   , '4 10 0d0|19 5 14d8'             ,   24),
 ('Giant Troll'              ,%X'0F020002',%X'00000000',%X'2026',  500,   85,
   20,  40, 1, 'T', '19d8'  , '1 1 1d6|1 1 1d6|1 2 3d4'        ,   25),
 ('Giant Brown Tick'         ,%X'00000012',%X'00000000',%X'0022',  200,   70,
-  12,  50, 0, 't', '20d8'  , '14 2 1d10|10 4 1d1'             ,   25),
-('Giant Red Beetle'         ,%X'00000012',%X'00000000',%X'0002',  300,   85,
-  15,  50, 1, 'B', '22d8'  , '2 2 4d4'                        ,   25),
+  12,  50, 0, 't', '18d8'  , '14 2 1d10|10 4 1d1'             ,   25),
+('Killer Red Beetle'        ,%X'00000012',%X'00000000',%X'0002',  300,   85,
+  15,  50, 1, 'K', '20d8'  , '2 2 4d4'                        ,   25),
 ('Wooden Mold'              ,%X'00000001',%X'00000000',%X'10A0',  999,  100,
-   2,  50, 1, 'm', '26d8'  , '14 8 2d6'                       ,   25),
+   2,  50, 1, 'm', '25d8'  , '14 8 2d6'                       ,   25),
 ('Giant Blue Dragon Fly'    ,%X'00000012',%X'00080009',%X'0030',  500,   75,
-  20,  24, 1, 'F', '5d8'   , '1 2 1d6'                        ,   25),
+  20,  24, 1, 'F', '6d8'   , '1 2 1d6'                        ,   25),
 ('Giant Grey Ant Lion'      ,%X'0008000A',%X'00000000',%X'0032',  400,   90,
-  10,  40, 1, 'A', '20d8'  , '1 2 2d12'                       ,   26),
+  10,  40, 1, 'A', '19d8'  , '1 2 2d12'                       ,   26),
 ('Disenchanter Bat'         ,%X'00000012',%X'00000000',%X'2060',    1,   75,
   14,  24, 3, 'b', '4d8'   , '21 1 0d0'                       ,   26),
 ('Giant Fire Tick'          ,%X'0000000A',%X'00000000',%X'2012',  200,   90,
@@ -2507,147 +2535,155 @@ Breaths	+	080000	Breath Lightning
   12,  50, 1, 'S', '13d8'  , '1 2 1d10|14 4 2d5'              ,   26),
 ('Clear Ooze'               ,%X'000B000A',%X'00000000',%X'00B2',    1,   12,
   10,  14, 1, 'O', '4d8'   , '3 5 1d8'                        ,   26),
-('Giant Fire Beetle'        ,%X'00000012',%X'00000000',%X'2012',  300,   95,
-  14,  45, 1, 'B', '13d8'  , '1 2 3d4|5 9 4d5'                ,   27),
+('Killer Fire Beetle'       ,%X'00000012',%X'00000000',%X'2012',  300,   95,
+  14,  45, 1, 'K', '13d8'  , '1 2 3d4|5 9 4d5'                ,   27),
 ('Vampire'                  ,%X'17000002',%X'00001209',%X'112E',  100,  175,
   20,  45, 1, 'V', '20d8'  , '1 1 1d6|1 1 1d6|19 5 18d8'      ,   27),
 ('Giant Red Dragon Fly'     ,%X'00000012',%X'00800008',%X'2050',  500,   75,
-  20,  24, 1, 'F', '6d8'   , '4 2 1d6'                        ,   27),
+  20,  24, 1, 'F', '7d8'   , '4 2 1d6'                        ,   27),
 ('Shimmering Mold'          ,%X'0B000081',%X'00000000',%X'10A0',  100,  180,
-   2,  24, 1, 'm', '34d8'  , '8 5 5d4'                        ,   27),
+   2,  24, 1, 'm', '32d8'  , '8 5 5d4'                        ,   27),
 ('Black Knight'             ,%X'17020002',%X'0000010F',%X'2030',  100,  140,
-  20,  60, 1, 'p', '23d8'  , '1 1 5d5'                        ,   28),
+  20,  60, 1, 'p', '25d8'  , '1 1 5d5'                        ,   28),
 ('Mage'                     ,%X'13020002',%X'00002C73',%X'2030',  100,  150,
   20,  30, 1, 'p', '10d8'  , '1 1 2d5'                        ,   28),
 ('Ice Troll'                ,%X'0F020002',%X'00000000',%X'0026',  500,  160,
-  20,  46, 1, 'T', '23d8'  , '1 1 1d5|1 1 1d5|7 2 3d6'        ,   28),
+  20,  46, 1, 'T', '22d8'  , '1 1 1d5|1 1 1d5|7 2 3d6'        ,   28),
 ('Giant Purple Worm'        ,%X'0000000A',%X'00000000',%X'2030',  300,  400,
-  14,  65, 1, 'w', '70d8'  , '1 1 1d8|6 2 2d8|14 4 1d8'       ,   29),
+  14,  65, 1, 'w', '65d8'  , '1 1 1d8|6 2 2d8|14 4 1d8'       ,   29),
 ('Young Blue Dragon'        ,%X'1F00000A',%X'0008100B',%X'2005',  700,  300,
-  20,  50, 1, 'd', '25d8'  , '1 3 1d4|1 3 1d4|1 2 1d6'        ,   29),
+  20,  50, 1, 'd', '33d8'  , '1 3 1d4|1 3 1d4|1 2 1d6'        ,   29),
 ('Young White Dragon'       ,%X'1F00000A',%X'0040100B',%X'2005',  700,  275,
-  20,  50, 1, 'd', '23d8'  , '1 3 1d4|1 3 1d4|1 2 1d6'        ,   29),
+  20,  50, 1, 'd', '32d8'  , '1 3 1d4|1 3 1d4|1 2 1d6'        ,   29),
 ('Young Green Dragon'       ,%X'1F00000A',%X'0010100B',%X'2005',  700,  290,
-  20,  50, 1, 'd', '24d8'  , '1 3 1d4|1 3 1d4|1 2 1d6'        ,   29),
+  20,  50, 1, 'd', '32d8'  , '1 3 1d4|1 3 1d4|1 2 1d6'        ,   29),
 ('Giant Fire Bat'           ,%X'00000012',%X'00000000',%X'2050',  100,   85,
   14,  30, 2, 'b', '5d8'   , '5 2 3d6|1 3 1d4|1 3 1d4'        ,   29),
 ('Giant Glowing Rat'        ,%X'0020000A',%X'00000000',%X'2070',  200,    4,
    8,  24, 1, 'r', '3d3'   , '8 2 2d6'                        ,   29),
-	{ Now things are going to get tough...			}
-	{ Some of the creatures have Max hit points, denoted in	}
-	{ their CDEFENSE flags as the '4000' bit set		}
+	{ Now things are going to get tough...                  }
+	{ Some of the creatures have Max hit points, denoted in }
+	{ their CDEFENSE flags as the '4000' bit set            }
 ('Skeleton Troll'           ,%X'00020002',%X'00000000',%X'500C',  400,  225,
-  20,  55, 1, 's', '16d8'  , '1 1 1d6|1 1 1d6|1 2 3d4'        ,   30),
+  20,  55, 1, 's', '14d8'  , '1 1 1d6|1 1 1d6|1 2 3d4'        ,   30),
 ('Giant Lightning Bat'      ,%X'0000000A',%X'00000000',%X'2042',  100,   80,
   15,  34, 2, 'b', '8d8'   , '8 2 3d8|1 3 1d5|1 3 1d5'        ,   30),
 ('Giant Static Ant'         ,%X'0000000A',%X'00000000',%X'0002',  600,   80,
   10,  40, 1, 'a', '8d8'   , '8 2 5d5'                        ,   30),
 ('Grave Wight'              ,%X'0F02000A',%X'0000190A',%X'512E',  300,  325,
-  20,  35, 1, 'W', '13d8'  , '1 1 1d7|1 1 1d7|19 5 20d8'      ,   30),
-('Slicer Beetle'            ,%X'0000000A',%X'00000000',%X'0012',  300,  200,
-  14,  55, 1, 'B', '25d8'  , '1 2 5d8'                        ,   30),
+  20,  35, 1, 'W', '12d8'  , '1 1 1d7|1 1 1d7|19 5 20d8'      ,   30),
+('Killer Slicer Beetle'     ,%X'0000000A',%X'00000000',%X'0012',  300,  200,
+  14,  55, 1, 'K', '22d8'  , '1 2 5d8'                        ,   30),
 ('Giant White Ant Lion'     ,%X'0008000A',%X'00000000',%X'0022',  400,  175,
-  12,  45, 1, 'A', '22d8'  , '7 2 3d10'                       ,   30),
-('Ghost'                    ,%X'1715000A',%X'0000002F',%X'500C',  100,  350,
-  20,  30, 2, 'G', '14d8'  , '4 7 0d0|19 5 22d8|17 3 1d10'    ,   31),
+  12,  45, 1, 'A', '20d8'  , '7 2 3d10'                       ,   30),
+('Ghost'                    ,%X'1715000A',%X'0001002F',%X'500C',  100,  350,
+  20,  30, 2, 'G', '13d8'  , '4 7 0d0|19 5 22d8|17 3 1d10'    ,   31),
 ('Giant Black Ant Lion'     ,%X'0008000A',%X'00000000',%X'0032',  400,  170,
-  14,  45, 1, 'A', '25d8'  , '1 2 2d12|6 9 3d6'               ,   31),
+  14,  45, 1, 'A', '23d8'  , '1 2 2d12|6 9 3d6'               ,   31),
 ('Death Watch Beetle'       ,%X'0000000A',%X'00000000',%X'0012',  300,  190,
-  16,  60, 1, 'B', '29d8'  , '1 2 5d4|1 10 5d6'               ,   31),
+  16,  60, 1, 'K', '25d8'  , '1 2 5d4|1 10 5d6'               ,   31),
 ('Ogre Magi'                ,%X'07020002',%X'0000A356',%X'403C',  300,  250,
   20,  42, 1, 'o', '14d8'  , '1 1 3d6'                        ,   31),
 ('Crystal Ooze'             ,%X'07390009',%X'00000000',%X'0092',  600,    8,
    5,  30,-1, 'O', '12d8'  , '7 5 4d4'                        ,   31),
 ('Two-Headed Troll'         ,%X'0F020002',%X'00000000',%X'6026',  500,  275,
-  20,  48, 1, 'T', '16d8'  , '1 1 1d8|1 1 1d8|1 2 1d6|1 2 1d6',   32),
+  20,  48, 1, 'T', '14d8'  , '1 1 1d8|1 1 1d8|1 2 1d6|1 2 1d6',   32),
 ('Invisible Stalker'        ,%X'00030022',%X'00000000',%X'0000',  200,  200,
   20,  46, 3, 'E', '19d8'  , '1 1 1d6'                        ,   32),
 ('Giant Hunter Ant'         ,%X'00000002',%X'00000000',%X'0002',   10,  150,
   16,  40, 1, 'a', '12d8'   , '1 2 4d8'                        ,   32),
 ('Ninja'                    ,%X'0F020002',%X'00000000',%X'6030',  100,  300,
-  20,  65, 1, 'p', '12d8'  , '14 1 3d4|2 1 3d4'               ,   32),
+  20,  65, 1, 'p', '15d8'  , '14 1 3d4|2 1 3d4'               ,   32),
 ('Barrow Wight'             ,%X'0F02000A',%X'00001308',%X'512E',  100,  375,
-  20,  40, 1, 'W', '14d8'  , '1 1 1d8|1 1 1d8|19 5 26d8'      ,   33),
+  20,  40, 1, 'W', '13d8'  , '1 1 1d8|1 1 1d8|19 5 26d8'      ,   33),
 ('Skeleton 2-Headed Troll'  ,%X'00020002',%X'00000000',%X'500C',  200,  325,
   20,  48, 1, 's', '20d8'  , '1 1 1d9|1 1 1d9|1 2 1d5|1 2 1d5',   33),
 ('Water Elemental'          ,%X'0000000A',%X'00000000',%X'0020',  500,  325,
   12,  36, 1, 'E', '25d8'  , '1 1 1d10|1 1 1d10'              ,   33),
 ('Fire Elemental'           ,%X'000A0012',%X'00000000',%X'2010',  700,  350,
-  16,  40, 0, 'E', '27d8'  , '5 1 4d6'                        ,   33),
-('Lich'                     ,%X'1F020002',%X'00009F75',%X'500C',  600,  750,
-  20,  50, 1, 'L', '27d8'  , '4 7 1d6|15 5 2d8|19 5 30d8'     ,   34),
+  16,  40, 0, 'E', '25d8'  , '5 1 4d6'                        ,   33),
+('Lich'                     ,%X'1F020002',%X'00019F75',%X'500C',  600,  750,
+  20,  50, 1, 'L', '25d8'  , '15 5 2d8|19 5 30d8|24 5 0d0'    ,   34),
 ('Master Vampire'           ,%X'17000002',%X'00001307',%X'512E',  100,  700,
-  20,  55, 1, 'V', '25d8'  , '1 1 1d6|1 1 1d6|19 5 32d8'      ,   34),
+  20,  55, 1, 'V', '23d8'  , '1 1 1d6|1 1 1d6|19 5 32d8'      ,   34),
 ('Spirit Troll'             ,%X'00040002',%X'00000000',%X'402E',  100,  425,
-  20,  56, 1, 'T', '16d8'  , '1 3 1d5|1 3 1d5|1 2 1d6'        ,   34),
+  20,  56, 1, 'T', '15d8'  , '1 3 1d5|1 3 1d5|1 2 1d6'        ,   34),
 ('Giant Red Scorpion'       ,%X'0000000A',%X'00000000',%X'0002',  400,  275,
-  12,  50, 2, 'S', '19d8'  , '1 2 1d6|14 4 1d4'               ,   34),
+  12,  50, 2, 'S', '18d8'  , '1 2 1d6|14 4 1d4'               ,   34),
 ('Earth Elemental'          ,%X'001A0002',%X'00000000',%X'0200',  900,  375,
-  10,  60, 0, 'E', '31d8'  , '1 1 4d6|1 1 4d6'                ,   34),
+  10,  60, 0, 'E', '30d8'  , '1 1 4d6|1 1 4d6'                ,   34),
 ('Young Black Dragon'       ,%X'1F00000A',%X'0020100B',%X'6005',  500,  600,
-  20,  55, 1, 'd', '24d8'  , '1 3 1d5|1 3 1d5|1 2 1d6'        ,   35),
+  20,  55, 1, 'd', '32d8'  , '1 3 1d5|1 3 1d5|1 2 1d6'        ,   35),
 ('Young Red Dragon'         ,%X'1F00000A',%X'0080100A',%X'6015',  500,  650,
-  20,  60, 1, 'd', '25d8'  , '1 3 1d8|1 3 1d8|1 2 2d8'        ,   35),
-('Necromancer'              ,%X'13020002',%X'00005763',%X'6030',  100,  600,
-  20,  40, 1, 'p', '15d8'  , '1 1 2d6'                        ,   35),
+  20,  60, 1, 'd', '36d8'  , '1 3 1d8|1 3 1d8|1 2 2d8'        ,   35),
+('Necromancer'              ,%X'13020002',%X'00005762',%X'6030',  100,  600,
+  20,  40, 1, 'p', '17d8'  , '1 1 2d6'                        ,   35),
 ('Mummified Troll'          ,%X'0F020002',%X'00000000',%X'502C',  500,  400,
   20,  38, 1, 'M', '18d8'  , '1 1 2d6|1 1 2d6'                ,   35),
 ('Giant Red Ant Lion'       ,%X'00080009',%X'00000000',%X'0032',  400,  350,
-  14,  48, 1, 'A', '25d8'  , '5 2 3d12'                       ,   35),
+  14,  48, 1, 'A', '23d8'  , '5 2 3d12'                       ,   35),
 ('Mature White Dragon'      ,%X'2F00000A',%X'0040100A',%X'4005',  700, 1000,
-  20,  65, 1, 'd', '30d8'  , '1 3 1d8|1 3 1d8|1 2 2d8'        ,   35),
+  20,  65, 1, 'd', '48d8'  , '1 3 1d8|1 3 1d8|1 2 2d8'        ,   35),
 ('Xorn'                     ,%X'00160002',%X'00000000',%X'4200',  100,  650,
-  20,  80, 1, 'X', '19d8'  , '1 1 1d6|1 1 1d6|1 1 1d6'        ,   36),
+  20,  80, 1, 'X', '20d8'  , '1 1 1d6|1 1 1d6|1 1 1d6'        ,   36),
 ('Giant Mottled Ant Lion'   ,%X'0008000A',%X'00000000',%X'0032',  400,  350,
-  14,  50, 2, 'A', '26d8 ' , '1 2 2d10'                       ,   36),
-('Grey Wraith'              ,%X'0F02000A',%X'00001308',%X'512E',  100,  700,
-  20,  50, 1, 'W', '15d8'  , '1 1 1d10|1 1 1d10|19 5 34d8'    ,   36),
+  14,  50, 2, 'A', '24d8 ' , '1 2 2d10'                       ,   36),
+('Grey Wraith'              ,%X'0F02000A',%X'00011308',%X'512E',  100,  700,
+  20,  50, 1, 'W', '23d8'  , '1 1 1d10|1 1 1d10|19 5 34d8'    ,   36),
 ('Young Multi-Hued Dragon'  ,%X'7F00000A',%X'00F81005',%X'6005',  500, 1250,
-  20,  55, 1, 'd', '32d8'  , '1 3 1d9|1 3 1d9|1 2 2d10'       ,   36),
+  20,  55, 1, 'd', '40d8'  , '1 3 1d9|1 3 1d9|1 2 2d10'       ,   36),
 ('Mature Blue Dragon'       ,%X'2F00000A',%X'00081009',%X'6005',  400, 1200,
-  20,  75, 1, 'd', '31d8'  , '1 3 1d8|1 3 1d8|1 2 2d10'       ,   36),
+  20,  75, 1, 'd', '48d8'  , '1 3 1d8|1 3 1d8|1 2 2d10'       ,   36),
 ('Mature Green Dragon'      ,%X'1F00000A',%X'0010100A',%X'6005',  700, 1100,
-  20,  70, 1, 'd', '30d8'  , '1 3 1d4|1 3 1d4|1 2 1d6'        ,   36),
-('Giant Iridescent Beetle'  ,%X'0000000A',%X'00000000',%X'0012',  300,  850,
-  16,  60, 1, 'B', '34d8'  , '1 2 4d6|1 1 1d12|11 7 0d0'      ,   37),
+  20,  70, 1, 'd', '48d8'  , '1 3 1d4|1 3 1d4|1 2 1d6'        ,   36),
+('Iridescent Beetle'        ,%X'0000000A',%X'00000000',%X'0012',  300,  850,
+  16,  60, 1, 'K', '32d8'  , '1 2 4d6|1 1 1d12|11 7 0d0'      ,   37),
 ('King Vampire'             ,%X'17000002',%X'00001307',%X'512E',  100, 1000,
-  20,  65, 1, 'V', '30d8'  , '1 1 1d6|1 1 1d6|19 5 38d8'      ,   37),
-('King Lich'                ,%X'1F020002',%X'00009F73',%X'500C',  500, 1400,
-  20,  65, 1, 'L', '45d8'  , '4 7 1d8|15 5 2d10|19 5 36d8'    ,   37),
+  20,  65, 1, 'V', '38d8'  , '1 1 1d6|1 1 1d6|19 5 38d8'      ,   37),
+('King Lich'                ,%X'1F020002',%X'00019F73',%X'500C',  500, 1400,
+  20,  65, 1, 'L', '52d8'  , '15 5 2d10|19 5 36d8|24 5 0d0'   ,   37),
 ('Mature Red Dragon'        ,%X'2F00000A',%X'00801808',%X'6015',  300, 1400,
-  20,  80, 1, 'd', '42d8'  , '1 3 1d10|1 3 1d10|1 2 2d12'     ,   37),
+  20,  80, 1, 'd', '60d8'  , '1 3 1d10|1 3 1d10|1 2 2d12'     ,   37),
 ('Mature Black Dragon'      ,%X'2F00000A',%X'00201009',%X'6005',  700, 1350,
-  20,  55, 1, 'd', '40d8'  , '1 3 1d8|1 3 1d8|1 2 2d10'       ,   37),
+  20,  55, 1, 'd', '58d8'  , '1 3 1d8|1 3 1d8|1 2 2d10'       ,   37),
 ('Mature Multi-Hued Dragon' ,%X'7F00000A',%X'00F81A05',%X'6005',  500, 1650,
-  20,  65, 1, 'd', '45d8'  , '1 3 1d10|1 3 1d10|1 2 2d12'     ,   38),
+  20,  65, 1, 'd', '80d8'  , '1 3 1d10|1 3 1d10|1 2 2d12'     ,   38),
 ('Ancient White Dragon'     ,%X'4F000002',%X'00401A08',%X'4005',  800, 1500,
-  20,  80, 2, 'd', '50d8'  , '1 3 1d8|1 3 1d8|1 2 2d8'        ,   38),
+  20,  80, 2, 'D', '88d8'  , '1 3 1d8|1 3 1d8|1 2 2d8'        ,   38),
 ('Emperor Wight'            ,%X'1B02000A',%X'00001306',%X'512E',  100, 1600,
-  20,  40, 2, 'W', '35d8'  , '1 1 1d12|1 1 1d12|19 5 42d8'    ,   38),
+  20,  40, 2, 'W', '48d8'  , '1 1 1d12|1 1 1d12|19 5 42d8'    ,   38),
 ('Black Wraith'             ,%X'1F02000A',%X'00001307',%X'512E',  100, 1700,
-  20,  55, 1, 'W', '37d8'  , '1 1 1d12|1 1 1d12|19 5 44d8'    ,   38),
+  20,  55, 1, 'W', '50d8'  , '1 1 1d12|1 1 1d12|19 5 44d8'    ,   38),
 ('Nether Wraith'            ,%X'1F07000A',%X'00005316',%X'512E',  100, 2100,
-  20,  55, 1, 'W', '38d8'  , '1 1 1d12|1 1 1d12|19 5 52d8'    ,   39),
+  20,  55, 1, 'W', '58d8'  , '1 1 1d12|1 1 1d12|19 5 52d8'    ,   39),
 ('Sorcerer'                 ,%X'13020002',%X'0000FF73',%X'6030',  100, 2150,
-  20,  50, 2, 'p', '20d8'  , '1 1 2d8'                        ,   39),
+  20,  50, 2, 'p', '30d8'  , '1 1 2d8'                        ,   39),
 ('Ancient Blue Dragon'      ,%X'4F000002',%X'00081A08',%X'6005',  800, 2500,
-  20,  90, 2, 'd', '52d8'  , '1 3 1d9|1 3 1d9|1 2 2d12'       ,   39),
+  20,  90, 2, 'D', '87d8'  , '1 3 1d9|1 3 1d9|1 2 2d12'       ,   39),
 ('Ancient Green Dragon'     ,%X'4F000002',%X'00101A09',%X'6005',  700, 2400,
-  20,  85, 2, 'd', '54d8'  , '1 3 1d8|1 3 1d8|1 2 2d10'       ,   39),
+  20,  85, 2, 'D', '90d8'  , '1 3 1d8|1 3 1d8|1 2 2d10'       ,   39),
 ('Ancient Black Dragon'     ,%X'4F000002',%X'00201A07',%X'6005',  700, 2500,
-  20,  90, 2, 'd', '56d8'  , '1 3 1d9|1 3 1d9|1 2 2d10'       ,   39),
+  20,  90, 2, 'D', '90d8'  , '1 3 1d9|1 3 1d9|1 2 2d10'       ,   39),
 ('Disenchanter Worms'       ,%X'00200022',%X'00000000',%X'01B0',  100,   30,
-   5,   5, 0, 'w', '12d8'  , '21 12 1d4'                      ,   40),
+   5,   5, 0, 'w', '10d8'  , '21 12 1d4'                      ,   40),
+('Rotting Quylthulg'        ,%X'00010000',%X'00004010',%X'5000',    0, 1000,
+  20,   1, 2, 'Q', '12d8'  , '0 0 0d0'                        ,   40),
 ('Ancient Red Dragon'       ,%X'7F000002',%X'00801E06',%X'6015',  500, 2750,
-  20, 100, 2, 'd', '60d8'  , '1 3 1d10|1 3 1d10|1 2 2d14'     ,   40),
-('Emperor Lich'             ,%X'2F020002',%X'00009F72',%X'500C',  500,10000,
-  20,  75, 2, 'L', '180d8' , '4 7 1d10|15 5 2d12|19 5 46d8'   ,   40),
+  20, 100, 2, 'D', '105d8' , '1 3 1d10|1 3 1d10|1 2 2d14'     ,   40),
+('Death Quasit'             ,%X'1103000A',%X'000010FA',%X'0004',    0, 1000,
+  20,  80, 3, 'q', '55d8'  , '15 2 3d6|1 3 3d3|1 3 3d3'       ,   40),
+('Emperor Lich'             ,%X'2F020002',%X'00019F72',%X'500C',  500,10000,
+  20,  75, 2, 'L', '190d8' , '15 5 2d12|19 5 46d8|24 5 0d0'   ,   40),
 ('Ancient Multi-Hued Dragon',%X'7F000002',%X'00F89E05',%X'6005',  500,12000,
-  20, 100, 2, 'd', '200d8' , '1 3 1d12|1 3 1d12|1 2 3d12'     ,   40),
-	{ Winning creatures should follow here.				}
-	{ Winning creatures are denoted by the 32 bit in CMOVE		}
-('Balrog'		    ,%X'800B0002',%X'0080FF54',%X'5004',    0,50000,
-  20, 125, 2, 'D', '300d8' , '5 1 4d18|1 17 3d18',               100)
+  20, 100, 2, 'D', '260d8' , '1 3 1d12|1 3 1d12|1 2 3d12'     ,   40),
+	{ Winning creatures should follow here.                         }
+	{ Winning creatures are denoted by the 32 bit in CMOVE          }
+	{ Iggy is not a win creature, just a royal pain in the ass...   }
+('Evil Iggy'                ,%X'7F130002',%X'0001D713',%X'5004',    0,18000,
+  20,  80, 2, 'p', '300d8' , '2 1 4d6|13 19 0d0'               ,   50),
+	{ Here is the only actual win creature...                       }
+('Balrog'                   ,%X'FF1F0002',%X'0081C743',%X'5004',    0,55000,
+  20, 125, 3, 'B', '375d8' , '5 1 10d12|1 17 8d12|24 5 0d0'    ,  100)
 				);
 
 	blank_monster	:= (0,0,0,0,0,0,0,0,0,false,false);

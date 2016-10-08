@@ -1,5 +1,5 @@
 	{ This save package was brought to by			-JWT-
-	  and							-RAK-	}
+	  and                                                   -RAK-   }
 
 
 	{ Data Corruption means character is dead, or save file was -RAK-
@@ -16,10 +16,10 @@
 	{ Uses XOR function to encode data			-RAK-	}
 [psect(save$code)] procedure coder(var line : ntype);
       var
-		i1			: integer;
-		i2,i3,i4		: unsigned;
+		i1                      : integer;
+		i2,i3,i4                : unsigned;
       begin
- 	for i1 := 1 to length(line) do
+	for i1 := 1 to length(line) do
 	  begin
 	    i2 := uint(ord(line[i1]));
 	    i3 := uint(randint(256)-1);
@@ -30,11 +30,11 @@
 
 
 	{ Encrypts a line of text, complete with a data-check sum-RAK-	}
-	{ (original by JWT)						}
+	{ (original by JWT)                                             }
 [psect(save$code)] procedure encrypt(var line : ntype);
       var
-	i1,i2		: integer;
-	temp		: ntype;
+	i1,i2           : integer;
+	temp            : ntype;
 
       begin
 	i2 := 0;
@@ -47,12 +47,12 @@
 
 
 	{ Decrypts a line of text, complete with a data-check sum-RAK-	}
-	{ (original by JWT)						}
+	{ (original by JWT)                                             }
 [psect(save$code)] procedure decrypt(var line : ntype);
       var
-	i1,i2,i3	: integer;
-	temp		: ntype;
-	tmp		: char;
+	i1,i2,i3        : integer;
+	temp            : ntype;
+	tmp             : char;
 
       begin
 	i2 := 0;
@@ -65,24 +65,24 @@
       end;
 
 
-	{ Actual save procedure				-RAK- & -JWT-	}
+	{ Actual save procedure 			-RAK- & -JWT-	}
 [psect(save$code)] function save_char : boolean;
       var
-	tot_monsters,tot_treasure		: integer;
-	i1,i2,trys				: integer;
-	xfloor					: unsigned;
-	save_seed				: unsigned;
-	fnam					: vtype;
-	temp					: packed array [1..70] of char;
-	out_rec,title1,title2			: ntype;
-	f1					: text;
-	f2					: file of key_type; 
-	flag,file_flag				: boolean;
+	tot_monsters,tot_treasure               : integer;
+	i1,i2,trys                              : integer;
+	xfloor                                  : unsigned;
+	save_seed                               : unsigned;
+	fnam                                    : vtype;
+	temp                                    : packed array [1..70] of char;
+	out_rec,title1,title2                   : ntype;
+	f1                                      : text;
+	f2                                      : file of key_type;
+	flag,file_flag                          : boolean;
 
       begin
 	prt('Enter Filename:',1,1);
 	flag := false;
-	{ Open the user's save file				-JWT-	}
+	{ Open the user's save file                             -JWT-   }
 	if (get_string(fnam,1,17,60)) then
 	  begin
 	    if (length(fnam) = 0) then fnam := 'MORIACHR.SAV';
@@ -92,7 +92,7 @@
 	    else
 	      flag := true;
 	  end;
-	{ Make an attempt to open the MASTER file		-JWT-	}
+	{ Make an attempt to open the MASTER file               -JWT-   }
 	if (flag) then
 	  begin
 	    rewrite(f1,error:=continue);
@@ -104,15 +104,15 @@
 	      begin
 		priv_switch(0);
 		open (f2,file_name:=moria_mas,
-		        error:=continue,access_method:=keyed,
-		        organization:=indexed,history:=new,sharing:=readwrite);
+			error:=continue,access_method:=keyed,
+			organization:=indexed,history:=new,sharing:=readwrite);
 	      end;
 	      if (status(f2) <> 0) then
-	        begin
+		begin
 		  msg_print('Error saving character, contact MORIA Wizard.');
 		  close(f1,error:=continue);
 		  flag := false;
-	        end;
+		end;
 	  end;
 	{ Make an attempt to create a unique ID and write to MASTER -RAK-}
 	if (flag) then
@@ -123,28 +123,28 @@
 	      for i1 := 1 to 70 do temp[i1] := chr(31+randint(95));
 	      title1 := temp;
 	      seed := encrypt_seed1;
-	      encrypt(title1);
+	      coder(title1);
 	      for i1 := 1 to 70 do
-	        key_rec.file_id[i1] := title1[i1];
+		key_rec.file_id[i1] := title1[i1];
 	      f2^ := key_rec;
 	      put(f2,error:=continue);
 	      if (status(f2) <> 0) then
 		begin
 		  trys := trys + 1;
-		  if (trys > 5) then 
+		  if (trys > 5) then
 		    begin
 		      file_flag := true;
 		      flag := false;
 		      msg_print('Error in writing to MASTER.');
 		    end;
-	        end
+		end
 	      else
 		file_flag := true;
 	    until(file_flag);
 	    close(f2,error:=continue);
 	    priv_switch(0);
 	  end;
-	{ If ID was written to MASTER, continue saving		-RAK-	}
+	{ If ID was written to MASTER, continue saving          -RAK-   }
 	if (flag) then
 	  begin
 	    save_seed := get_seed;
@@ -157,12 +157,12 @@
 	    clear(1,1);
 	    prt('Saving character...',1,1);
 	    put_qio;
-		{ Version number of Moria		}
-	    writev(out_rec,save_file_version);
+		{ Version number of Moria               }
+	    writev(out_rec,cur_version);
 	    encrypt(out_rec);
 	    writeln(f1,out_rec,error:=continue);
 
-		{ Write out the player record. 	}
+		{ Write out the player record.	}
 	    with py.misc do
 	      begin
 		writev(out_rec,name);
@@ -301,11 +301,12 @@
 	      end;
 
 	    for i1 := 1 to 31 do
-	      begin
-		writev(out_rec,magic_spell[py.misc.pclass,i1].learned:5);
-		encrypt(out_rec);
-		writeln(f1,out_rec,error:=continue)
-	      end;
+	      with magic_spell[py.misc.pclass,i1] do
+		begin
+		  writev(out_rec,learned:5,' ',sexp:5);
+		  encrypt(out_rec);
+		  writeln(f1,out_rec,error:=continue)
+		end;
 
 		{ Write the important dungeon info and floor	-RAK-	}
 	    begin
@@ -379,7 +380,7 @@
 	      encrypt(out_rec);
 	      writeln(f1,out_rec,error:=continue);
 
-		{ Save the Monster List			}
+		{ Save the Monster List 		}
 	      i1 := muptr;
 	      tot_monsters := 0;
 	      if (i1 > 0) then
@@ -412,13 +413,13 @@
 	      for i1 := 1 to max_stores do
 		with store[i1] do
 		  begin
-		{ Save items...			}
+		{ Save items...                 }
 		    writev(out_rec,store_ctr:1);
 		    encrypt(out_rec);
 		    writeln(f1,out_rec,error:=continue);
 		    for i2 := 1 to store_ctr do
 		      with store_inven[i2].sitem do
-		        begin
+			begin
 			  writev(out_rec,store_inven[i2].scost);
 			  encrypt(out_rec);
 			  writeln(f1,out_rec,error:=continue);
@@ -434,7 +435,7 @@
 				level:1,' ',cost:1);
 			  encrypt(out_rec);
 			  writeln(f1,out_rec,error:=continue);
-		        end;
+			end;
 		    if (store_open > turn) then
 		      store_open := store_open - turn + 15
 		    else
@@ -448,7 +449,7 @@
 	  end;
 	if (flag) then
 	  begin
-	    writev(out_rec,'Character saved. [Moria Version M',
+	    writev(out_rec,'Character saved. [Moria Version ',
 						cur_version:5:2,']');
 	    prt(out_rec,1,1);
 	    exit;
@@ -461,15 +462,15 @@
 	{ Restore a saved game				-RAK- & -JWT-	}
 [psect(save$code)] function get_char(fnam : vtype) : boolean;
       var
-	tot_treasures,tot_monsters		: integer;
-	i1,i2,i3,i4,dummy			: integer;
-	xfloor,save_seed			: unsigned;
-	save_version				: real;
-	in_rec,temp				: ntype;
-	temp_id					: packed array [1..70] of char;
-	f1					: text;
-	f2					: file of key_type;
-	dun_flag	 			: boolean;
+	tot_treasures,tot_monsters              : integer;
+	i1,i2,i3,i4,dummy                       : integer;
+	xfloor,save_seed                        : unsigned;
+	save_version                            : real;
+	in_rec,temp                             : ntype;
+	temp_id                                 : packed array [1..70] of char;
+	f1                                      : text;
+	f2                                      : file of key_type;
+	dun_flag                                : boolean;
 
       begin
 	dun_flag := false;
@@ -490,7 +491,7 @@
 	readv(temp,save_seed);
 	temp := substr(in_rec,14,70);
 	seed := encrypt_seed1;
-	encrypt(temp);
+	coder(temp);
 	temp_id := temp;
 	priv_switch(1);
 	open (f2,file_name:=moria_mas,
@@ -513,19 +514,17 @@
 	readln(f1,in_rec);
 	decrypt(in_rec);
 	readv(in_rec,save_version);
-	if (save_version <> save_file_version) then
+	if (save_version <> cur_version) then
 	  begin
 	    prt('Save file is incompatable with this version.',2,1);
 	    writev(in_rec,'  [Save file version ',save_version:5:2,']');
 	    prt(in_rec,3,1);
-	    writev(in_rec,'  [Moria version    M',cur_version:5:2,']');
+	    writev(in_rec,'  [Moria version     ',cur_version:5:2,']');
 	    prt(in_rec,4,1);
-	    if (save_version > 4.2) then
-	      prt('Updating character for newer version...',5,1)
-	    else if (save_version > 4.0) then
+	    if (save_version > 4.0) then
 	      begin
-	        prt('Updating character for newer version...',5,1);
-	        dun_flag := true;
+		prt('Updating character for newer version...',5,1);
+		dun_flag := true;
 	      end
 	    else
 	      exit;
@@ -653,17 +652,31 @@
 			tim_infra);
 	  end;
 
-	for i1 := 1 to 31 do
+	{ Older version characters do not store experience...	}
+	if (dun_flag) then
 	  begin
-	    readln(f1,in_rec);
-	    decrypt(in_rec);
-	    readv(in_rec,magic_spell[py.misc.pclass,i1].learned)
+	    for i1 := 1 to 31 do
+	      begin
+		readln(f1,in_rec);
+		decrypt(in_rec);
+		readv(in_rec,magic_spell[py.misc.pclass,i1].learned)
+	      end;
+	  end
+	else
+	  begin
+	    for i1 := 1 to 31 do
+	      with magic_spell[py.misc.pclass,i1] do
+		begin
+		  readln(f1,in_rec);
+		  decrypt(in_rec);
+		  readv(in_rec,learned,sexp)
+		end;
 	  end;
 
 		{ If same version, restore dungeon level...	}
 	if (not(dun_flag)) then
 	  begin
-		{ Read the important dungeon info and floor	}
+		{ Read the important dungeon info and floor     }
 	    readln(f1,in_rec);
 	    decrypt(in_rec);
 	    readv(in_rec,cur_height,cur_width,max_panel_rows,max_panel_cols);
@@ -671,23 +684,23 @@
 		{ Restore the floor	}
 	    for i1 := 1 to cur_height do
 	      begin
-	        readln(f1,in_rec);
-	        decrypt(in_rec);
-	        for i2 := 1 to cur_width do
+		readln(f1,in_rec);
+		decrypt(in_rec);
+		for i2 := 1 to cur_width do
 		  begin
 		    xfloor := ord(in_rec[i2]);
 		    with cave[i1,i2] do
 		      begin
-		        fval := int(uand(%X'0F',xfloor));
-		        if (uand(%X'10',xfloor) <> 0) then
+			fval := int(uand(%X'0F',xfloor));
+			if (uand(%X'10',xfloor) <> 0) then
 			  fopen := true;
-		        if (uand(%X'20',xfloor) <> 0) then
+			if (uand(%X'20',xfloor) <> 0) then
 			  pl := true;
-		        if (uand(%X'40',xfloor) <> 0) then
+			if (uand(%X'40',xfloor) <> 0) then
 			  fm := true;
-		        tl := false;
-		        tptr := 0;
-		        cptr := 0;
+			tl := false;
+			tptr := 0;
+			cptr := 0;
 		      end;
 		  end;
 	      end;
@@ -699,12 +712,12 @@
 	    readv(in_rec,tot_treasures);
 	    for i1 := 1 to tot_treasures do
 	      begin
-	        popt(i2);
-	        with t_list[i2] do
+		popt(i2);
+		with t_list[i2] do
 		  begin
-	            readln(f1,in_rec);
-	            decrypt(in_rec);
-	            readv(in_rec,i3,i4);
+		    readln(f1,in_rec);
+		    decrypt(in_rec);
+		    readv(in_rec,i3,i4);
 		    cave[i3,i4].tptr := i2;
 
 		    readln(f1,in_rec);
@@ -727,9 +740,9 @@
 	    decrypt(in_rec);
 	    for i1 := 1 to max_objects do
 	      if (in_rec[i1] = 'T') then
-	        identify(object_list[i1])
+		identify(object_list[i1])
 	      else
-	        object_ident[i1] := false;
+		object_ident[i1] := false;
 
 		{ Restore the Monster List		}
 	    mlink;
@@ -739,14 +752,14 @@
 	    i3 := 0;
 	    for i1 := 1 to tot_monsters do
 	      begin
-	        readln(f1,in_rec);
-	        decrypt(in_rec);
-	        popm(i2);
-	        with m_list[i2] do
+		readln(f1,in_rec);
+		decrypt(in_rec);
+		popm(i2);
+		with m_list[i2] do
 		  begin
 		    readv(in_rec,fy,fx,mptr,hp,cspeed,csleep,cdis,ml,confused);
 		    cave[fy,fx].cptr := i2;
-		    if (muptr = 0) then 
+		    if (muptr = 0) then
 		      muptr := i2
 		    else
 		      m_list[i3].nptr := i2;
@@ -755,18 +768,18 @@
 		  end;
 	      end;
 
-		{ Restore the town level stores		}
+		{ Restore the town level stores 	}
 	    readln(f1,in_rec);
 	    decrypt(in_rec);
 	    readv(in_rec,town_seed);
 	    for i1 := 1 to max_stores do
 	      with store[i1] do
-	        begin
+		begin
 		  readln(f1,in_rec);
 		  decrypt(in_rec);
 		  readv(in_rec,i2);
 		  store_ctr := i2;
-		{ If not current version then re-outfit the stores	}
+		{ If not current version then re-outfit the stores      }
 		  if (dun_flag) then
 		    begin
 		      i2 := 0;
@@ -792,7 +805,7 @@
 		  readln(f1,in_rec);
 		  decrypt(in_rec);
 		  readv(in_rec,owner,insult_cur,store_open);
-	        end;
+		end;
 	    store_maint;
 	  end;
 
@@ -809,13 +822,13 @@
 	{ Wizard command for restoring character		-RAK-	}
 [psect(save$code)] procedure restore_char;
       var
-	i1					: integer;
-	fnam					: vtype;
-	in_rec,temp				: ntype;
-	temp_id					: packed array [1..70] of char;
-	f1					: text;
-	f2					: file of key_type;
-	flag					: boolean;
+	i1                                      : integer;
+	fnam                                    : vtype;
+	in_rec,temp                             : ntype;
+	temp_id                                 : packed array [1..70] of char;
+	f1                                      : text;
+	f2                                      : file of key_type;
+	flag                                    : boolean;
 
       begin
 	prt('Name of file to be restored: ',1,1);
@@ -829,12 +842,12 @@
 	    else
 	      begin
 		flag := true;
-	        open (f2,file_name:=moria_mas,
+		open (f2,file_name:=moria_mas,
 			access_method:=keyed,organization:=indexed,
 			history:=old,sharing:=readwrite,error:=continue);
-	        if (status(f2) <> 0) then
+		if (status(f2) <> 0) then
 		  begin
-	            open (f2,file_name:=moria_mas,
+		    open (f2,file_name:=moria_mas,
 			access_method:=keyed,organization:=indexed,
 			history:=new,sharing:=readwrite,error:=continue);
 		    if (status(f2) <> 0) then
@@ -845,26 +858,26 @@
 		  end;
 		if (flag) then
 		  begin
-	            reset(f1,error:=continue);
-	            readln(f1,in_rec,error:=continue);
-	            seed := encrypt_seed2;
-	            decrypt(in_rec);
+		    reset(f1,error:=continue);
+		    readln(f1,in_rec,error:=continue);
+		    seed := encrypt_seed2;
+		    decrypt(in_rec);
 		    temp := substr(in_rec,14,70);
 		    seed := encrypt_seed1;
-		    encrypt(temp);
+		    coder(temp);
 		    for i1 := 1 to 70 do
 		      key_rec.file_id[i1] := temp[i1];
-	            findk(f2,0,temp_id,eql,error:=continue);
-	            delete(f2,error:=continue);
-	            f2^ := key_rec;
-	            put(f2,error:=continue);
-	            if (status(f2) = 0) then
-	              msg_print('Character restored...')
+		    findk(f2,0,temp_id,eql,error:=continue);
+		    delete(f2,error:=continue);
+		    f2^ := key_rec;
+		    put(f2,error:=continue);
+		    if (status(f2) = 0) then
+		      msg_print('Character restored...')
 		    else
 		      msg_print('Could not write ID in MASTER.');
 		  end;
-	        close(f1,error:=continue);
-	        close(f2,error:=continue);
+		close(f1,error:=continue);
+		close(f2,error:=continue);
 	      end;
 	    seed := get_seed;
 	    priv_switch(0);
