@@ -1,0 +1,22 @@
+
+	In VMS 4.0 the following device driver bug is fixed:
+
+	VAX/VMS Systems Dispatch, March 1985; AD-L034A-24
+	Page 26
+	Process hangs in LEF wait state
+
+	This  bug was a problem in MORIA.  It was fixed by pausing just
+	before requesting input via QIO.  If you are running VMS 4.0 or
+	greater, you should  remove these pauses from IO.INC.  Comments
+	showing what code should be removed are placed just before each
+	affected section.  You may search for  'VMS 4.0'  to locate all
+	of these sections.
+
+	In addition, you should remove comments around a single line of
+	code  in  MORIA.INC.   This line causes the player to hibernate
+	one  second  for every twenty turns of resting performed, which
+	keeps  a resting player from eating up the system's CPU.  Again
+	there is a comment just before the affected line.
+
+
+			-SYSRK-

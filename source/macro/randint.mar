@@ -1,0 +1,21 @@
+	;
+	;  Macro function for :
+	;
+	;	y := RANDINT(x) where y receives an integer
+	;			1 <= y <= x
+	;
+	;  Seed is a global variable declared in PASCAL main.
+	;
+	.title	randint		Uniform random number generator
+	.ident	/randint/
+	.psect  misc1$code,pic,con,rel,lcl,shr,exe,rd,nowrt,2
+	.entry	randint,^M<>
+	mull2	#16807,seed
+	bicl2	#^X80000000,seed
+	subl3	#1,seed,r0
+	emul	r0,4(ap),#0,r0
+	ediv	#2147483647,r0,r0,r1
+	addl2	#1,r0
+	ret
+	.end
+

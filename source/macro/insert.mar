@@ -1,0 +1,27 @@
+	;	Robert Koeneke
+	;	09-20-84
+	;	Module :
+	;		Insert - Searches for match string and replaces
+	;			 a match with a replacement string.
+	;			 No checking is done.
+	;
+	.title	INSERT_STR	Insert a string
+	.ident	/insert_str/
+	.psect	misc1$code,pic,con,rel,lcl,shr,exe,rd,nowrt,2
+	.entry	INSERT_STR,^M<R2,R3,R4,R5,R6>
+	movl	4(ap),r4		; Address of source string
+	movl	8(ap),r5		; Address of match string
+	matchc	(r5),2(r5),(r4),2(r4)	; Look for match
+	bneq	1$			; No match?
+	movl	r3,r6			; Save for second MOVC
+	movzwl	(r5),r0			; Length of match string
+	subl2	r0,r6			; Dest for second MOVC
+	subw3	(r5),@12(ap),r1		; rep_len - mtc_len
+	cvtwl	r1,r1			; Convert to longword
+	addw	r1,(r4)			; Zap length of source
+	addl2	r3,r1			; R1=Move to, R3=Move from
+	movc3	r2,(r3),(r1)		; Adjust source string
+	movl	12(ap),r0		; Address of replace string
+	movc3	(r0),2(r0),(r6)		; Put replace string into source
+1$:	ret
+	.end

@@ -1,0 +1,24 @@
+	;
+	;  Robert Koeneke
+	;  September 1, 1984
+	;  MORIA subroutine
+	;  Macro function for :
+	;
+	;	MIN( MAX( y , x ) + 1 , z )
+	;
+	.title	MINMAX		Returns the min of a max and a number.
+	.ident	/minmax/
+	.psect  misc1$code,pic,con,rel,lcl,shr,exe,rd,nowrt,2
+	.entry	minmax,^M<>
+	movl	4(ap),r0
+	movl	8(ap),r1
+	cmpl	r0,r1
+	bgeq	1$
+	movl	r1,r0
+1$:	incl	r0
+	cmpl	r0,12(ap)
+	bgtr	2$
+	ret
+2$:	movl	12(ap),r0
+	ret
+	.end

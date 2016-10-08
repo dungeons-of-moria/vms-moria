@@ -1,0 +1,615 @@
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+
+
+
+
+
+             __________
+          1  DISCLAIMER
+
+
+
+               Moria is intended for Public Domain, and may not be sold  or
+
+          marketed  IN  ANY  FORM without the permision and written consent
+
+          from the author Robert Alan Koeneke.  I retain all copyrights  to
+
+          this  program,  in  either the original or modified forms, and no
+
+          violation,  deletion,  or  change  of  the  copyright  notice  is
+
+          allowed.   Futhermore,  I will have no liability or responsibilty
+
+          to any user with respect to loss or  damage  caused  directly  or
+
+          indirectly by this program.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                       1
+
+
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+
+
+
+
+
+             ____________
+          2  INTRODUCTION
+
+
+
+               MORIA is a huge dungeon simulation game  written  mainly  in
+
+          VAX-11  PASCAL, encompasing about 22,000 lines of code.  A single
+
+          executable file is all that is needed to bring up MORIA  for  the
+
+          first  time,  although  a  MORIA  help library must be present in
+
+          order to use the internal help options.
+
+
+
+               In  addition  to  the  PASCAL  source  code,  several  macro
+
+          functions  and  procedures  are present which must be linked into
+
+          the moria object library.  These  macro  routines  are  primarily
+
+          used for greatly improved speed on IO and execution.
+
+
+
+
+
+
+
+             ___ ____________ _______
+          3  THE DISTRIBUTION PACKAGE
+
+
+
+               This distribution package contains many files organized into
+
+          certain directories.  The directory structure is as follows:
+
+
+
+                                  +--------------------+
+
+                                  |Main MORIA directory|
+
+                                  |     Build.com      |
+
+                                  +--------------------+
+
+                                  /          |         \
+
+                                 /           |          \
+
+           +--------------------+ +--------------------+ +--------------------+
+
+           | DOC - Documentation| | SOURCE - .PAS files| | EXECUTE - Binaries |
+
+           |       source       | |                    | |           and data |
+
+           +--------------------+ +--------------------+ +--------------------+
+
+                                      /           \
+
+                                     /             \
+
+               +--------------------+               +--------------------+
+
+               | MACRO - source &   |               | INCLUDE - Pascal   |
+
+               |         library    |               |       include files|
+
+               +--------------------+               +--------------------+
+
+
+
+
+
+               A ready to run Moria is found in EXECUTE.DIR, along with all
+
+          needed  data  files  and the Moria help library.  You may execute
+
+          BUILD.COM to rebuild Moria if needed.  Examine BUILD.COM  closely
+
+          and  you  will  notice  that it will allow you to rebuild certain
+
+          sections of Moria or re-link it, if the proper parameter is used.
+
+
+
+               Documentation source can be found in the directory  DOC.DIR.
+
+          MORIA.HLP  is  used to build the help library.  MORIA.RNO is used
+
+          for the manual which can be printed off.
+
+
+
+               The source directory, SOURCE.DIR,  contains  only  MORIA.PAS
+
+          and  TERMDEF.PAS.   Most of the guts to Moria can be found in the
+
+          directory INCLUDE.DIR, which contains all of  the  include  files
+
+          used  by  MORIA.PAS.   MACRO.DIR contains several macro routines,
+
+          whose objects  are  stored  in  MORIALIB.OLB,  an  object  module
+
+          library.
+
+
+
+
+
+                                       2
+
+
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+
+
+
+
+
+             ____________
+          4  INSTALLATION
+
+
+
+               Because of the size of MORIA when running, it  is  suggested
+
+          that  it be installed shared.  MORIA can be installed with SYSPRV
+
+          so that all data files can be kept locked up to all  but  system.
+
+          MORIA  turns  off  SYSPRV automatically unless accessing it's own
+
+          data files, so that no breach in  system  security  is  possible.
+
+          Also,  the  game  itself  should be read protected, allowing only
+
+          EXECUTE access, so that it can not propagate within a system.
+
+
+
+
+
+          Installed without SYSPRV      /open/shared         
+
+          Executable protection         MORIA.EXE (s:re,o:re,g:re,w:re)
+
+
+
+          Installed with SYSPRV         /priv=sysprv/open/shared
+
+          Executable protection         MORIA.EXE (s:re,o:e,g:e,w:e)
+
+
+
+
+
+
+
+               When MORIA is first executed,  it  looks  for  certain  data
+
+          files  in  the same directory as the executable.  If they are not
+
+          found, they are created with default values and the  game  exits.
+
+          The  local MORIA WIZARD should edit these files for site specific
+
+          information and running hours.
+
+
+
+               Four  data  files  are  created  and  maintained  by  MORIA.
+
+          MORIA.DAT  contains  a startup message and MORIA news, and can be
+
+          used to tell MORIAvites about changes in playing times and  such.
+
+          HOURS.DAT  contains  a  reject  message  and the normal operating
+
+          hours for the game.   Note  that  the  only  part  of  this  file
+
+          important  to  the  game  is the lines containing hours, and that
+
+          text may be added before and/or after these lines.   MORIATOP.DAT
+
+          will  contain  the  top  twenty scores.  MORIACHR.DAT contains an
+
+          entry for each living, saved character, thus disallowing  players
+
+          to bring back dead characters.
+
+
+
+               A fifth file is needed if you want to use the internal  help
+
+          command  within  MORIA.   This  is the MORIAHLP.HLB help library,
+
+          which must be located in the same directory  as  the  other  data
+
+          files.
+
+
+
+               The suggested protection for these files is as follows:
+
+
+
+                                With SYSPRV             Without SYSPRV
+
+                MORIA.DAT       (s:rw,o,g,w)            (s:rw,o:r,g:r,w:r)
+
+                HOURS.DAT       (s:rw,o,g,w)            (s:rw,o:r,g:r,w:r)
+
+                MORIATOP.DAT    (s:rw,o:r,g:r,w:r)      (s:rw,o:rw,g:rw,w:rw)
+
+                MORIACHR.DAT    (s:rw,o,g,w)            (s:rw,o:rw,g:rw,w:rw)
+
+                MORIAHLP.HLB    (s:r,o:r,g:r,w:r)       (s:r,o:r,g:r,w:r)
+
+
+
+          It is suggested that a special directory be set aside  for  MORIA
+
+          game  and  data  files,  so that they may be easily protected and
+
+          maintained.  Note that  the  data  files  must  be  in  the  same
+
+          directory as the executable.
+
+
+
+
+
+                                       3
+
+
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+
+
+
+
+
+               Characters may be saved in MORIA, and  later  restored.   To
+
+          save  a  character  use  <CONTROL>-Z  and supply a filename.  The
+
+          character will be encrypted so that no tampering will be allowed.
+
+          To restore a character, set up a moria foreign command and supply
+
+          the saved-character filename as an argument.
+
+
+
+          Set up a MORIA foreign run command :  $ moria :== $user1:[moria]moria
+
+          Restore character                  :  $ moria save_filename
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                       4
+
+
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+           The Dungeons of Moria - COPYRIGHT (c) Robert Alan Koeneke
+
+
+
+
+
+             _____
+          5  NOTES
+
+
+
+          5.1  The IO Bug...
+
+
+
+               When Moria was run at high baud rates (9600 and above),  the
+
+          game  would  come to a screeching halt and the process would have
+
+          to be killed.  I suspected that I had screwed up  on  my  use  of
+
+          QIO.   But  after  tromping  through the code and writing several
+
+          test programs, I have come  to  the  conclusion  that  a  problem
+
+          exists  in the device driver.  In order to "get around" this bug,
+
+          I pause the process a small amount of time before issuing  a  QIO
+
+          read  command.   This seems to allow the device driver to perform
+
+          what ever duty needs doing, and no hang ups occur.  If you should
+
+          experience  a  problem  with the game going into permanent LEF's,
+
+          try increasing the pause time a bit.
+
+
+
+
+
+
+
+          5.2  Hibernating The Game...
+
+
+
+               At certain places in the  game,  I  have  included  code  to
+
+          hibernate  for  brief periods.  Many of these were taken out with
+
+          the addition of the pause  before  each  INKEY,  but  some  still
+
+          exist.   These  are included to keep Moria "system friendly".  My
+
+          philosophy has been that a well written game should not  eat  the
+
+          CPU up alive.  If you wish to differ, these pauses can be removed
+
+          to speed up the game, but you should not remove the pauses before
+
+          INKEY  unless  you  are  running the game at baud rates less than
+
+          9600.
+
+
+
+
+
+
+
+          5.3  A Vision Of The FUTURE...
+
+
+
+               With the 4.0 version of Moria, I had finally "finished"  all
+
+          I  had originally set out to do.  Moria 1.1 which was released as
+
+          an executable was actually an incomplete game.
+
+
+
+               Around May, 1986, I expect to release a  Moria  Version  5.0
+
+          (or  there  abouts).   This version may have some (or all) of the
+
+          following:
+
+
+
+                Altars
+
+                Artifacts
+
+                New creatures
+
+                New objects
+
+                Regeneration for monsters (slower than the player of course)
+
+                Water passages, rooms, etc.
+
+
+
+
+
+               In addition, I  expect  much  of  my  code  will  be  better
+
+          documented  and  more  carefully  written.  I may even tackle the
+
+          "Town level" code...
+
+
+
+
+
+
+
+                                       5
+
+

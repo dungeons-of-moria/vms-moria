@@ -1,0 +1,41 @@
+	.TITLE	HANDLER - Condition handler for MORIA
+	.PSECT	HANDLER$DATA	RD, WRT, PIC, NOSHR, NOEXE, LONG
+FAC:	.ASCID	/MORIA/
+STRING:	.ASCII	/**Warning: Error Encountered **/<13><10>
+	.ASCII	/--Attempting to continue game--/<13><10>
+	.ASCII	/--Suggest you SAVE and restore your character/<13><10>
+	.ASCII	/Press RETURN to continue: /
+	STRING_LEN = .-STRING
+PROMPT:	.LONG	STRING_LEN
+	.ADDRESS STRING
+RESP:	.LONG	10
+	.ADDRESS BUF
+BUF:	.BLKB	10
+
+	.PSECT	MISC1$CODE	RD, NOWRT, PIC, SHR, LONG, EXE
+	$SSDEF			; Define system service values
+	.ENTRY	OH_NO,^M<R2,R3,R4>
+;+
+;	Arg list offsets
+	SIG_ARGS = 4		; Signal array
+	MECH_ARGS = 8		; Mechanism array
+;-
+	MOVL	SIG_ARGS(AP), R2	; Get pointer to signals
+	MOVL	4(R2), R3		; Get condition signalled
+	CMPL	R3, #SS$_UNWIND		; Unwinding?
+	BEQL	10$			; Yes, just do it
+	$PUTMSG_S	MSGVEC=@SIG_ARGS(AP),-
+			FACNAM=FAC
+	PUSHAL	PROMPT
+	PUSHAL	BUF
+	CALLS	#2, G^LIB$GET_COMMAND	; 
+	BICL3	#^C<7>, R3, R4		; Extract the severity
+	CMPL	R4, #4			; Is it fatal?
+	BLSS	10$			; Nope, resignal.
+	BICB	#7, 4(R2)		; Modify the severity to warning
+	$UNWIND_S	DEPADR=20$	; Unwind to caller
+10$:	MOVL	#SS$_RESIGNAL, R0	; Say to resignal
+	RET
+
+20$:	.LONG	1
+	.END

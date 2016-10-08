@@ -1,0 +1,87 @@
+	; PUTQIO - contains two related functions, PUT_BUFFER and PUT_QIO.
+	;	   PUT_BUFFER accepts an (row,col) cursor address, and a
+	;	   string.  Cursor positioning characters are added into
+	;	   the buffer in front of the string.  Buffer dumps if it
+	;	   becomes too full.
+	;	   PUT_QIO performs the buffer dump operation.  It can be
+	;	   called externally, or by PUT_BUFFER.
+	;
+	;
+	;	Globals used:	(Declared in MORIA pascal code)
+	;		cursor_r:	array of 24 strings (6 bytes)
+	;		curlen_r:	length of each row string
+	;		cursor_c:	array of 80 strings (6 bytes)
+	;		curlen_c:	length of each col string
+	;		cursor_l:	Total length of row and col
+	;		row_first:	Boolean (1,0)
+	;				1 - Row,Col format
+	;				0 - Col,Row format
+	;
+	;	Registers:
+	;		R0	Used by MOVC
+	;		R1	Used by MOVC
+	;		R2	Used by MOVC
+	;		R3	Used by MOVC
+	;		R4	Used by MOVC
+	;		R5	Used by MOVC
+	;
+	;	This IO routine does no index checking.
+					;
+	.title	PUT_QIO		Build and dump IO buffer\
+	.ident	/put_qio/
+	.psect	IOBUF$DATA
+					;
+	IO$_WRITEVBLK:	.long	48	; See STARLET ($IODEF)
+	out_buf:	.blkb	1024	; Size in bytes of buffer
+	out_len:	.long	0	; Current length of buffer
+					;
+					;
+	.psect	IO$CODE,pic,con,rel,lcl,shr,exe,rd,nowrt,2
+	.entry	PUT_BUFFER,^M<R2,R3,R4,R5>
+					;
+	movab	out_buf,r3		; Address of output buffer.
+	addl2	out_len,r3		; Buffer may be partially full.
+	cmpl	row_first,#0		; Test for row first
+	bgtr	1$			; Branch to row,col format
+					; Col,Row format
+	mull3	#12,12(ap),r1		; (8 bytes * index) for col.
+	movab	cursor_c-10[r1],r1	; Address of needed col coord.
+	movc3	curlen_c,(r1),(r3)	; Move col cursor characters.
+	mull3	#12,8(ap),r1		; (8 bytes * index) for row.
+	movab	cursor_r-10[r1],r1	; Address of needed row coord.
+	movc3	curlen_r,(r1),(r3)	; Move row cursor characters.
+	brb	2$			; Branch to copy string
+1$:					; Row,Col format
+	mull3	#12,8(ap),r1		; (8 bytes * index) for row.
+	movab	cursor_r-10[r1],r1	; Address of needed row coord.
+	movc3	curlen_r,(r1),(r3)	; Move row cursor characters.
+	mull3	#12,12(ap),r1		; (8 bytes * index) for col.
+	movab	cursor_c-10[r1],r1	; Address of needed col coord.
+	movc3	curlen_c,(r1),(r3)	; Move col cursor characters.
+2$:					; Copy String
+	tstw	@4(ap)			; No string?
+	beql	3$			; No move needed.
+	movl	4(ap),r1		; Move address of string arg.
+	movc3	@4(ap),2(r1),(r3)	; Move string arg into output buff.
+3$:
+	addw3	cursor_l,@4(ap),r1	; Total length of new output
+	addw2	r1,out_len		; Total length of saved output
+	cmpw	out_len,#900		; Buffer getting full?
+	bgtr	DUMP_QIO		; Output the buffer...
+	ret				; return from PUT_BUFFER
+					;
+					; PUT_QIO entry point
+PUT_QIO::
+	.word	0
+					;
+DUMP_QIO:
+	$QIOW_S	EFN=#6, -		; Unique event flag
+		CHAN=channel, -		; Output the buffer
+		FUNC=IO$_WRITEVBLK, -	; Write virtual block
+		P1=out_buf, -		; Address of buffer
+		P2=out_len		; Buffers current length
+					;
+	movw	#0,out_len		; Clear buffer;
+	ret				; Return from PUT_QIO
+					;
+	.end

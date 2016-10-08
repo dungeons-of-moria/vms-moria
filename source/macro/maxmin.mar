@@ -1,0 +1,25 @@
+	;
+	;  Robert Koeneke
+	;  September 1, 1984
+	;  MORIA subroutine
+	;  Macro function for :
+	;
+	;	MAX( MIN( x , y ) - 1 , z )
+	;	Arguments in order x, y, z
+	;
+	.title	MAXMIN	Retruns the max of a min and number.
+	.ident	/maxmin/
+	.psect  misc1$code,pic,con,rel,lcl,shr,exe,rd,nowrt,2
+	.entry	maxmin,^M<>
+	movl	4(ap),r0
+	movl	8(ap),r1
+	cmpl	r1,r0
+	bgeq	1$
+	movl	r1,r0
+1$:	decl	r0
+	cmpl	12(ap),r0
+	bgtr	2$
+	ret
+2$:	movl	12(ap),r0
+	ret
+	.end

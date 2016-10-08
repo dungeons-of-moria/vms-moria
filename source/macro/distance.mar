@@ -1,0 +1,34 @@
+	;
+	;  Programmer:	RAK	V4.3
+	;  Macro function for :
+	;
+	;	dis := distance(y1,x1,y2,x2)
+	;
+	;	Distance returned is only an approximation based on :
+	;
+	;	dy = abs(y1-y2)
+	;	dx = abs(x1-x2)
+	;
+	;	distance =  2*(dy+dx) - MIN(dy,dx)
+	;		    ----------------------
+	;			      2
+	;
+	.title	DISTANCE	Integer distance between two points
+	.ident	/distance/
+	.psect  misc1$code,pic,con,rel,lcl,shr,exe,rd,nowrt,2
+	.entry	distance,^M<>
+	subl3	4(ap),12(ap),r0
+	bgeq	1$
+	mnegl	r0,r0
+1$:	subl3	8(ap),16(ap),r1
+	bgeq	2$
+	mnegl	r1,r1
+2$:	cmpl	r0,r1
+	bgeq	3$
+	addl2	r1,r1
+	brb	4$
+3$:	addl2	r0,r0
+4$:	addl2	r1,r0
+	ashl	#-1,r0,r0
+	ret
+	.end

@@ -1,0 +1,23 @@
+	;
+	;  Robert Koeneke
+	;  September 1, 1984
+	;  MORIA subroutine
+	;  Macro function for :
+	;
+	;	y := bitpos(x)
+	;		Locate first set bit in x and return that position
+	;		in y.
+	;		Clear bit in x.
+	;
+	.title	BIT_POS		Return location of next bit
+	.ident	/bit_pos/
+	.psect  misc1$code,pic,con,rel,lcl,shr,exe,rd,nowrt,2
+	.entry	bit_pos,^M<>
+	ffs	#0,#32,@4(ap),r0
+	beql	2$
+	bbsc	r0,@4(ap),1$
+1$:	incl	r0
+	ret
+2$:	clrl	r0
+	ret
+	.end
