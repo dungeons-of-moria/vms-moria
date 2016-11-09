@@ -9,6 +9,12 @@ This repository contains the original VMS Pascal source code as written
 by Robert Alan Koeneke, and assistant programmers Jimmey Wayne Todd and
 Gary D. McAdoo.
 
+Want to play Moria?
+
+Most people do not have access to a machine capable of running VMS. Luckily,
+Moria was rewritten in the C language a few years later and released as
+Umoria. Recently it was made available for the
+[Windows and macOS platforms](https://github.com/dungeons-of-moria/umoria).
 
 
 ## Summary
@@ -21,7 +27,6 @@ player will begin their adventure on the town level where they may acquire
 supplies, weapons, armor, and magical devices by bartering with various shop
 owners. After preparing for their adventure, the player can descend into the
 dungeons of MORIA, where fantastic adventures await their coming!
-
 
 
 _If you have any other version of VMS Moria than 4.43 and 4.8, then please get
