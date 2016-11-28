@@ -1,4 +1,4 @@
-# Moria 4.8
+# VMS Moria 4.8
 
 _The Dungeons of Moria_ is a single player dungeon simulation originally
 written by Robert Alan Koeneke and first released in 1985. Moria has
