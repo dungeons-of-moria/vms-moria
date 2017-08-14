@@ -1,7 +1,8 @@
 # VMS Moria 4.8
 
 _The Dungeons of Moria_ is a single player dungeon simulation originally
-written by Robert Alan Koeneke and first released in 1985. Moria has
+written by Robert Alan Koeneke and first released in 1983 (although Koeneke
+wrote a VMS Basic version of Moria the year before in 1982). Moria has
 inspired many other games including _Angband_ and perhaps the most famous
 roguelike of all, _Diablo_!
 
